@@ -1,8 +1,9 @@
 "use client";
 
+import { StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
-import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import { CATEGORY_LABEL, getIngredient } from "@/lib/catalog";
 import { formatPct, formatWon, pctChange } from "@/lib/format";
 import { buildDecisions } from "@/lib/recommend";
@@ -68,13 +69,15 @@ export function IngredientDetailView({ id }: { id: string }) {
             <SourceNote date={s?.date ?? null} source={prices.source} />
           </div>
         </div>
-        <Button
-          variant={watching ? "outline" : "default"}
-          aria-pressed={watching}
-          onClick={() => toggleWatch(id, ingredient.name, watching, "ingredient_detail")}
+        <Toggle
+          variant="outline"
+          pressed={watching}
+          onPressedChange={() => toggleWatch(id, ingredient.name, watching, "ingredient_detail")}
+          aria-label={`${ingredient.name} 관심 재료`}
         >
-          {watching ? "★ 관심 재료" : "☆ 관심 재료 추가"}
-        </Button>
+          <StarIcon data-icon="inline-start" className="group-aria-pressed/toggle:fill-current" />
+          {watching ? "관심 재료" : "관심 재료로 담기"}
+        </Toggle>
       </div>
 
       {!s ? (

@@ -1,8 +1,9 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, StarIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, INGREDIENTS } from "@/lib/catalog";
@@ -30,19 +31,18 @@ export function toggleWatch(id: string, name: string, on: boolean, source: "ingr
   }
 }
 
-function StarButton({ on, name, onToggle }: { on: boolean; name: string; onToggle: () => void }) {
+/** 관심 재료 별 토글. 상태는 aria-pressed로 전달하고 이름은 고정한다 */
+function StarToggle({ on, name, onToggle }: { on: boolean; name: string; onToggle: () => void }) {
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      aria-pressed={on}
-      aria-label={on ? `${name} 관심 재료에서 빼기` : `${name} 관심 재료로 담기`}
-      className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-[22px] leading-none transition-colors hover:bg-canvas ${
-        on ? "text-ink" : "text-hairline hover:text-steel"
-      }`}
+    <Toggle
+      pressed={on}
+      onPressedChange={onToggle}
+      aria-label={`${name} 관심 재료`}
+      // 목록에 여러 개가 있어 눌림 상태를 채운 원 대신 채운 별로 표시
+      className="size-11 shrink-0 px-0 text-steel hover:text-ink aria-pressed:border-transparent aria-pressed:bg-transparent aria-pressed:text-ink aria-pressed:hover:bg-muted aria-pressed:hover:text-ink"
     >
-      {on ? "★" : "☆"}
-    </button>
+      <StarIcon className="size-[22px] group-aria-pressed/toggle:fill-current" />
+    </Toggle>
   );
 }
 
@@ -75,7 +75,7 @@ function Group({
               key={d.ingredientId}
               decision={d}
               name={name}
-              trailing={<StarButton on={on} name={name} onToggle={() => toggleWatch(d.ingredientId, name, on, "ingredients_list")} />}
+              trailing={<StarToggle on={on} name={name} onToggle={() => toggleWatch(d.ingredientId, name, on, "ingredients_list")} />}
             />
           );
         })}
