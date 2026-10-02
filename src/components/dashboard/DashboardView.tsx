@@ -1,6 +1,8 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { formatDateShort } from "@/lib/format";
 import { compareForDisplay } from "@/lib/status";
 import { useDecisions } from "@/store/use-decisions";
@@ -25,8 +27,9 @@ export function DashboardView() {
         title={prices.date ? `${formatDateShort(prices.date)} 오늘의 판단` : "오늘의 판단"}
         description={<SourceNote date={prices.date} source={prices.source} />}
         action={
-          <Link href="/ingredients" className="btn-secondary">
-            + 관심 재료
+          <Link href="/ingredients" className={buttonVariants({ variant: "outline" })}>
+            <PlusIcon data-icon="inline-start" />
+            관심 재료
           </Link>
         }
       />

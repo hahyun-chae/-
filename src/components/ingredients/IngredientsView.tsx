@@ -1,6 +1,8 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, INGREDIENTS } from "@/lib/catalog";
 import { matchesKorean } from "@/lib/hangul";
@@ -181,17 +183,18 @@ export function IngredientsView() {
         )}
 
         {q && !exactMatch && (
-          <button
-            type="button"
-            className="btn-secondary w-full"
+          <Button
+            variant="outline"
+            className="w-full"
             onClick={() => {
               track("Custom Ingredient Added", { ingredient_name: q, source: "ingredients_list" });
               actions.addWatch([actions.addCustomIngredient(q)]);
               setQuery("");
             }}
           >
-            + &lsquo;{q}&rsquo; 직접 추가 <span className="text-sm text-muted-foreground">(시세 미연동)</span>
-          </button>
+            <PlusIcon data-icon="inline-start" />
+            &lsquo;{q}&rsquo; 직접 추가 <span className="text-sm text-muted-foreground">(시세 미연동)</span>
+          </Button>
         )}
       </div>
     </>

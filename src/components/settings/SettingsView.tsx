@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { DEFAULT_THRESHOLDS } from "@/lib/status";
 import { REGIONS } from "@/lib/templates";
@@ -104,12 +105,16 @@ export function SettingsView() {
         <section className="card space-y-4 p-5 sm:p-7">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold">판단 기준값</h2>
-            <button type="button" className="text-sm font-semibold text-brand-700" onClick={() => {
+            <Button
+              variant="link"
+              size="sm"
+              onClick={() => {
                 actions.updateSettings({ thresholds: DEFAULT_THRESHOLDS });
                 track("Settings Changed", { setting: "thresholds_reset", value: true });
-              }}>
+              }}
+            >
               기본값으로
-            </button>
+            </Button>
           </div>
           {THRESHOLD_FIELDS.map((f) => (
             <div key={f.key}>
@@ -163,9 +168,9 @@ export function SettingsView() {
           <div className="mt-3 flex gap-2">
             {confirmReset ? (
               <>
-                <button
-                  type="button"
-                  className="btn bg-red-600 text-white hover:bg-red-700"
+                <Button
+                  variant="destructive"
+                  className="bg-destructive text-white hover:bg-destructive/90"
                   onClick={() => {
                     track("Data Reset", {});
                     actions.reset();
@@ -173,15 +178,15 @@ export function SettingsView() {
                   }}
                 >
                   모두 지우고 처음부터
-                </button>
-                <button type="button" className="btn-secondary" onClick={() => setConfirmReset(false)}>
+                </Button>
+                <Button variant="outline" onClick={() => setConfirmReset(false)}>
                   취소
-                </button>
+                </Button>
               </>
             ) : (
-              <button type="button" className="btn-secondary text-red-600" onClick={() => setConfirmReset(true)}>
+              <Button variant="outline" className="text-destructive hover:text-destructive" onClick={() => setConfirmReset(true)}>
                 데이터 초기화
-              </button>
+              </Button>
             )}
           </div>
         </section>

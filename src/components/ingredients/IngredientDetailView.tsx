@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { Button } from "@/components/ui/button";
 import { CATEGORY_LABEL, getIngredient } from "@/lib/catalog";
 import { formatPct, formatWon, pctChange } from "@/lib/format";
 import { buildDecisions } from "@/lib/recommend";
@@ -67,13 +68,13 @@ export function IngredientDetailView({ id }: { id: string }) {
             <SourceNote date={s?.date ?? null} source={prices.source} />
           </div>
         </div>
-        <button
-          type="button"
-          className={watching ? "btn-secondary" : "btn-primary"}
+        <Button
+          variant={watching ? "outline" : "default"}
+          aria-pressed={watching}
           onClick={() => toggleWatch(id, ingredient.name, watching, "ingredient_detail")}
         >
           {watching ? "★ 관심 재료" : "☆ 관심 재료 추가"}
-        </button>
+        </Button>
       </div>
 
       {!s ? (

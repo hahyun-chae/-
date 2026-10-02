@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, INGREDIENTS, ingredientName } from "@/lib/catalog";
 import { MENU_TEMPLATES } from "@/lib/templates";
@@ -97,9 +98,9 @@ export function OnboardingView() {
             />
           </div>
 
-          <button type="submit" className="btn-primary mt-8 w-full" disabled={!name.trim()}>
+          <Button type="submit" className="mt-8 w-full" disabled={!name.trim()}>
             다음
-          </button>
+          </Button>
         </form>
       )}
 
@@ -148,15 +149,19 @@ export function OnboardingView() {
 
           {/* 재료 목록이 길어서 이동 버튼은 하단에 고정 */}
           <div className="sticky bottom-0 -mx-4 mt-8 flex gap-2 bg-canvas/90 px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-xl sm:-mx-6 sm:px-6">
-            <button type="button" className="btn-secondary" onClick={() => setStep(0)}>이전</button>
-            <button type="button" className="btn-primary flex-1" disabled={watch.length === 0}
+            <Button variant="outline" onClick={() => setStep(0)}>
+              이전
+            </Button>
+            <Button
+              className="flex-1"
+              disabled={watch.length === 0}
               onClick={() => {
                 track("Onboarding Step Completed", { step: 2, step_name: "관심 재료" });
                 setStep(2);
               }}
             >
               {watch.length > 0 ? `${watch.length}개 선택 · 다음` : "재료를 1개 이상 골라 주세요"}
-            </button>
+            </Button>
           </div>
         </section>
       )}
@@ -203,11 +208,15 @@ export function OnboardingView() {
           <p className="mt-3 text-sm text-slate-500">등록 후 메뉴 화면에서 재료를 자유롭게 고칠 수 있어요.</p>
 
           <div className="mt-8 flex gap-2">
-            <button type="button" className="btn-secondary" onClick={() => setStep(1)}>이전</button>
-            <button type="button" className="btn-ghost" onClick={() => finish(false)}>건너뛰기</button>
-            <button type="button" className="btn-primary flex-1" onClick={() => finish(templateIds.length > 0)}>
+            <Button variant="outline" onClick={() => setStep(1)}>
+              이전
+            </Button>
+            <Button variant="link" onClick={() => finish(false)}>
+              건너뛰기
+            </Button>
+            <Button className="flex-1" onClick={() => finish(templateIds.length > 0)}>
               {templateIds.length > 0 ? `${templateIds.length}개 등록하고 시작` : "시작하기"}
-            </button>
+            </Button>
           </div>
         </section>
       )}

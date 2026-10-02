@@ -1,6 +1,8 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { useDecisions } from "@/store/use-decisions";
 import { RoleBadge, StatusBadge } from "../ui/Badges";
 import { EmptyState, LoadingBlock, PageHeader } from "../ui/common";
@@ -17,8 +19,9 @@ export function MenusView() {
         title="메뉴 재료 구성"
         description="메뉴별로 핵심·조정 가능·대체 가능 재료를 정해 두면, 가격이 오를 때 그 안에서만 추천해 드려요."
         action={
-          <Link href="/menus/new" className="btn-primary">
-            + 메뉴 추가
+          <Link href="/menus/new" className={buttonVariants()}>
+            <PlusIcon data-icon="inline-start" />
+            메뉴 추가
           </Link>
         }
       />

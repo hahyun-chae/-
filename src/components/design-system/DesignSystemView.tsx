@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
@@ -113,9 +113,9 @@ export function DesignSystemView() {
         </p>
         <nav aria-label="컴포넌트 바로가기" className="mt-6 flex flex-wrap gap-2">
           {SECTIONS.map((s) => (
-            <Button key={s.id} variant="outline" size="sm" nativeButton={false} render={<a href={`#${s.id}`} />}>
+            <a key={s.id} href={`#${s.id}`} className={buttonVariants({ variant: "outline", size: "sm" })}>
               {s.label}
-            </Button>
+            </a>
           ))}
         </nav>
       </header>
@@ -221,12 +221,14 @@ export function DesignSystemView() {
             </Cell>
           </Row>
 
-          <Row label="링크로 렌더링" hint="render={<a />}">
-            <Button nativeButton={false} render={<a href="#dialog" />}>Dialog 섹션으로 이동</Button>
-            <Button variant="link" nativeButton={false} render={<a href="https://ui.shadcn.com/docs/components/base/button" target="_blank" rel="noreferrer" />}>
+          <Row label="링크를 버튼 모양으로" hint="<a className={buttonVariants(...)}> — render={<a />}는 role=button이 붙어 쓰지 않음">
+            <a href="#dialog" className={buttonVariants()}>
+              Dialog 섹션으로 이동
+            </a>
+            <a href="https://ui.shadcn.com/docs/components/base/button" target="_blank" rel="noreferrer" className={buttonVariants({ variant: "link" })}>
               shadcn 문서
               <ExternalLinkIcon data-icon="inline-end" />
-            </Button>
+            </a>
           </Row>
         </Section>
 

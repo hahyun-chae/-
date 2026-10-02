@@ -1,7 +1,9 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { MENU_TEMPLATES, type MenuTemplate } from "@/lib/templates";
 import type { Ingredient, IngredientRole, Menu, SubstituteGroup } from "@/lib/types";
@@ -167,13 +169,13 @@ export function MenuEditor({
                   onChange={(e) => updateGroup(g.id, { name: e.target.value })}
                   aria-label="그룹 이름"
                 />
-                <button
-                  type="button"
-                  className="btn-ghost shrink-0 text-red-600 hover:bg-red-50"
+                <Button
+                  variant="ghost"
+                  className="shrink-0 text-destructive hover:bg-destructive/10 hover:text-destructive"
                   onClick={() => setMenu((m) => ({ ...m, substituteGroups: m.substituteGroups.filter((x) => x.id !== g.id) }))}
                 >
                   삭제
-                </button>
+                </Button>
               </div>
 
               <p className="mt-3 mb-1.5 text-sm font-semibold text-slate-700">지금 쓰는 재료</p>
@@ -198,9 +200,10 @@ export function MenuEditor({
               />
             </div>
           ))}
-          <button type="button" className="btn-secondary w-full border-dashed" onClick={addGroup}>
-            + 대체 그룹 추가
-          </button>
+          <Button variant="outline" className="w-full border-dashed" onClick={addGroup}>
+            <PlusIcon data-icon="inline-start" />
+            대체 그룹 추가
+          </Button>
         </div>
       </Section>
 
@@ -213,9 +216,8 @@ export function MenuEditor({
       <div className="sticky bottom-16 z-10 -mx-4 flex gap-2 border-t border-slate-200 bg-canvas/95 px-4 py-3 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 lg:bottom-0">
         {!isNew &&
           (confirmDelete ? (
-            <button
-              type="button"
-              className="btn bg-red-600 text-white hover:bg-red-700"
+            <Button
+              variant="destructive" className="bg-destructive text-white hover:bg-destructive/90"
               onClick={() => {
                 actions.deleteMenu(menu.id);
                 track("Menu Deleted", { menu_id: menu.id });
@@ -223,18 +225,16 @@ export function MenuEditor({
               }}
             >
               정말 삭제
-            </button>
+            </Button>
           ) : (
-            <button type="button" className="btn-ghost text-red-600 hover:bg-red-50" onClick={() => setConfirmDelete(true)}>
+            <Button variant="ghost" className="text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => setConfirmDelete(true)}>
               메뉴 삭제
-            </button>
+            </Button>
           ))}
-        <button type="button" className="btn-secondary ml-auto" onClick={() => router.back()}>
+        <Button variant="outline" className="ml-auto" onClick={() => router.back()}>
           취소
-        </button>
-        <button type="button" className="btn-primary" onClick={save}>
-          저장
-        </button>
+        </Button>
+        <Button onClick={save}>저장</Button>
       </div>
     </div>
   );

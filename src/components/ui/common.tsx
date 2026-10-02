@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { formatDateShort } from "@/lib/format";
 
 export function PageHeader({
@@ -56,7 +57,7 @@ export function EmptyState({
       <p className="text-[21px] font-semibold text-ink">{title}</p>
       {description && <p className="mt-2 max-w-sm text-[17px] text-muted-foreground">{description}</p>}
       {href && cta && (
-        <Link href={href} className="btn-primary mt-6">
+        <Link href={href} className={buttonVariants({ className: "mt-6" })}>
           {cta}
         </Link>
       )}

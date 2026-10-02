@@ -1,6 +1,8 @@
 "use client";
 
+import { CheckIcon } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { formatWon } from "@/lib/format";
 import type { Decision } from "@/lib/recommend";
@@ -93,9 +95,10 @@ export function DecisionCard({
           {RESPONSES.map((r) => {
             const selected = response === r.value;
             return (
-              <button
+              <Button
                 key={r.value}
-                type="button"
+                variant={selected ? "default" : "outline"}
+                className="flex-1 sm:flex-none sm:min-w-20"
                 aria-pressed={selected}
                 onClick={() => {
                   actions.respond(responseKey, selected ? null : r.value);
@@ -108,17 +111,10 @@ export function DecisionCard({
                     candidate_ids: d.candidates.map((c) => c.ingredientId),
                   });
                 }}
-                className={`btn flex-1 sm:flex-none ${
-                  selected
-                    ? r.value === "applied"
-                      ? "bg-brand-600 text-white"
-                      : "bg-ink text-white"
-                    : "text-ink shadow-[0_0_0_1px_var(--color-steel)] hover:bg-canvas"
-                }`}
               >
-                {selected && "✓ "}
+                {selected && <CheckIcon data-icon="inline-start" />}
                 {r.label}
-              </button>
+              </Button>
             );
           })}
         </div>
