@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_KR } from "next/font/google";
+import { AnalyticsProvider } from "@/components/layout/AnalyticsProvider";
 import { AppShell } from "@/components/layout/AppShell";
 import { getPriceBoard } from "@/lib/prices";
 import { PricesProvider } from "@/store/prices-context";
@@ -28,6 +29,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko" className={`${notoSansKr.variable} h-full antialiased`}>
       <body className="min-h-full">
+        <AnalyticsProvider />
         <PricesProvider initial={prices}>
           <AppShell>{children}</AppShell>
         </PricesProvider>

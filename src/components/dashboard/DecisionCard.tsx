@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 import { formatWon } from "@/lib/format";
 import type { Decision } from "@/lib/recommend";
 import type { UserResponse } from "@/lib/types";
@@ -96,7 +97,17 @@ export function DecisionCard({
                 key={r.value}
                 type="button"
                 aria-pressed={selected}
-                onClick={() => actions.respond(responseKey, selected ? null : r.value)}
+                onClick={() => {
+                  actions.respond(responseKey, selected ? null : r.value);
+                  track("Recommendation Responded", {
+                    ingredient_id: d.ingredientId,
+                    ingredient_name: nameOf(d.ingredientId),
+                    action: d.action,
+                    response: selected ? "cleared" : r.value,
+                    price_change_pct: d.change == null ? null : Math.round(d.change * 10) / 10,
+                    candidate_ids: d.candidates.map((c) => c.ingredientId),
+                  });
+                }}
                 className={`btn flex-1 sm:flex-none ${
                   selected
                     ? r.value === "applied"

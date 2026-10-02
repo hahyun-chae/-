@@ -5,6 +5,7 @@ import { CATEGORY_LABEL, INGREDIENTS } from "@/lib/catalog";
 import { matchesKorean } from "@/lib/hangul";
 import type { Ingredient } from "@/lib/types";
 import { actions } from "@/store/app-store";
+import { track } from "@/lib/analytics";
 
 /** 재료 검색(초성 검색 지원). 목록에 없는 재료는 '시세 미연동 재료'로 직접 추가할 수 있다. */
 export function IngredientPicker({
@@ -14,6 +15,7 @@ export function IngredientPicker({
   placeholder = "재료 검색 (예: 시금치, ㅅㄱㅊ)",
   allowCustom = true,
   autoFocus,
+  source = "menu_editor",
 }: {
   onPick: (id: string) => void;
   exclude?: string[];
@@ -21,6 +23,8 @@ export function IngredientPicker({
   placeholder?: string;
   allowCustom?: boolean;
   autoFocus?: boolean;
+  /** 직접 추가 이벤트에 기록할 위치 */
+  source?: "onboarding" | "menu_editor";
 }) {
   const [query, setQuery] = useState("");
   const listId = useId();
@@ -77,7 +81,10 @@ export function IngredientPicker({
             <li>
               <button
                 type="button"
-                onClick={() => pick(actions.addCustomIngredient(query.trim()))}
+                onClick={() => {
+                  track("Custom Ingredient Added", { ingredient_name: query.trim(), source });
+                  pick(actions.addCustomIngredient(query.trim()));
+                }}
                 className="flex w-full items-center gap-2 px-5 py-2.5 text-left text-brand-700 hover:bg-brand-50"
               >
                 <span className="font-semibold">+ &lsquo;{query.trim()}&rsquo; 직접 추가</span>

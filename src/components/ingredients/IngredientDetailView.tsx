@@ -5,10 +5,11 @@ import { useMemo } from "react";
 import { CATEGORY_LABEL, getIngredient } from "@/lib/catalog";
 import { formatPct, formatWon, pctChange } from "@/lib/format";
 import { buildDecisions } from "@/lib/recommend";
-import { actions, makeNameOf, useAppState } from "@/store/app-store";
+import { makeNameOf, useAppState } from "@/store/app-store";
 import { usePrices } from "@/store/prices-context";
 import { ActionBadge, ChangeText, NormalBadge, RoleBadge, StatusBadge } from "../ui/Badges";
 import { EmptyState, LoadingBlock, SectionTitle, SourceNote } from "../ui/common";
+import { toggleWatch } from "./IngredientsView";
 import { PriceChart } from "./PriceChart";
 
 const CHART_COLOR = { surge: "#dc2626", up: "#ea580c", flat: "#64748b", down: "#2563eb", plunge: "#1e40af" } as const;
@@ -69,7 +70,7 @@ export function IngredientDetailView({ id }: { id: string }) {
         <button
           type="button"
           className={watching ? "btn-secondary" : "btn-primary"}
-          onClick={() => (watching ? actions.removeWatch(id) : actions.addWatch([id]))}
+          onClick={() => toggleWatch(id, ingredient.name, watching, "ingredient_detail")}
         >
           {watching ? "★ 관심 재료" : "☆ 관심 재료 추가"}
         </button>

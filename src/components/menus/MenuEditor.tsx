@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 import { BUSINESS_TYPES, MENU_TEMPLATES } from "@/lib/templates";
 import type { Ingredient, IngredientRole, Menu, SubstituteGroup } from "@/lib/types";
 import { actions, makeNameOf, newId } from "@/store/app-store";
@@ -95,6 +96,13 @@ export function MenuEditor({
       name: menu.name.trim(),
       substituteGroups: groups.map((g) => ({ ...g, name: g.name.trim() || `${nameOf(g.currentIngredientId)} 대체` })),
     });
+    track("Menu Saved", {
+      is_new: isNew,
+      core_count: menu.ingredients.filter((i) => i.role === "core").length,
+      adjustable_count: menu.ingredients.filter((i) => i.role === "adjustable").length,
+      substitute_group_count: groups.length,
+      has_price: menu.price != null,
+    });
     router.push("/menus");
   };
 
@@ -108,7 +116,10 @@ export function MenuEditor({
               <button
                 key={t.templateId}
                 type="button"
-                onClick={() => setMenu({ ...instantiateTemplate(t), id: menu.id })}
+                onClick={() => {
+                  setMenu({ ...instantiateTemplate(t), id: menu.id });
+                  track("Menu Template Applied", { template_id: t.templateId, template_name: t.name });
+                }}
                 className="min-h-9 rounded-full bg-transparent px-3.5 text-sm text-ink ring-1 ring-steel hover:bg-canvas"
               >
                 {t.name}
@@ -214,6 +225,7 @@ export function MenuEditor({
               className="btn bg-red-600 text-white hover:bg-red-700"
               onClick={() => {
                 actions.deleteMenu(menu.id);
+                track("Menu Deleted", { menu_id: menu.id });
                 router.push("/menus");
               }}
             >

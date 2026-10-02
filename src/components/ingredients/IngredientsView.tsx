@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, INGREDIENTS } from "@/lib/catalog";
 import { matchesKorean } from "@/lib/hangul";
 import { buildDecisions, type Decision } from "@/lib/recommend";
@@ -14,6 +15,17 @@ import { PriceRow } from "./PriceRow";
 type Tab = "all" | IngredientCategory;
 
 const CATEGORY_ORDER: IngredientCategory[] = ["grain", "leafy", "vegetable", "namul", "mushroom", "fruit", "meat", "seafood", "etc"];
+
+/** 관심 재료 담기/빼기 + 이벤트 기록 (재료 상세 화면에서도 사용) */
+export function toggleWatch(id: string, name: string, on: boolean, source: "ingredients_list" | "ingredient_detail") {
+  if (on) {
+    actions.removeWatch(id);
+    track("Watchlist Item Removed", { ingredient_id: id, ingredient_name: name, source });
+  } else {
+    actions.addWatch([id]);
+    track("Watchlist Item Added", { ingredient_id: id, ingredient_name: name, source });
+  }
+}
 
 function StarButton({ on, name, onToggle }: { on: boolean; name: string; onToggle: () => void }) {
   return (
@@ -60,7 +72,7 @@ function Group({
               key={d.ingredientId}
               decision={d}
               name={name}
-              trailing={<StarButton on={on} name={name} onToggle={() => (on ? actions.removeWatch(d.ingredientId) : actions.addWatch([d.ingredientId]))} />}
+              trailing={<StarButton on={on} name={name} onToggle={() => toggleWatch(d.ingredientId, name, on, "ingredients_list")} />}
             />
           );
         })}
@@ -129,7 +141,10 @@ export function IngredientsView() {
                 type="button"
                 role="tab"
                 aria-selected={selected}
-                onClick={() => setTab(t.id)}
+                onClick={() => {
+                  if (t.id !== activeTab) track("Category Tab Selected", { category: t.label });
+                  setTab(t.id);
+                }}
                 className={`min-h-10 shrink-0 rounded-full px-4 text-[15px] whitespace-nowrap transition-colors ${
                   selected ? "bg-ink font-semibold text-white" : "text-ink ring-1 ring-hairline ring-inset hover:bg-white"
                 }`}
@@ -170,6 +185,7 @@ export function IngredientsView() {
             type="button"
             className="btn-secondary w-full"
             onClick={() => {
+              track("Custom Ingredient Added", { ingredient_name: q, source: "ingredients_list" });
               actions.addWatch([actions.addCustomIngredient(q)]);
               setQuery("");
             }}

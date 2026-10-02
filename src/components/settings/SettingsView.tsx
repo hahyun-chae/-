@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 import { DEFAULT_THRESHOLDS } from "@/lib/status";
 import { BUSINESS_TYPES, REGIONS } from "@/lib/templates";
 import type { Thresholds } from "@/lib/types";
@@ -72,7 +73,10 @@ export function SettingsView() {
               label="업종"
               value={s.businessType}
               options={BUSINESS_TYPES.map((b) => ({ value: b.id, label: b.label }))}
-              onChange={(v) => actions.updateSettings({ businessType: v })}
+              onChange={(v) => {
+                actions.updateSettings({ businessType: v });
+                track("Settings Changed", { setting: "business_type", value: v });
+              }}
             />
           </div>
         </section>
@@ -88,13 +92,19 @@ export function SettingsView() {
                 { value: "retail", label: "소매가" },
                 { value: "wholesale", label: "도매가" },
               ]}
-              onChange={(v) => actions.updateSettings({ priceType: v })}
+              onChange={(v) => {
+                actions.updateSettings({ priceType: v });
+                track("Settings Changed", { setting: "price_type", value: v });
+              }}
             />
             <p className="mt-1.5 text-sm text-slate-500">시장·마트에서 직접 사면 소매가, 도매시장·거래처 발주라면 도매가가 더 가까워요.</p>
           </div>
           <div>
             <label className="label" htmlFor="region">지역</label>
-            <select id="region" className="input" value={s.region} onChange={(e) => actions.updateSettings({ region: e.target.value })}>
+            <select id="region" className="input" value={s.region} onChange={(e) => {
+                actions.updateSettings({ region: e.target.value });
+                track("Settings Changed", { setting: "region", value: REGIONS.find((r) => r.code === e.target.value)?.label ?? e.target.value });
+              }}>
               {REGIONS.map((r) => (
                 <option key={r.code} value={r.code}>{r.label}</option>
               ))}
@@ -106,7 +116,10 @@ export function SettingsView() {
         <section className="card space-y-4 p-5 sm:p-7">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold">판단 기준값</h2>
-            <button type="button" className="text-sm font-semibold text-brand-700" onClick={() => actions.updateSettings({ thresholds: DEFAULT_THRESHOLDS })}>
+            <button type="button" className="text-sm font-semibold text-brand-700" onClick={() => {
+                actions.updateSettings({ thresholds: DEFAULT_THRESHOLDS });
+                track("Settings Changed", { setting: "thresholds_reset", value: true });
+              }}>
               기본값으로
             </button>
           </div>
@@ -125,6 +138,8 @@ export function SettingsView() {
                     const v = Number(e.target.value);
                     if (Number.isFinite(v) && v > 0) actions.updateSettings({ thresholds: { ...s.thresholds, [f.key]: v } });
                   }}
+                  // 입력 중 매 글자가 아니라 입력을 마쳤을 때 한 번만 기록
+                  onBlur={() => track("Settings Changed", { setting: `threshold_${f.key}`, value: s.thresholds[f.key] })}
                 />
                 <span className="font-semibold text-slate-600">%</span>
               </div>
@@ -142,7 +157,10 @@ export function SettingsView() {
               type="checkbox"
               className="mt-1 h-5 w-5 accent-ink"
               checked={s.autoWatchMenuIngredients}
-              onChange={(e) => actions.updateSettings({ autoWatchMenuIngredients: e.target.checked })}
+              onChange={(e) => {
+                actions.updateSettings({ autoWatchMenuIngredients: e.target.checked });
+                track("Settings Changed", { setting: "auto_watch_menu_ingredients", value: e.target.checked });
+              }}
             />
             <span>
               <span className="block font-semibold text-slate-900">메뉴 재료를 관심 재료에 자동 추가</span>
@@ -161,6 +179,7 @@ export function SettingsView() {
                   type="button"
                   className="btn bg-red-600 text-white hover:bg-red-700"
                   onClick={() => {
+                    track("Data Reset", {});
                     actions.reset();
                     router.push("/onboarding");
                   }}
