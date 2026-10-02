@@ -3,44 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { track } from "@/lib/analytics";
 import { DEFAULT_THRESHOLDS } from "@/lib/status";
 import { REGIONS } from "@/lib/templates";
-import type { Thresholds } from "@/lib/types";
+import type { PriceType, Thresholds } from "@/lib/types";
 import { actions, useAppState } from "@/store/app-store";
 import { usePrices } from "@/store/prices-context";
 import { LoadingBlock, PageHeader } from "../ui/common";
-
-function Segmented<T extends string>({
-  value,
-  options,
-  onChange,
-  label,
-}: {
-  value: T;
-  options: { value: T; label: string }[];
-  onChange: (v: T) => void;
-  label: string;
-}) {
-  return (
-    <div role="radiogroup" aria-label={label} className="flex flex-wrap gap-1.5">
-      {options.map((o) => (
-        <button
-          key={o.value}
-          type="button"
-          role="radio"
-          aria-checked={value === o.value}
-          onClick={() => onChange(o.value)}
-          className={`min-h-11 rounded-full px-5 text-[15px] ring-1 ring-inset ${
-            value === o.value ? "bg-ink text-white ring-ink" : "bg-transparent text-ink ring-steel hover:bg-canvas"
-          }`}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 const THRESHOLD_FIELDS: { key: keyof Thresholds; label: string; desc: string }[] = [
   { key: "up", label: "상승·하락 기준", desc: "1주 전보다 이만큼 오르거나 내리면 상승·하락으로 봐요." },
@@ -74,18 +44,22 @@ export function SettingsView() {
           <h2 className="text-base font-semibold">시세 기준</h2>
           <div>
             <p className="label">가격 기준</p>
-            <Segmented
-              label="가격 기준"
-              value={s.priceType}
-              options={[
-                { value: "retail", label: "소매가" },
-                { value: "wholesale", label: "도매가" },
-              ]}
-              onChange={(v) => {
+            {/* 하나만 고르는 토글 그룹. Base UI는 값을 배열로 주고받는다 */}
+            <ToggleGroup
+              variant="outline"
+              aria-label="가격 기준"
+              value={[s.priceType]}
+              onValueChange={(next) => {
+                const v = next[0] as PriceType | undefined;
+                // 이미 선택된 항목을 다시 눌러 비우는 경우는 무시 (항상 하나는 선택)
+                if (!v || v === s.priceType) return;
                 actions.updateSettings({ priceType: v });
                 track("Settings Changed", { setting: "price_type", value: v });
               }}
-            />
+            >
+              <ToggleGroupItem value="retail">소매가</ToggleGroupItem>
+              <ToggleGroupItem value="wholesale">도매가</ToggleGroupItem>
+            </ToggleGroup>
             <p className="mt-1.5 text-sm text-slate-500">시장·마트에서 직접 사면 소매가, 도매시장·거래처 발주라면 도매가가 더 가까워요.</p>
           </div>
           <div>

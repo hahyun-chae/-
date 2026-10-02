@@ -3,6 +3,7 @@
 import { PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, INGREDIENTS } from "@/lib/catalog";
 import { matchesKorean } from "@/lib/hangul";
@@ -124,79 +125,74 @@ export function IngredientsView() {
     <>
       <PageHeader title="재료 시세" description={<SourceNote date={prices.date} source={prices.source} />} />
 
-      {/* 검색 + 카테고리 탭: 스크롤해도 상단에 고정 */}
-      <div className="sticky top-12 z-10 -mx-4 bg-canvas/90 px-4 pt-1 pb-3 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:top-0 lg:-mx-12 lg:px-12 lg:pt-4">
-        <input
-          type="search"
-          className="input"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="재료 검색 (예: 시금치, ㅅㄱㅊ)"
-          aria-label="재료 검색"
-        />
-        <div role="tablist" aria-label="재료 분류" className="-mx-1 mt-3 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none]">
-          {tabs.map((t) => {
-            const selected = activeTab === t.id;
-            return (
-              <button
-                key={t.id}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                onClick={() => {
-                  if (t.id !== activeTab) track("Category Tab Selected", { category: t.label });
-                  setTab(t.id);
-                }}
-                className={`min-h-10 shrink-0 rounded-full px-4 text-[15px] whitespace-nowrap transition-colors ${
-                  selected ? "bg-ink font-semibold text-white" : "text-ink ring-1 ring-hairline ring-inset hover:bg-white"
-                }`}
-              >
+      <Tabs
+        value={activeTab}
+        onValueChange={(v) => {
+          const next = v as Tab;
+          if (next !== activeTab) track("Category Tab Selected", { category: tabs.find((t) => t.id === next)?.label ?? next });
+          setTab(next);
+        }}
+        className="gap-0"
+      >
+        {/* 검색 + 카테고리 탭: 스크롤해도 상단에 고정 */}
+        <div className="sticky top-12 z-10 -mx-4 bg-canvas/90 px-4 pt-1 pb-3 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:top-0 lg:-mx-12 lg:px-12 lg:pt-4">
+          <input
+            type="search"
+            className="input"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="재료 검색 (예: 시금치, ㅅㄱㅊ)"
+            aria-label="재료 검색"
+          />
+          <TabsList aria-label="재료 분류" className="mt-3 w-full justify-start overflow-x-auto rounded-full bg-control/70 p-1 [scrollbar-width:none]">
+            {tabs.map((t) => (
+              <TabsTrigger key={t.id} value={t.id} className="flex-none rounded-full px-4 text-[15px] data-active:font-semibold">
                 {t.label}
-                <span className={`ml-1 ${selected ? "text-white/70" : "text-steel"}`}>{t.count}</span>
-              </button>
-            );
-          })}
+                <span className="text-steel">{t.count}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
         </div>
-      </div>
 
-      <div className="mt-4 space-y-10">
-        {watchedItems.length > 0 ? (
-          <Group title="★ 관심 재료" hint={`상승 ${up} · 하락 ${down}`} items={watchedItems} watched={watched} nameOf={view.nameOf} />
-        ) : (
-          !q && (
-            <p className="card px-5 py-4 text-[15px] text-muted-foreground sm:px-7">
-              {activeTab === "all" ? "" : `${CATEGORY_LABEL[activeTab]} 중 `}
-              <span className="text-ink">☆</span>를 눌러 관심 재료로 담으면 목록 맨 위에 모여요.
-            </p>
-          )
-        )}
+        <TabsContent value={activeTab} className="mt-4 space-y-10 text-base">
+          {watchedItems.length > 0 ? (
+            <Group title="★ 관심 재료" hint={`상승 ${up} · 하락 ${down}`} items={watchedItems} watched={watched} nameOf={view.nameOf} />
+          ) : (
+            !q && (
+              <p className="card px-5 py-4 text-[15px] text-muted-foreground sm:px-7">
+                {activeTab === "all" ? "" : `${CATEGORY_LABEL[activeTab]} 중 `}
+                <span className="text-ink">☆</span>를 눌러 관심 재료로 담으면 목록 맨 위에 모여요.
+              </p>
+            )
+          )}
 
-        {otherItems.length > 0 && (
-          <Group title={watchedItems.length > 0 ? "다른 재료" : "전체 재료"} items={otherItems} watched={watched} nameOf={view.nameOf} />
-        )}
+          {otherItems.length > 0 && (
+            <Group title={watchedItems.length > 0 ? "다른 재료" : "전체 재료"} items={otherItems} watched={watched} nameOf={view.nameOf} />
+          )}
 
-        {q && visible.length === 0 && (
-          <div className="card px-5 py-8 text-center sm:px-7">
-            <p className="text-[17px] text-ink">&lsquo;{q}&rsquo; 검색 결과가 없어요</p>
-            <p className="mt-1 text-sm text-muted-foreground">공식 시세가 없는 재료도 직접 추가해서 메뉴 구성에 쓸 수 있어요.</p>
-          </div>
-        )}
+          {q && visible.length === 0 && (
+            <div className="card px-5 py-8 text-center sm:px-7">
+              <p className="text-[17px] text-ink">&lsquo;{q}&rsquo; 검색 결과가 없어요</p>
+              <p className="mt-1 text-sm text-muted-foreground">공식 시세가 없는 재료도 직접 추가해서 메뉴 구성에 쓸 수 있어요.</p>
+            </div>
+          )}
 
-        {q && !exactMatch && (
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => {
-              track("Custom Ingredient Added", { ingredient_name: q, source: "ingredients_list" });
-              actions.addWatch([actions.addCustomIngredient(q)]);
-              setQuery("");
-            }}
-          >
-            <PlusIcon data-icon="inline-start" />
-            &lsquo;{q}&rsquo; 직접 추가 <span className="text-sm text-muted-foreground">(시세 미연동)</span>
-          </Button>
-        )}
-      </div>
+          {q && !exactMatch && (
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                track("Custom Ingredient Added", { ingredient_name: q, source: "ingredients_list" });
+                actions.addWatch([actions.addCustomIngredient(q)]);
+                setQuery("");
+              }}
+            >
+              <PlusIcon data-icon="inline-start" />
+              &lsquo;{q}&rsquo; 직접 추가 <span className="text-sm text-muted-foreground">(시세 미연동)</span>
+            </Button>
+          )}
+        </TabsContent>
+      </Tabs>
     </>
   );
 }

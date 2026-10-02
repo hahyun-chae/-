@@ -1,8 +1,10 @@
 "use client";
 
+import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, INGREDIENTS, ingredientName } from "@/lib/catalog";
 import { MENU_TEMPLATES } from "@/lib/templates";
@@ -122,27 +124,26 @@ export function OnboardingView() {
 
           <div className="mt-6 space-y-6">
             {groups.map((g) => (
-              <section key={g.category} aria-label={CATEGORY_LABEL[g.category]}>
-                <h2 className="mb-2.5 text-sm font-semibold text-muted-foreground">{CATEGORY_LABEL[g.category]}</h2>
-                <div className="flex flex-wrap gap-2">
-                  {g.ids.map((id) => {
-                    const on = watch.includes(id);
-                    return (
-                      <button
-                        key={id}
-                        type="button"
-                        aria-pressed={on}
-                        onClick={() => setWatch(toggle(watch, id))}
-                        className={`min-h-11 rounded-full px-4 text-[17px] ring-1 ring-inset transition-colors ${
-                          on ? "bg-ink font-semibold text-white ring-ink" : "bg-white text-ink ring-hairline hover:bg-canvas"
-                        }`}
-                      >
-                        {on && "✓ "}
-                        {nameOf(id)}
-                      </button>
-                    );
-                  })}
-                </div>
+              <section key={g.category} aria-labelledby={`ob-cat-${g.category}`}>
+                <h2 id={`ob-cat-${g.category}`} className="mb-2.5 text-sm font-semibold text-muted-foreground">
+                  {CATEGORY_LABEL[g.category]}
+                </h2>
+                {/* 분류별 다중 선택. 그룹의 선택값을 전체 선택 목록(watch)에 합친다 */}
+                <ToggleGroup
+                  multiple
+                  variant="outline"
+                  aria-labelledby={`ob-cat-${g.category}`}
+                  className="w-full flex-wrap"
+                  value={g.ids.filter((id) => watch.includes(id))}
+                  onValueChange={(next) => setWatch((w) => [...w.filter((id) => !g.ids.includes(id)), ...next])}
+                >
+                  {g.ids.map((id) => (
+                    <ToggleGroupItem key={id} value={id} className="text-[17px]">
+                      {watch.includes(id) && <CheckIcon data-icon="inline-start" />}
+                      {nameOf(id)}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
               </section>
             ))}
           </div>

@@ -1,8 +1,9 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { MENU_TEMPLATES, type MenuTemplate } from "@/lib/templates";
@@ -19,16 +20,25 @@ export function instantiateTemplate(t: MenuTemplate): Menu {
   };
 }
 
+/** 등록한 재료 칩: shadcn Badge + 빼기 버튼 */
 function Chips({ ids, nameOf, onRemove, tone }: { ids: string[]; nameOf: (id: string) => string; onRemove: (id: string) => void; tone: string }) {
   if (ids.length === 0) return null;
   return (
     <ul className="mb-2.5 flex flex-wrap gap-1.5">
       {ids.map((id) => (
-        <li key={id} className={`inline-flex items-center gap-1 rounded-full py-1 pr-1 pl-3 text-sm font-semibold ${tone}`}>
-          {nameOf(id)}
-          <button type="button" onClick={() => onRemove(id)} className="grid h-6 w-6 place-items-center rounded-full hover:bg-black/10" aria-label={`${nameOf(id)} 빼기`}>
-            ✕
-          </button>
+        <li key={id}>
+          <Badge className={`h-8 gap-0.5 py-0 pr-0.5 pl-3 text-sm font-semibold ${tone}`}>
+            {nameOf(id)}
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              className="text-current hover:bg-black/10 hover:text-current"
+              onClick={() => onRemove(id)}
+              aria-label={`${nameOf(id)} 빼기`}
+            >
+              <XIcon />
+            </Button>
+          </Badge>
         </li>
       ))}
     </ul>
@@ -108,17 +118,17 @@ export function MenuEditor({
           <p className="text-sm font-semibold text-ink">템플릿으로 빠르게 시작하기</p>
           <div className="mt-2.5 flex flex-wrap gap-1.5">
             {MENU_TEMPLATES.map((t) => (
-              <button
+              <Button
                 key={t.templateId}
-                type="button"
+                variant="outline"
+                size="sm"
                 onClick={() => {
                   setMenu({ ...instantiateTemplate(t), id: menu.id });
                   track("Menu Template Applied", { template_id: t.templateId, template_name: t.name });
                 }}
-                className="min-h-9 rounded-full bg-transparent px-3.5 text-sm text-ink ring-1 ring-steel hover:bg-canvas"
               >
                 {t.name}
-              </button>
+              </Button>
             ))}
           </div>
         </section>

@@ -29,6 +29,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const BUTTON_VARIANTS = ["default", "secondary", "outline", "ghost", "destructive", "link"] as const;
 const BUTTON_SIZES = ["xs", "sm", "default", "lg"] as const;
@@ -41,6 +44,9 @@ const SECTIONS = [
   { id: "card", label: "Card" },
   { id: "badge", label: "Badge" },
   { id: "dialog", label: "Dialog" },
+  { id: "tabs", label: "Tabs" },
+  { id: "toggle", label: "Toggle" },
+  { id: "toggle-group", label: "ToggleGroup" },
 ];
 
 function Section({ id, title, description, children }: { id: string; title: string; description: string; children: React.ReactNode }) {
@@ -102,6 +108,8 @@ export function DesignSystemView() {
   const [menuName, setMenuName] = useState("비빔밥");
   const [savedName, setSavedName] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [priceType, setPriceType] = useState<string[]>(["retail"]);
+  const [picked, setPicked] = useState<string[]>(["spinach", "chard"]);
 
   return (
     <div>
@@ -478,6 +486,152 @@ export function DesignSystemView() {
                   </ul>
                 </DialogContent>
               </Dialog>
+            </Cell>
+          </Row>
+        </Section>
+
+        {/* ───────── Tabs ───────── */}
+        <Section id="tabs" title="Tabs" description="variant default · line, 비활성 탭, 패널 전환 (재료 시세 카테고리 탭에 사용)">
+          <Row label='variant="default"' hint="원가핏 사용 형태: 알약형 + 개수 표시">
+            <Tabs defaultValue="namul" className="w-full">
+              <TabsList className="w-full justify-start overflow-x-auto rounded-full bg-control/70 p-1 sm:w-fit">
+                {[
+                  ["all", "전체", 42],
+                  ["leafy", "잎채소", 7],
+                  ["namul", "나물", 9],
+                  ["meat", "축산", 4],
+                ].map(([v, l, n]) => (
+                  <TabsTrigger key={v} value={String(v)} className="flex-none rounded-full px-4 text-[15px] data-active:font-semibold">
+                    {l}
+                    <span className="text-steel">{n}</span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              <TabsContent value="all" className="pt-2 text-muted-foreground">전체 재료 42종을 보여줘요.</TabsContent>
+              <TabsContent value="leafy" className="pt-2 text-muted-foreground">배추, 양배추, 상추 …</TabsContent>
+              <TabsContent value="namul" className="pt-2 text-muted-foreground">시금치, 콩나물, 취나물, 비름나물, 근대 …</TabsContent>
+              <TabsContent value="meat" className="pt-2 text-muted-foreground">계란, 삼겹살, 닭고기, 소고기</TabsContent>
+            </Tabs>
+          </Row>
+          <Row label="기본 모양 · line · disabled">
+            <Cell name="default">
+              <Tabs defaultValue="a">
+                <TabsList>
+                  <TabsTrigger value="a">소매가</TabsTrigger>
+                  <TabsTrigger value="b">도매가</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </Cell>
+            <Cell name='variant="line"'>
+              <Tabs defaultValue="b">
+                <TabsList variant="line">
+                  <TabsTrigger value="a">오늘</TabsTrigger>
+                  <TabsTrigger value="b">1주</TabsTrigger>
+                  <TabsTrigger value="c">1개월</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </Cell>
+            <Cell name="disabled 탭">
+              <Tabs defaultValue="a">
+                <TabsList>
+                  <TabsTrigger value="a">공식 시세</TabsTrigger>
+                  <TabsTrigger value="b" disabled>
+                    구매가 (준비 중)
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </Cell>
+          </Row>
+        </Section>
+
+        {/* ───────── Toggle ───────── */}
+        <Section id="toggle" title="Toggle" description="variant default · outline, size sm · default · lg, 눌림 · 비활성 상태">
+          <Row label="variant × 상태" hint="aria-pressed가 true면 Ink 채움">
+            <Cell name="default">
+              <Toggle aria-label="관심 재료">
+                <StarIcon data-icon="inline-start" />
+                관심 재료
+              </Toggle>
+            </Cell>
+            <Cell name="default · pressed">
+              <Toggle defaultPressed aria-label="관심 재료">
+                <StarIcon data-icon="inline-start" />
+                관심 재료
+              </Toggle>
+            </Cell>
+            <Cell name="outline">
+              <Toggle variant="outline">시금치</Toggle>
+            </Cell>
+            <Cell name="outline · pressed">
+              <Toggle variant="outline" defaultPressed>
+                <CheckIcon data-icon="inline-start" />
+                시금치
+              </Toggle>
+            </Cell>
+            <Cell name="disabled">
+              <Toggle variant="outline" disabled>
+                근대
+              </Toggle>
+            </Cell>
+          </Row>
+          <Row label="size">
+            {(["sm", "default", "lg"] as const).map((sz) => (
+              <Cell key={sz} name={sz}>
+                <Toggle variant="outline" size={sz} defaultPressed={sz === "default"}>
+                  애호박
+                </Toggle>
+              </Cell>
+            ))}
+          </Row>
+        </Section>
+
+        {/* ───────── ToggleGroup ───────── */}
+        <Section id="toggle-group" title="ToggleGroup" description="하나만 선택(설정의 가격 기준) · 여러 개 선택(온보딩 재료 고르기)">
+          <Row label="단일 선택" hint={`value=${JSON.stringify(priceType)} — Base UI는 값을 배열로 다룸`}>
+            <ToggleGroup
+              variant="outline"
+              aria-label="가격 기준"
+              value={priceType}
+              onValueChange={(next) => next.length > 0 && setPriceType(next)}
+            >
+              <ToggleGroupItem value="retail">소매가</ToggleGroupItem>
+              <ToggleGroupItem value="wholesale">도매가</ToggleGroupItem>
+            </ToggleGroup>
+          </Row>
+          <Row label="여러 개 선택 (multiple)" hint={`value=${JSON.stringify(picked)}`}>
+            <ToggleGroup multiple variant="outline" aria-label="나물" className="flex-wrap" value={picked} onValueChange={setPicked}>
+              {[
+                ["spinach", "시금치"],
+                ["chwinamul", "취나물"],
+                ["amaranth", "비름나물"],
+                ["chard", "근대"],
+              ].map(([v, l]) => (
+                <ToggleGroupItem key={v} value={v}>
+                  {picked.includes(v) && <CheckIcon data-icon="inline-start" />}
+                  {l}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          </Row>
+          <Row label="spacing={0} (붙인 모양) · size sm · disabled">
+            <Cell name="spacing={0}">
+              <ToggleGroup variant="outline" spacing={0} defaultValue={["week"]} aria-label="기간">
+                <ToggleGroupItem value="day">전일</ToggleGroupItem>
+                <ToggleGroupItem value="week">1주</ToggleGroupItem>
+                <ToggleGroupItem value="month">1개월</ToggleGroupItem>
+              </ToggleGroup>
+            </Cell>
+            <Cell name='size="sm"'>
+              <ToggleGroup variant="outline" size="sm" defaultValue={["up"]} aria-label="상태">
+                <ToggleGroupItem value="up">상승</ToggleGroupItem>
+                <ToggleGroupItem value="down">하락</ToggleGroupItem>
+              </ToggleGroup>
+            </Cell>
+            <Cell name="disabled">
+              <ToggleGroup variant="outline" disabled defaultValue={["a"]} aria-label="비활성">
+                <ToggleGroupItem value="a">KAMIS</ToggleGroupItem>
+                <ToggleGroupItem value="b">직접 입력</ToggleGroupItem>
+              </ToggleGroup>
             </Cell>
           </Row>
         </Section>
