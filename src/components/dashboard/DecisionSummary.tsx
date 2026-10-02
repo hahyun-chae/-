@@ -25,9 +25,9 @@ export function DecisionSummary({ decisions }: { decisions: Decision[] }) {
           </p>
           <p className={`tabular mt-2 text-[32px] leading-none font-semibold tracking-[-0.015em] sm:text-[48px] ${t.num}`}>
             {t.value}
-            <span className="ml-0.5 text-base font-normal text-muted sm:text-[17px]">개</span>
+            <span className="ml-0.5 text-base font-normal text-muted-foreground sm:text-[17px]">개</span>
           </p>
-          <p className="mt-2 hidden text-sm text-muted sm:block">{t.sub}</p>
+          <p className="mt-2 hidden text-sm text-muted-foreground sm:block">{t.sub}</p>
         </div>
       ))}
     </section>

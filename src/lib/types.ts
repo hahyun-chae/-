@@ -47,11 +47,8 @@ export interface Thresholds {
   aboveNormal: number; // 평년 대비 %
 }
 
-export type BusinessType = "bibimbap" | "salad" | "sandwich" | "banchan" | "etc";
-
 export interface StoreSettings {
   name: string;
-  businessType: BusinessType;
   region: string;
   priceType: PriceType;
   thresholds: Thresholds;

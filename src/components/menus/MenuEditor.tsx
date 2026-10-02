@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { track } from "@/lib/analytics";
-import { BUSINESS_TYPES, MENU_TEMPLATES } from "@/lib/templates";
+import { MENU_TEMPLATES, type MenuTemplate } from "@/lib/templates";
 import type { Ingredient, IngredientRole, Menu, SubstituteGroup } from "@/lib/types";
 import { actions, makeNameOf, newId } from "@/store/app-store";
 import { IngredientPicker } from "../ingredients/IngredientPicker";
 
-export function instantiateTemplate(t: (typeof MENU_TEMPLATES)["bibimbap"][number]): Menu {
+export function instantiateTemplate(t: MenuTemplate): Menu {
   return {
     id: newId("menu"),
     name: t.name,
@@ -46,12 +46,10 @@ function Section({ title, desc, children }: { title: string; desc: string; child
 export function MenuEditor({
   initial,
   custom,
-  businessType,
   isNew,
 }: {
   initial: Menu;
   custom: Ingredient[];
-  businessType: keyof typeof MENU_TEMPLATES;
   isNew: boolean;
 }) {
   const router = useRouter();
@@ -78,11 +76,6 @@ export function MenuEditor({
       ...m,
       substituteGroups: [...m.substituteGroups, { id: newId("group"), name: "", currentIngredientId: "", optionIds: [] }],
     }));
-
-  const templates = [
-    ...MENU_TEMPLATES[businessType],
-    ...BUSINESS_TYPES.filter((b) => b.id !== businessType).flatMap((b) => MENU_TEMPLATES[b.id]),
-  ];
 
   const save = () => {
     if (!menu.name.trim()) return setError("메뉴 이름을 입력해 주세요.");
@@ -112,7 +105,7 @@ export function MenuEditor({
         <section className="rounded-3xl bg-white p-5 sm:p-7">
           <p className="text-sm font-semibold text-ink">템플릿으로 빠르게 시작하기</p>
           <div className="mt-2.5 flex flex-wrap gap-1.5">
-            {templates.map((t) => (
+            {MENU_TEMPLATES.map((t) => (
               <button
                 key={t.templateId}
                 type="button"

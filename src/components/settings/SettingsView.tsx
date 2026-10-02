@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { track } from "@/lib/analytics";
 import { DEFAULT_THRESHOLDS } from "@/lib/status";
-import { BUSINESS_TYPES, REGIONS } from "@/lib/templates";
+import { REGIONS } from "@/lib/templates";
 import type { Thresholds } from "@/lib/types";
 import { actions, useAppState } from "@/store/app-store";
 import { usePrices } from "@/store/prices-context";
@@ -66,18 +66,6 @@ export function SettingsView() {
           <div>
             <label className="label" htmlFor="store-name">가게 이름</label>
             <input id="store-name" className="input" value={s.name} placeholder="예: 행복한 비빔밥" onChange={(e) => actions.updateSettings({ name: e.target.value })} />
-          </div>
-          <div>
-            <p className="label">업종</p>
-            <Segmented
-              label="업종"
-              value={s.businessType}
-              options={BUSINESS_TYPES.map((b) => ({ value: b.id, label: b.label }))}
-              onChange={(v) => {
-                actions.updateSettings({ businessType: v });
-                track("Settings Changed", { setting: "business_type", value: v });
-              }}
-            />
           </div>
         </section>
 

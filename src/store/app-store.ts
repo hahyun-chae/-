@@ -11,7 +11,6 @@ const STORAGE_KEY = "wongafit:v1";
 
 export const DEFAULT_SETTINGS: StoreSettings = {
   name: "",
-  businessType: "bibimbap",
   region: "",
   priceType: "retail",
   thresholds: DEFAULT_THRESHOLDS,

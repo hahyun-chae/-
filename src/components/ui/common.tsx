@@ -14,7 +14,7 @@ export function PageHeader({
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-10">
       <div>
         <h1 className="text-[28px] leading-[1.14] font-semibold tracking-[-0.015em] text-ink sm:text-[40px] sm:leading-none">{title}</h1>
-        {description && <p className="mt-2 text-[17px] text-muted">{description}</p>}
+        {description && <p className="mt-2 text-[17px] text-muted-foreground">{description}</p>}
       </div>
       {action}
     </div>
@@ -26,14 +26,14 @@ export function SectionTitle({ children, count, hint }: { children: React.ReactN
     <div className="mb-4 flex items-baseline gap-2">
       <h2 className="text-[21px] leading-none font-semibold text-ink">{children}</h2>
       {count != null && <span className="text-[17px] text-steel">{count}</span>}
-      {hint && <span className="ml-auto text-sm text-muted">{hint}</span>}
+      {hint && <span className="ml-auto text-sm text-muted-foreground">{hint}</span>}
     </div>
   );
 }
 
 export function SourceNote({ date, source }: { date: string | null; source: "KAMIS" | "MOCK" }) {
   return (
-    <span className="text-sm text-muted">
+    <span className="text-sm text-muted-foreground">
       {date ? `기준일 ${formatDateShort(date)}` : "기준일 없음"} ·{" "}
       {source === "KAMIS" ? "KAMIS 공식 시세" : <span className="font-semibold text-launch-orange">데모 시세 (KAMIS 키 미설정)</span>}
     </span>
@@ -54,7 +54,7 @@ export function EmptyState({
   return (
     <div className="card flex flex-col items-center px-7 py-14 text-center">
       <p className="text-[21px] font-semibold text-ink">{title}</p>
-      {description && <p className="mt-2 max-w-sm text-[17px] text-muted">{description}</p>}
+      {description && <p className="mt-2 max-w-sm text-[17px] text-muted-foreground">{description}</p>}
       {href && cta && (
         <Link href={href} className="btn-primary mt-6">
           {cta}

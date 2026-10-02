@@ -11,7 +11,7 @@ cp .env.example .env.local   # KAMIS 키가 없으면 비워 둬도 데모 시�
 npm run dev                  # http://localhost:3000
 ```
 
-처음 접속하면 온보딩(업종 → 관심 재료 → 대표 메뉴)으로 이동하고, 이후 앱의 첫 화면은 재료 시세 탭(`/ingredients`)이다.
+처음 접속하면 온보딩(상호명 → 관심 재료 → 대표 메뉴)으로 이동하고, 이후 앱의 첫 화면은 재료 시세 탭(`/ingredients`)이다.
 
 ## 폴더 구조
 
@@ -36,7 +36,7 @@ src/
 ├── lib/
 │   ├── types.ts                # 도메인 타입
 │   ├── catalog.ts              # 재료 마스터 (KAMIS 품목 매핑)
-│   ├── templates.ts            # 업종별 추천 재료·메뉴 템플릿, 지역 코드
+│   ├── templates.ts            # 메뉴 템플릿, 지역 코드
 │   ├── status.ts               # 가격 상태 분류 (급등/상승/보합/하락/급락)
 │   ├── recommend.ts            # 추천 행동 규칙 + 대체 재료 추천 + 추천 이유 문장
 │   ├── hangul.ts               # 초성 검색, 조사 처리

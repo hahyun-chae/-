@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, INGREDIENTS, ingredientName } from "@/lib/catalog";
-import { BUSINESS_TYPES, MENU_TEMPLATES } from "@/lib/templates";
+import { MENU_TEMPLATES } from "@/lib/templates";
 import type { IngredientCategory } from "@/lib/types";
 import { actions, makeNameOf, useAppState } from "@/store/app-store";
 import { IngredientPicker } from "../ingredients/IngredientPicker";
@@ -15,11 +15,6 @@ import { instantiateTemplate } from "../menus/MenuEditor";
 const STEPS = ["상호명", "관심 재료", "대표 메뉴"];
 
 const CATEGORY_ORDER: IngredientCategory[] = ["leafy", "vegetable", "namul", "mushroom", "grain", "fruit", "meat", "seafood", "etc"];
-
-/** 업종 구분 없이 전체 메뉴 템플릿 (같은 이름은 하나만) */
-const ALL_TEMPLATES = BUSINESS_TYPES.flatMap((b) => MENU_TEMPLATES[b.id]).filter(
-  (t, i, arr) => arr.findIndex((x) => x.templateId === t.templateId) === i,
-);
 
 function StepLabel({ n }: { n: number }) {
   return <p className="text-sm font-semibold text-brand-700">{n} / 3</p>;
@@ -47,7 +42,7 @@ export function OnboardingView() {
   })).filter((g) => g.ids.length > 0);
 
   const finish = (withMenus: boolean) => {
-    const menus = withMenus ? ALL_TEMPLATES.filter((t) => templateIds.includes(t.templateId)).map(instantiateTemplate) : [];
+    const menus = withMenus ? MENU_TEMPLATES.filter((t) => templateIds.includes(t.templateId)).map(instantiateTemplate) : [];
     actions.completeOnboarding({ name: name.trim() }, watch, menus);
     track("Onboarding Step Completed", { step: 3, step_name: "대표 메뉴" });
     track("Onboarding Completed", {
@@ -127,7 +122,7 @@ export function OnboardingView() {
           <div className="mt-6 space-y-6">
             {groups.map((g) => (
               <section key={g.category} aria-label={CATEGORY_LABEL[g.category]}>
-                <h2 className="mb-2.5 text-sm font-semibold text-muted">{CATEGORY_LABEL[g.category]}</h2>
+                <h2 className="mb-2.5 text-sm font-semibold text-muted-foreground">{CATEGORY_LABEL[g.category]}</h2>
                 <div className="flex flex-wrap gap-2">
                   {g.ids.map((id) => {
                     const on = watch.includes(id);
@@ -175,7 +170,7 @@ export function OnboardingView() {
           </p>
 
           <div className="mt-6 space-y-2">
-            {ALL_TEMPLATES.map((t) => {
+            {MENU_TEMPLATES.map((t) => {
               const on = templateIds.includes(t.templateId);
               return (
                 <button

@@ -39,12 +39,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const app = useAppState();
   const isOnboarding = pathname.startsWith("/onboarding");
+  // 디자인 시스템 페이지는 개발용이라 탭·온보딩 확인 없이 단독으로 보여준다
+  const isDesignSystem = pathname.startsWith("/design-system");
   const ready = app !== null && app.onboarded;
 
   // 어느 화면으로 들어와도 온보딩 전이면 온보딩으로 보낸다
   useEffect(() => {
-    if (app && !app.onboarded && !isOnboarding) router.replace("/onboarding");
-  }, [app, isOnboarding, router]);
+    if (app && !app.onboarded && !isOnboarding && !isDesignSystem) router.replace("/onboarding");
+  }, [app, isOnboarding, isDesignSystem, router]);
+
+  if (isDesignSystem) {
+    return <main className="mx-auto min-h-screen max-w-6xl px-4 py-10 sm:px-8">{children}</main>;
+  }
 
   if (isOnboarding) {
     return <main className="mx-auto min-h-screen max-w-2xl px-4 py-8 sm:px-6">{children}</main>;
@@ -62,7 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               key={n.href}
               href={n.href}
               className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-[15px] ${
-                isActive(pathname, n.href) ? "bg-canvas font-semibold text-ink" : "text-muted hover:text-ink"
+                isActive(pathname, n.href) ? "bg-canvas font-semibold text-ink" : "text-muted-foreground hover:text-ink"
               }`}
             >
               <NavIcon d={n.icon} />

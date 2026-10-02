@@ -47,7 +47,7 @@ export function DashboardView() {
               먼저 확인할 재료
             </SectionTitle>
             {attention.length === 0 ? (
-              <div className="card px-7 py-8 text-center text-[17px] text-muted">
+              <div className="card px-7 py-8 text-center text-[17px] text-muted-foreground">
                 크게 오른 재료가 없어요. 오늘은 평소대로 장을 보셔도 좋아요.
               </div>
             ) : (

@@ -33,7 +33,6 @@ export function MenuEditPage({ menuId }: { menuId?: string }) {
         key={existing?.id ?? blank.id}
         initial={existing ?? blank}
         custom={app.customIngredients}
-        businessType={app.settings.businessType}
         isNew={!existing}
       />
     </>

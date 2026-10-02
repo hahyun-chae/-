@@ -7,7 +7,7 @@ import { ACTION_TONE, STATUS_TONE } from "./tone";
 export function StatusBadge({ status, size = "md" }: { status: PriceStatus | null; size?: "sm" | "md" }) {
   const sizeCls = size === "sm" ? "px-2 py-0.5 text-xs" : "px-2.5 py-0.5 text-[13px]";
   if (!status) {
-    return <span className={`inline-flex items-center rounded-full bg-canvas font-semibold text-muted ${sizeCls}`}>시세 없음</span>;
+    return <span className={`inline-flex items-center rounded-full bg-canvas font-semibold text-muted-foreground ${sizeCls}`}>시세 없음</span>;
   }
   const meta = STATUS_META[status];
   return (

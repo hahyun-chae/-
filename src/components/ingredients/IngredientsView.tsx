@@ -61,7 +61,7 @@ function Group({
       <div className="mb-3 flex items-baseline gap-2 px-1">
         <h2 className="text-[17px] font-semibold text-ink">{title}</h2>
         <span className="text-[17px] text-steel">{items.length}</span>
-        {hint && <span className="ml-auto text-sm text-muted">{hint}</span>}
+        {hint && <span className="ml-auto text-sm text-muted-foreground">{hint}</span>}
       </div>
       <ul className="card divide-y divide-slate-100 overflow-hidden">
         {items.map((d) => {
@@ -162,7 +162,7 @@ export function IngredientsView() {
           <Group title="★ 관심 재료" hint={`상승 ${up} · 하락 ${down}`} items={watchedItems} watched={watched} nameOf={view.nameOf} />
         ) : (
           !q && (
-            <p className="card px-5 py-4 text-[15px] text-muted sm:px-7">
+            <p className="card px-5 py-4 text-[15px] text-muted-foreground sm:px-7">
               {activeTab === "all" ? "" : `${CATEGORY_LABEL[activeTab]} 중 `}
               <span className="text-ink">☆</span>를 눌러 관심 재료로 담으면 목록 맨 위에 모여요.
             </p>
@@ -176,7 +176,7 @@ export function IngredientsView() {
         {q && visible.length === 0 && (
           <div className="card px-5 py-8 text-center sm:px-7">
             <p className="text-[17px] text-ink">&lsquo;{q}&rsquo; 검색 결과가 없어요</p>
-            <p className="mt-1 text-sm text-muted">공식 시세가 없는 재료도 직접 추가해서 메뉴 구성에 쓸 수 있어요.</p>
+            <p className="mt-1 text-sm text-muted-foreground">공식 시세가 없는 재료도 직접 추가해서 메뉴 구성에 쓸 수 있어요.</p>
           </div>
         )}
 
@@ -190,7 +190,7 @@ export function IngredientsView() {
               setQuery("");
             }}
           >
-            + &lsquo;{q}&rsquo; 직접 추가 <span className="text-sm text-muted">(시세 미연동)</span>
+            + &lsquo;{q}&rsquo; 직접 추가 <span className="text-sm text-muted-foreground">(시세 미연동)</span>
           </button>
         )}
       </div>

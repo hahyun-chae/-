@@ -5,6 +5,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { getPriceBoard } from "@/lib/prices";
 import { PricesProvider } from "@/store/prices-context";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 const notoSansKr = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
@@ -27,7 +28,7 @@ export const revalidate = 3600;
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const prices = await getPriceBoard();
   return (
-    <html lang="ko" className={`${notoSansKr.variable} h-full antialiased`}>
+    <html lang="ko" className={cn("h-full antialiased font-sans", notoSansKr.variable)}>
       <body className="min-h-full">
         <AnalyticsProvider />
         <PricesProvider initial={prices}>
