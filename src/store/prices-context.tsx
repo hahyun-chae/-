@@ -5,7 +5,10 @@ import type { PriceBoard, PriceFallback, PriceType } from "@/lib/types";
 import { useAppState } from "./app-store";
 
 interface PricesValue {
+  /** 재료별로 고른 용량이 반영된 시세 */
   board: PriceBoard;
+  /** 기본 용량 시세. 목록 정렬처럼 용량을 바꿔도 달라지면 안 되는 곳에 쓴다 */
+  baseBoard: PriceBoard;
   source: "KAMIS" | "MOCK";
   fallback?: PriceFallback;
   date: string | null;
@@ -74,6 +77,7 @@ export function PricesProvider({ initial, children }: { initial: Initial; childr
     <PricesContext.Provider
       value={{
         board,
+        baseBoard: rawBoard,
         source: current?.source ?? initial.source,
         fallback: current ? current.fallback : initial.fallback,
         date: latestDate(board),

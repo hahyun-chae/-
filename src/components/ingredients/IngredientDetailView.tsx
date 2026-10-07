@@ -117,13 +117,13 @@ export function IngredientDetailView({ id }: { id: string }) {
 
           <section>
             <SectionTitle>기간별 비교</SectionTitle>
-            <div className="card overflow-x-auto">
-              <table className="w-full min-w-[420px] text-left text-[17px]">
+            <div className="card overflow-hidden">
+              <table className="w-full text-left text-[15px] sm:text-[17px]">
                 <thead className="bg-slate-50 text-sm text-slate-500">
                   <tr>
-                    <th className="px-5 py-3 sm:px-7 font-semibold">비교 시점</th>
-                    <th className="px-5 py-3 sm:px-7 text-right font-semibold">가격</th>
-                    <th className="px-5 py-3 sm:px-7 text-right font-semibold">오늘과 차이</th>
+                    <th className="px-4 py-3 sm:px-7 font-semibold">비교 시점</th>
+                    <th className="px-4 py-3 sm:px-7 text-right font-semibold">가격</th>
+                    <th className="px-4 py-3 sm:px-7 text-right font-semibold">오늘 대비</th>
                   </tr>
                 </thead>
                 <tbody className="tabular divide-y divide-slate-100">
@@ -131,9 +131,9 @@ export function IngredientDetailView({ id }: { id: string }) {
                     const diff = pctChange(s.price, c.value);
                     return (
                       <tr key={c.label}>
-                        <td className="px-5 py-3 sm:px-7 font-semibold text-slate-700">{c.label}</td>
-                        <td className="px-5 py-3 sm:px-7 text-right text-slate-700">{formatWon(c.value)}</td>
-                        <td className={`px-5 py-3 sm:px-7 text-right font-semibold ${diff == null ? "text-slate-400" : diff > 0 ? "text-red-600" : diff < 0 ? "text-blue-600" : "text-slate-500"}`}>
+                        <td className="px-4 py-3 sm:px-7 font-semibold text-slate-700">{c.label}</td>
+                        <td className="px-4 py-3 sm:px-7 text-right text-slate-700">{formatWon(c.value)}</td>
+                        <td className={`px-4 py-3 sm:px-7 text-right font-semibold ${diff == null ? "text-slate-400" : diff > 0 ? "text-red-600" : diff < 0 ? "text-blue-600" : "text-slate-500"}`}>
                           {diff == null ? "-" : `${diff > 0 ? "▲" : diff < 0 ? "▼" : ""} ${formatPct(diff, 1)}`}
                         </td>
                       </tr>
