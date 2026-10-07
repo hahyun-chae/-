@@ -114,7 +114,7 @@ export function SettingsView() {
             </div>
           ))}
           {s.thresholds.surge <= s.thresholds.up && (
-            <p className="text-sm font-semibold text-red-600">급등 기준은 상승 기준보다 커야 해요.</p>
+            <p className="text-sm font-semibold text-red-400">급등 기준은 상승 기준보다 커야 해요.</p>
           )}
         </section>
 

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+import { DM_Sans, Geist, Noto_Sans_KR } from "next/font/google";
 import { AnalyticsProvider } from "@/components/layout/AnalyticsProvider";
 import { AppShell } from "@/components/layout/AppShell";
 import { getPriceBoard } from "@/lib/prices";
@@ -7,10 +7,21 @@ import { PricesProvider } from "@/store/prices-context";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
+// 본문·UI는 DM Sans, 섹션 제목은 Geist. 두 서체에 없는 한글은 Noto Sans KR로 보여준다
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+});
+
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+});
+
 const notoSansKr = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
   subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -19,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5f5f7",
+  themeColor: "#0a0a0a",
 };
 
 // 시세는 하루 1~2회 바뀌므로 1시간마다 다시 생성
@@ -28,7 +39,7 @@ export const revalidate = 3600;
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const prices = await getPriceBoard();
   return (
-    <html lang="ko" className={cn("h-full antialiased font-sans", notoSansKr.variable)}>
+    <html lang="ko" className={cn("dark h-full antialiased font-sans", dmSans.variable, geist.variable, notoSansKr.variable)}>
       <body className="min-h-full">
         <AnalyticsProvider />
         <PricesProvider initial={prices}>

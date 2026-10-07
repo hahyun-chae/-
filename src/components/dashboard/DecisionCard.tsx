@@ -70,10 +70,10 @@ export function DecisionCard({
           <p className="mb-2 text-sm font-semibold text-violet-900">추천 대체 재료 <span className="font-normal text-violet-700">· 사장님이 허용한 재료 중에서</span></p>
           <ul className="grid gap-2 sm:grid-cols-3">
             {d.candidates.map((c, i) => (
-              <li key={c.ingredientId} className="flex items-center justify-between rounded-xl bg-white px-4 py-3">
+              <li key={c.ingredientId} className="flex items-center justify-between rounded-lg bg-canvas px-4 py-3">
                 <div>
                   <p className="font-semibold text-slate-900">
-                    <span className="mr-1 text-xs text-violet-600">{i + 1}</span>
+                    <span className="mr-1 text-xs text-violet-700">{i + 1}</span>
                     {nameOf(c.ingredientId)}
                   </p>
                   <p className="tabular text-xs text-slate-500">{formatWon(c.snapshot.price)} / {c.snapshot.unit}</p>
@@ -85,7 +85,7 @@ export function DecisionCard({
         </div>
       )}
 
-      <p className="mt-4 rounded-2xl bg-canvas px-5 py-4 text-[17px] leading-relaxed text-slate-700">
+      <p className="mt-4 rounded-2xl bg-canvas px-5 py-4 text-base leading-relaxed text-slate-700">
         <span className="mr-1.5 text-xs font-semibold text-slate-400">추천 이유</span>
         {d.reason}
       </p>

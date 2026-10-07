@@ -62,8 +62,8 @@ function Group({
   return (
     <section>
       <div className="mb-3 flex items-baseline gap-2 px-1">
-        <h2 className="text-[17px] font-semibold text-ink">{title}</h2>
-        <span className="text-[17px] text-steel">{items.length}</span>
+        <h2 className="text-base font-semibold text-ink">{title}</h2>
+        <span className="text-base text-steel">{items.length}</span>
         {hint && <span className="ml-auto text-sm text-muted-foreground">{hint}</span>}
       </div>
       <ul className="card divide-y divide-slate-100 overflow-hidden">
@@ -172,7 +172,7 @@ export function IngredientsView() {
 
           {q && visible.length === 0 && (
             <div className="card px-5 py-8 text-center sm:px-7">
-              <p className="text-[17px] text-ink">&lsquo;{q}&rsquo; 검색 결과가 없어요</p>
+              <p className="text-base text-ink">&lsquo;{q}&rsquo; 검색 결과가 없어요</p>
               <p className="mt-1 text-sm text-muted-foreground">공식 시세가 없는 재료도 직접 추가해서 메뉴 구성에 쓸 수 있어요.</p>
             </div>
           )}

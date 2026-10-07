@@ -14,7 +14,8 @@ import { EmptyState, LoadingBlock, SectionTitle, SourceNote } from "../ui/common
 import { toggleWatch } from "./IngredientsView";
 import { PriceChart } from "./PriceChart";
 
-const CHART_COLOR = { surge: "#dc2626", up: "#ea580c", flat: "#64748b", down: "#2563eb", plunge: "#1e40af" } as const;
+// 다크 바탕에서 읽히도록 400~500 톤을 쓴다
+const CHART_COLOR = { surge: "#f87171", up: "#fb923c", flat: "#b2b2b2", down: "#60a5fa", plunge: "#3b82f6" } as const;
 
 export function IngredientDetailView({ id }: { id: string }) {
   const app = useAppState();
@@ -108,7 +109,7 @@ export function IngredientDetailView({ id }: { id: string }) {
           <section>
             <SectionTitle>기간별 비교</SectionTitle>
             <div className="card overflow-x-auto">
-              <table className="w-full min-w-[420px] text-left text-[17px]">
+              <table className="w-full min-w-[420px] text-left text-base">
                 <thead className="bg-slate-50 text-sm text-slate-500">
                   <tr>
                     <th className="px-5 py-3 sm:px-7 font-semibold">비교 시점</th>
@@ -123,7 +124,7 @@ export function IngredientDetailView({ id }: { id: string }) {
                       <tr key={c.label}>
                         <td className="px-5 py-3 sm:px-7 font-semibold text-slate-700">{c.label}</td>
                         <td className="px-5 py-3 sm:px-7 text-right text-slate-700">{formatWon(c.value)}</td>
-                        <td className={`px-5 py-3 sm:px-7 text-right font-semibold ${diff == null ? "text-slate-400" : diff > 0 ? "text-red-600" : diff < 0 ? "text-blue-600" : "text-slate-500"}`}>
+                        <td className={`px-5 py-3 sm:px-7 text-right font-semibold ${diff == null ? "text-slate-400" : diff > 0 ? "text-red-400" : diff < 0 ? "text-blue-400" : "text-slate-500"}`}>
                           {diff == null ? "-" : `${diff > 0 ? "▲" : diff < 0 ? "▼" : ""} ${formatPct(diff, 1)}`}
                         </td>
                       </tr>
@@ -138,7 +139,7 @@ export function IngredientDetailView({ id }: { id: string }) {
             <SectionTitle>오늘의 판단</SectionTitle>
             <div className="card p-5 sm:p-7">
               <ActionBadge action={d.action} />
-              <p className="mt-3 text-[17px] leading-relaxed text-slate-700">{d.reason}</p>
+              <p className="mt-3 text-base leading-relaxed text-slate-700">{d.reason}</p>
               {d.candidates.length > 0 && (
                 <p className="mt-2 text-sm text-violet-800">
                   추천 대체: {d.candidates.map((c) => `${nameOf(c.ingredientId)} ${formatPct(c.change)}`).join(" · ")}

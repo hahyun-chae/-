@@ -85,7 +85,7 @@ export function OnboardingView() {
             <br />
             우리 가게 기준으로 판단해 드릴게요
           </h1>
-          <p className="mt-2 text-[17px] text-slate-500">먼저 가게 이름을 알려 주세요.</p>
+          <p className="mt-2 text-base text-slate-500">먼저 가게 이름을 알려 주세요.</p>
 
           <div className="mt-8">
             <label className="label" htmlFor="ob-name">상호명</label>
@@ -110,7 +110,7 @@ export function OnboardingView() {
         <section>
           <StepLabel n={2} />
           <h1 className="mt-1 text-2xl font-semibold text-slate-900">자주 쓰는 재료를 골라 주세요</h1>
-          <p className="mt-2 text-[17px] text-slate-500">고른 재료는 재료 시세 화면 맨 위에 모여요. 나중에 언제든 바꿀 수 있어요.</p>
+          <p className="mt-2 text-base text-slate-500">고른 재료는 재료 시세 화면 맨 위에 모여요. 나중에 언제든 바꿀 수 있어요.</p>
 
           <div className="mt-6">
             <IngredientPicker
@@ -138,7 +138,7 @@ export function OnboardingView() {
                   onValueChange={(next) => setWatch((w) => [...w.filter((id) => !g.ids.includes(id)), ...next])}
                 >
                   {g.ids.map((id) => (
-                    <ToggleGroupItem key={id} value={id} className="text-[17px]">
+                    <ToggleGroupItem key={id} value={id} className="text-base">
                       {watch.includes(id) && <CheckIcon data-icon="inline-start" />}
                       {nameOf(id)}
                     </ToggleGroupItem>
@@ -171,7 +171,7 @@ export function OnboardingView() {
         <section>
           <StepLabel n={3} />
           <h1 className="mt-1 text-2xl font-semibold text-slate-900">대표 메뉴를 등록할까요?</h1>
-          <p className="mt-2 text-[17px] text-slate-500">
+          <p className="mt-2 text-base text-slate-500">
             메뉴별로 <b>바꿔 써도 되는 재료</b>를 정해 두면, 가격이 올랐을 때 그 안에서만 대체 재료를 추천해 드려요.
           </p>
 
@@ -188,7 +188,7 @@ export function OnboardingView() {
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-base font-semibold text-slate-900">{t.name}</p>
-                    <span className={`grid h-6 w-6 place-items-center rounded-full text-sm ${on ? "bg-brand-600 text-white" : "ring-1 ring-steel"}`}>{on && "✓"}</span>
+                    <span className={`grid h-6 w-6 place-items-center rounded-full text-sm ${on ? "bg-snow-white text-graphite" : "ring-1 ring-steel"}`}>{on && "✓"}</span>
                   </div>
                   <div className="mt-2 space-y-1 text-sm text-slate-600">
                     <p className="flex flex-wrap items-center gap-1.5">

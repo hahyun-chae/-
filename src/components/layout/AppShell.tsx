@@ -15,7 +15,7 @@ const NAV = [
 
 function NavIcon({ d }: { d: string }) {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d={d} />
     </svg>
   );
@@ -28,8 +28,8 @@ function isActive(pathname: string, href: string) {
 export function Logo() {
   return (
     <Link href="/ingredients" className="flex items-center gap-2">
-      <span className="grid h-8 w-8 place-items-center rounded-[9px] bg-ink text-sm font-semibold text-white">₩</span>
-      <span className="text-lg font-semibold tracking-tight text-slate-900">원가핏</span>
+      <span className="grid h-8 w-8 place-items-center rounded-lg bg-snow-white text-sm font-semibold text-graphite">₩</span>
+      <span className="text-lg font-medium tracking-[-0.02em] text-snow-white">원가핏</span>
     </Link>
   );
 }
@@ -59,16 +59,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="lg:flex">
       {/* 데스크톱 사이드바 */}
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-control bg-white px-4 py-7 lg:flex">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/10 bg-void-canvas px-4 py-7 lg:flex">
         <Logo />
-        <p className="mt-1 pl-10 text-xs text-slate-500">{app?.settings.name || "우리 가게"}</p>
+        <p className="mt-1 pl-10 text-caption text-smoke">{app?.settings.name || "우리 가게"}</p>
         <nav className="mt-8 space-y-1">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-[15px] ${
-                isActive(pathname, n.href) ? "bg-canvas font-semibold text-ink" : "text-muted-foreground hover:text-ink"
+              className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-[15px] transition-colors ${
+                isActive(pathname, n.href) ? "bg-white/10 font-medium text-snow-white" : "text-smoke hover:bg-white/5 hover:text-bone"
               }`}
             >
               <NavIcon d={n.icon} />
@@ -76,27 +76,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
         </nav>
-        <p className="mt-auto text-xs leading-relaxed text-slate-400">
+        <p className="mt-auto text-xs leading-relaxed text-steel">
           추천은 판단을 돕기 위한 참고 정보예요. 최종 결정은 사장님이 해 주세요.
         </p>
       </aside>
 
       {/* 모바일 상단 바 */}
-      <header className="sticky top-0 z-20 flex h-12 items-center justify-between border-b border-control bg-frost/80 px-4 backdrop-blur-xl lg:hidden">
+      <header className="sticky top-0 z-20 flex h-12 items-center justify-between border-b border-white/10 bg-void-canvas/80 px-4 backdrop-blur-xl lg:hidden">
         <Logo />
-        <span className="max-w-[45%] truncate text-sm text-slate-500">{app?.settings.name || "우리 가게"}</span>
+        <span className="max-w-[45%] truncate text-sm text-smoke">{app?.settings.name || "우리 가게"}</span>
       </header>
 
-      <main className="mx-auto w-full max-w-5xl px-4 pt-5 pb-28 sm:px-6 lg:px-12 lg:pt-14 lg:pb-20">{ready ? children : <LoadingBlock />}</main>
+      <main className="mx-auto w-full max-w-5xl px-4 pt-5 pb-36 sm:px-6 lg:px-12 lg:pt-14 lg:pb-20">{ready ? children : <LoadingBlock />}</main>
 
-      {/* 모바일 하단 탭 */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t border-control bg-frost/90 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] lg:hidden">
+      {/* 모바일 하단 탭: 화면 가장자리에서 16px 띄운 frosted 알약 내비 */}
+      <nav className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 grid grid-cols-4 gap-1 rounded-[19px] border border-hairline/20 bg-graphite/85 p-1.5 shadow-float backdrop-blur-sm lg:hidden">
         {NAV.map((n) => (
           <Link
             key={n.href}
             href={n.href}
-            className={`flex min-h-14 flex-col items-center justify-center gap-0.5 text-xs ${
-              isActive(pathname, n.href) ? "text-ink" : "text-steel"
+            className={`flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-[14px] text-xs transition-colors ${
+              isActive(pathname, n.href) ? "bg-white/10 font-medium text-snow-white" : "text-smoke"
             }`}
           >
             <NavIcon d={n.icon} />

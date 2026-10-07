@@ -56,7 +56,7 @@ export function NormalBadge() {
 
 const ROLE_LABEL = { core: "핵심", adjustable: "조정 가능", substitute: "대체 그룹" } as const;
 const ROLE_TONE = {
-  core: "bg-ink text-white",
+  core: "bg-snow-white text-graphite",
   adjustable: "bg-orange-100 text-orange-800",
   substitute: "bg-violet-100 text-violet-800",
 } as const;

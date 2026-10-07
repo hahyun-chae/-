@@ -115,8 +115,8 @@ export function DesignSystemView() {
     <div>
       <header className="mb-10">
         <p className="text-sm font-semibold text-brand-700">원가핏 · shadcn/ui (base-nova)</p>
-        <h1 className="mt-1 text-[40px] leading-none font-semibold tracking-[-0.015em]">디자인 시스템</h1>
-        <p className="mt-3 max-w-2xl text-[17px] text-muted-foreground">
+        <h1 className="mt-1 text-[40px] leading-none font-medium tracking-[-0.035em] text-snow-white">디자인 시스템</h1>
+        <p className="mt-3 max-w-2xl text-base text-muted-foreground">
           프로젝트에 추가한 shadcn/ui 컴포넌트를 variant와 상태별로 모았어요. 색·모서리는 <code className="text-sm">globals.css</code>의 원가핏 토큰을 따라요.
         </p>
         <nav aria-label="컴포넌트 바로가기" className="mt-6 flex flex-wrap gap-2">
@@ -296,7 +296,7 @@ export function DesignSystemView() {
                 </CardHeader>
                 <CardContent>
                   <p className="tabular text-2xl font-semibold">1,560원</p>
-                  <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-red-600">
+                  <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-red-400">
                     <TrendingUpIcon className="size-4" aria-hidden />
                     +32.2% <span className="font-normal text-muted-foreground">1주 전 대비</span>
                   </p>
@@ -312,7 +312,7 @@ export function DesignSystemView() {
                 </CardHeader>
                 <CardContent>
                   <p className="tabular text-xl font-semibold">879원</p>
-                  <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-blue-600">
+                  <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-blue-400">
                     <TrendingDownIcon className="size-4" aria-hidden />
                     -8.0%
                   </p>
