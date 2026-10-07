@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { CATEGORY_LABEL, getIngredient, kamisPath } from "@/lib/catalog";
-import { formatPct, formatWon, pctChange } from "@/lib/format";
+import { formatPct, formatUnitPrice, formatWon, pctChange } from "@/lib/format";
 import { buildDecisions } from "@/lib/recommend";
-import { makeNameOf, useAppState } from "@/store/app-store";
+import { actions, makeNameOf, useAppState } from "@/store/app-store";
 import { usePrices } from "@/store/prices-context";
 import { ActionBadge, ChangeText, NormalBadge, RoleBadge, StatusBadge } from "../ui/Badges";
 import { EmptyState, LoadingBlock, SectionTitle, SourceNote } from "../ui/common";
@@ -95,12 +95,48 @@ export function IngredientDetailView({ id }: { id: string }) {
                   오늘 {s.priceType === "retail" ? "소매" : "도매"}가 · {s.unit}
                 </p>
                 <p className="tabular text-4xl font-semibold text-slate-900">{formatWon(s.price)}</p>
+                {formatUnitPrice(s.price, s.unit) && (
+                  <p className="tabular mt-1 font-mono text-xs text-steel">{formatUnitPrice(s.price, s.unit)}</p>
+                )}
               </div>
               <div className="text-right">
                 <ChangeText value={d.change} status={d.status} className="text-2xl" />
                 <p className="text-xs text-slate-400">1주 전 대비</p>
               </div>
             </div>
+            {s.sizes && (
+              <div className="mt-5">
+                <p className="label">용량 선택</p>
+                <div className="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label="용량 선택">
+                  {s.sizes.map((size) => {
+                    const selected = size.kindCode === s.kindCode;
+                    return (
+                      <button
+                        key={size.kindCode}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => size.kindCode && actions.setSizePref(id, size.kindCode)}
+                        className={`flex items-baseline justify-between gap-3 rounded-lg border px-4 py-3 text-left transition-colors ${
+                          selected ? "border-brand-600 bg-brand-50" : "border-hairline hover:bg-control"
+                        }`}
+                      >
+                        <span className="font-semibold text-ink">{size.unit}</span>
+                        <span className="tabular text-right">
+                          <span className="font-semibold text-ink">{formatWon(size.price)}</span>
+                          {formatUnitPrice(size.price, size.unit) && (
+                            <span className="ml-2 font-mono text-xs text-steel">{formatUnitPrice(size.price, size.unit)}</span>
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  용량마다 KAMIS가 따로 조사한 실제 가격이에요. 큰 용량일수록 단위당 가격이 달라서 작은 용량 가격을 곱해 계산하면 맞지 않아요.
+                </p>
+              </div>
+            )}
             <div className="mt-4">
               <PriceChart snapshot={s} color={CHART_COLOR[d.status ?? "flat"]} />
             </div>

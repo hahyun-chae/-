@@ -1,5 +1,5 @@
 import { INGREDIENTS, KAMIS_CATEGORY_LABEL } from "../catalog";
-import type { PriceBoard, PriceType } from "../types";
+import type { PriceBoard, PriceSnapshot, PriceType } from "../types";
 import { shiftDate } from "../format";
 
 // KAMIS Open API - 일별 부류별 도·소매가격 (dailyPriceByCategoryList)
@@ -87,23 +87,33 @@ export async function getKamisBoard(
     const board: PriceBoard = {};
     for (const ing of INGREDIENTS) {
       if (!ing.kamis) continue;
-      const item = pick(byCategory.get(ing.kamis.categoryCode) ?? [], ing.kamis.itemCode, ing.kamis.kindCode);
-      const price = item && toNumber(item.dpr1);
-      if (!item || !price) continue;
-      board[ing.id] = {
-        ingredientId: ing.id,
-        priceType,
-        date,
-        unit: item.unit || ing.unit,
-        price,
-        prevDay: toNumber(item.dpr2),
-        weekAgo: toNumber(item.dpr3),
-        twoWeeksAgo: toNumber(item.dpr4),
-        monthAgo: toNumber(item.dpr5),
-        yearAgo: toNumber(item.dpr6),
-        normalYear: toNumber(item.dpr7),
-        source: "KAMIS",
-      };
+      const { categoryCode, itemCode, kindCode, sizeKindCodes = [] } = ing.kamis;
+      const rows = byCategory.get(categoryCode) ?? [];
+      // 기본 용량이 오늘 조사되지 않았으면(도매 등) 조사된 다른 용량이 기본이 된다
+      const sizes = [kindCode, ...sizeKindCodes].flatMap((code): PriceSnapshot[] => {
+        const item = pick(rows, itemCode, code);
+        const price = item && toNumber(item.dpr1);
+        if (!item || !price) return [];
+        return [
+          {
+            ingredientId: ing.id,
+            priceType,
+            date,
+            unit: item.unit || ing.unit,
+            price,
+            prevDay: toNumber(item.dpr2),
+            weekAgo: toNumber(item.dpr3),
+            twoWeeksAgo: toNumber(item.dpr4),
+            monthAgo: toNumber(item.dpr5),
+            yearAgo: toNumber(item.dpr6),
+            normalYear: toNumber(item.dpr7),
+            source: "KAMIS",
+            kindCode: item.kind_code,
+          },
+        ];
+      });
+      if (sizes.length === 0) continue;
+      board[ing.id] = sizes.length > 1 ? { ...sizes[0], sizes } : sizes[0];
     }
     return board;
   }

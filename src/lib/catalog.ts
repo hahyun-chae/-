@@ -132,17 +132,17 @@ function itemLabel(itemCode: string, itemName: string): string {
 }
 
 /**
- * 같은 품목에서 이름이 겹치는 품종(용량만 다른 쌀 10kg/20kg, 계란 10구/30구 등)은 하나만 남긴다.
+ * 같은 품목에서 이름이 겹치는 품종(용량만 다른 쌀 10kg/20kg, 계란 10구/30구 등)은 한 재료의 용량 선택지로 묶는다.
  * 대표 재료가 차지한 이름이 먼저이고, 품목 대표 시세(kindCode 없음)는 품종명이 없는 이름("쌀")을 차지한다.
  */
-const takenNames = new Set(
+const takenNames = new Map<string, KamisRef>(
   FEATURED_INGREDIENTS.flatMap((i) => {
     if (!i.kamis) return [];
-    const { itemCode, kindCode } = i.kamis;
-    const kinds = KAMIS_KINDS.filter((k) => k.itemCode === itemCode);
-    // 품종을 지정했으면 그 품종, 품목 대표 시세인데 품종이 하나뿐이면 그 품종(예: 고구마 · 밤)도 같은 재료로 본다
-    const claimed = kindCode ? kinds.filter((k) => k.kindCode === kindCode) : kinds.length === 1 ? kinds : [];
-    return [`${itemCode}|`, ...claimed.map((k) => `${itemCode}|${cleanKindLabel(k)}`)];
+    const ref = i.kamis;
+    const kinds = KAMIS_KINDS.filter((k) => k.itemCode === ref.itemCode);
+    // 품종을 지정했으면 그 품종, 품목 대표 시세인데 품종이 하나뿐이면 그 품종(예: 고구마(밤))도 같은 재료로 본다
+    const claimed = ref.kindCode ? kinds.filter((k) => k.kindCode === ref.kindCode) : kinds.length === 1 ? kinds : [];
+    return [`${ref.itemCode}|`, ...claimed.map((k) => `${ref.itemCode}|${cleanKindLabel(k)}`)].map((key) => [key, ref] as const);
   }),
 );
 
@@ -150,9 +150,15 @@ const takenNames = new Set(
 export const KAMIS_INGREDIENTS: Ingredient[] = KAMIS_KINDS.flatMap((k) => {
   const kind = cleanKindLabel(k);
   const nameKey = `${k.itemCode}|${kind}`;
-  if (takenNames.has(nameKey)) return [];
-  takenNames.add(nameKey);
+  const owner = takenNames.get(nameKey);
+  if (owner) {
+    // 이름이 같으면 용량만 다른 품종이다: 먼저 나온 재료의 다른 용량으로 붙인다 (품목 대표 시세는 제외)
+    if (owner.kindCode && owner.kindCode !== k.kindCode) owner.sizeKindCodes = [...(owner.sizeKindCodes ?? []), k.kindCode];
+    return [];
+  }
   const item = itemLabel(k.itemCode, k.itemName);
+  const ref = kamis(k.categoryCode, k.itemCode, item, k.kindCode, kind || undefined);
+  takenNames.set(nameKey, ref);
   return [
     {
       id: `kamis-${k.itemCode}-${k.kindCode}`,
@@ -160,7 +166,7 @@ export const KAMIS_INGREDIENTS: Ingredient[] = KAMIS_KINDS.flatMap((k) => {
       aliases: kind ? [kind] : [],
       category: CATEGORY_BY_ITEM[k.itemCode] ?? CATEGORY_BY_KAMIS[k.categoryCode] ?? "etc",
       unit: k.units.retail ?? k.units.wholesale ?? "",
-      kamis: kamis(k.categoryCode, k.itemCode, item, k.kindCode, kind || undefined),
+      kamis: ref,
     },
   ];
 });

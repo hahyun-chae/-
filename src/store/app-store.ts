@@ -24,6 +24,7 @@ export const INITIAL_STATE: AppState = {
   menus: [],
   customIngredients: [],
   responses: {},
+  sizePrefs: {},
 };
 
 let state: AppState | null = null;
@@ -134,6 +135,9 @@ export const actions = {
       else delete responses[key];
       return { ...s, responses };
     });
+  },
+  setSizePref(ingredientId: string, kindCode: string) {
+    setState((s) => ({ ...s, sizePrefs: { ...s.sizePrefs, [ingredientId]: kindCode } }));
   },
   reset() {
     setState(() => INITIAL_STATE);

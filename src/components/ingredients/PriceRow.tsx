@@ -25,6 +25,7 @@ export function PriceRow({
           {d.snapshot ? (
             <>
               <b className="font-semibold text-slate-700">{formatWon(d.snapshot.price)}</b> / {d.snapshot.unit}
+              {d.snapshot.sizes && <span className="text-steel"> · 다른 용량 {d.snapshot.sizes.length - 1}개</span>}
             </>
           ) : (
             "공식 시세 정보 없음"
