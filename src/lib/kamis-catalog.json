@@ -1,0 +1,2661 @@
+{
+ "syncedAt": "2026-10-07",
+ "categories": {
+  "100": "식량작물",
+  "200": "채소류",
+  "300": "특용작물",
+  "400": "과일류",
+  "500": "축산물",
+  "600": "수산물"
+ },
+ "kinds": [
+  {
+   "categoryCode": "100",
+   "itemCode": "111",
+   "itemName": "쌀",
+   "kindCode": "01",
+   "kindName": "20kg",
+   "units": {
+    "retail": "20kg",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 62855,
+    "wholesale": 59200
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "111",
+   "itemName": "쌀",
+   "kindCode": "05",
+   "kindName": "20kg(햅쌀)",
+   "units": {
+    "retail": "20kg",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 65469,
+    "wholesale": 60380
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "111",
+   "itemName": "쌀",
+   "kindCode": "10",
+   "kindName": "10kg",
+   "units": {
+    "retail": "10kg"
+   },
+   "refPrice": {
+    "retail": 34870
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "111",
+   "itemName": "쌀",
+   "kindCode": "11",
+   "kindName": "10kg(햅쌀)",
+   "units": {
+    "retail": "10kg"
+   },
+   "refPrice": {
+    "retail": 36705
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "112",
+   "itemName": "찹쌀",
+   "kindCode": "01",
+   "kindName": "일반계",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "retail": 5181,
+    "wholesale": 136400
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "113",
+   "itemName": "혼식곡",
+   "kindCode": "01",
+   "kindName": "국산",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 7808
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "115",
+   "itemName": "현미",
+   "kindCode": "01",
+   "kindName": "찰현미",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 5693,
+    "wholesale": 65160
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "121",
+   "itemName": "보리쌀",
+   "kindCode": "04",
+   "kindName": "찰보리",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 5256,
+    "wholesale": 40020
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "141",
+   "itemName": "콩",
+   "kindCode": "01",
+   "kindName": "흰 콩(국산)",
+   "units": {
+    "retail": "500g",
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "retail": 5044,
+    "wholesale": 228600
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "141",
+   "itemName": "콩",
+   "kindCode": "03",
+   "kindName": "흰 콩(수입)",
+   "units": {
+    "wholesale": "35kg"
+   },
+   "refPrice": {
+    "wholesale": 127400
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "142",
+   "itemName": "팥",
+   "kindCode": "00",
+   "kindName": "붉은 팥(국산)",
+   "units": {
+    "retail": "500g",
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "retail": 13513,
+    "wholesale": 656600
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "142",
+   "itemName": "팥",
+   "kindCode": "01",
+   "kindName": "붉은 팥(수입)",
+   "units": {
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "wholesale": 261800
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "143",
+   "itemName": "녹두",
+   "kindCode": "00",
+   "kindName": "국산",
+   "units": {
+    "retail": "500g",
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "retail": 12189,
+    "wholesale": 551400
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "143",
+   "itemName": "녹두",
+   "kindCode": "01",
+   "kindName": "수입",
+   "units": {
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "wholesale": 217000
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "143",
+   "itemName": "녹두",
+   "kindCode": "02",
+   "kindName": "중국",
+   "units": {
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "wholesale": 269200
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "143",
+   "itemName": "녹두",
+   "kindCode": "03",
+   "kindName": "페루",
+   "units": {
+    "wholesale": "40kg"
+   },
+   "refPrice": {
+    "wholesale": 176000
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "144",
+   "itemName": "메밀",
+   "kindCode": "01",
+   "kindName": "메밀(수입)",
+   "units": {
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "wholesale": 3025
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "151",
+   "itemName": "고구마",
+   "kindCode": "00",
+   "kindName": "밤",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 4588,
+    "wholesale": 31820
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "152",
+   "itemName": "감자",
+   "kindCode": "01",
+   "kindName": "수미(노지)",
+   "units": {
+    "retail": "100g",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 344,
+    "wholesale": 34140
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "152",
+   "itemName": "감자",
+   "kindCode": "02",
+   "kindName": "대지마",
+   "units": {
+    "retail": "100g"
+   },
+   "refPrice": {
+    "retail": 770
+   }
+  },
+  {
+   "categoryCode": "100",
+   "itemCode": "152",
+   "itemName": "감자",
+   "kindCode": "04",
+   "kindName": "수미(시설)",
+   "units": {
+    "retail": "100g",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 485,
+    "wholesale": 50100
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "211",
+   "itemName": "배추",
+   "kindCode": "01",
+   "kindName": "봄",
+   "units": {
+    "retail": "1포기",
+    "wholesale": "10kg(그물망 3포기)"
+   },
+   "refPrice": {
+    "retail": 3523,
+    "wholesale": 7526
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "211",
+   "itemName": "배추",
+   "kindCode": "02",
+   "kindName": "여름(고랭지)",
+   "units": {
+    "retail": "1포기",
+    "wholesale": "10kg(그물망 3포기)"
+   },
+   "refPrice": {
+    "retail": 6213,
+    "wholesale": 15900
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "211",
+   "itemName": "배추",
+   "kindCode": "03",
+   "kindName": "가을",
+   "units": {
+    "retail": "1포기",
+    "wholesale": "10kg(그물망 3포기)"
+   },
+   "refPrice": {
+    "retail": 3720,
+    "wholesale": 14780
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "211",
+   "itemName": "배추",
+   "kindCode": "06",
+   "kindName": "월동",
+   "units": {
+    "wholesale": "10kg(그물망 3포기)",
+    "retail": "1포기"
+   },
+   "refPrice": {
+    "wholesale": 8135,
+    "retail": 3421
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "212",
+   "itemName": "양배추",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1포기",
+    "wholesale": "8kg"
+   },
+   "refPrice": {
+    "retail": 3953,
+    "wholesale": 9390
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "213",
+   "itemName": "시금치",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 1096,
+    "wholesale": 18780
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "214",
+   "itemName": "상추",
+   "kindCode": "01",
+   "kindName": "적",
+   "units": {
+    "retail": "100g",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 1038,
+    "wholesale": 16320
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "214",
+   "itemName": "상추",
+   "kindCode": "02",
+   "kindName": "청",
+   "units": {
+    "retail": "100g",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 971,
+    "wholesale": 16000
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "215",
+   "itemName": "얼갈이배추",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 2286,
+    "wholesale": 5596
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "216",
+   "itemName": "갓",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 6626
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "221",
+   "itemName": "수박",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1개",
+    "wholesale": "1개"
+   },
+   "refPrice": {
+    "retail": 23400,
+    "wholesale": 17300
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "222",
+   "itemName": "참외",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "10개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 16359,
+    "wholesale": 49300
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "223",
+   "itemName": "오이",
+   "kindCode": "01",
+   "kindName": "가시계통",
+   "units": {
+    "retail": "10개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 8090,
+    "wholesale": 14650
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "223",
+   "itemName": "오이",
+   "kindCode": "02",
+   "kindName": "다다기계통",
+   "units": {
+    "retail": "10개",
+    "wholesale": "50개"
+   },
+   "refPrice": {
+    "retail": 6370,
+    "wholesale": 25020
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "223",
+   "itemName": "오이",
+   "kindCode": "03",
+   "kindName": "취청",
+   "units": {
+    "retail": "10개",
+    "wholesale": "50개"
+   },
+   "refPrice": {
+    "retail": 9230,
+    "wholesale": 18600
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "224",
+   "itemName": "호박",
+   "kindCode": "01",
+   "kindName": "애호박",
+   "units": {
+    "retail": "1개",
+    "wholesale": "20개"
+   },
+   "refPrice": {
+    "retail": 1267,
+    "wholesale": 13940
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "224",
+   "itemName": "호박",
+   "kindCode": "02",
+   "kindName": "쥬키니",
+   "units": {
+    "retail": "1개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 1563,
+    "wholesale": 9938
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "225",
+   "itemName": "토마토",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 7645,
+    "wholesale": 24820
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "226",
+   "itemName": "딸기",
+   "kindCode": "00",
+   "kindName": "설향",
+   "units": {
+    "retail": "500g",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 5214,
+    "wholesale": 17000
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "231",
+   "itemName": "무",
+   "kindCode": "01",
+   "kindName": "봄",
+   "units": {
+    "retail": "1개",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 1942,
+    "wholesale": 13380
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "231",
+   "itemName": "무",
+   "kindCode": "02",
+   "kindName": "고랭지",
+   "units": {
+    "retail": "1개",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 2793,
+    "wholesale": 20460
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "231",
+   "itemName": "무",
+   "kindCode": "03",
+   "kindName": "가을",
+   "units": {
+    "retail": "1개",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 2173,
+    "wholesale": 17860
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "231",
+   "itemName": "무",
+   "kindCode": "06",
+   "kindName": "월동",
+   "units": {
+    "retail": "1개",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 2411,
+    "wholesale": 18075
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "232",
+   "itemName": "당근",
+   "kindCode": "01",
+   "kindName": "무세척(국산)",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "retail": 4359,
+    "wholesale": 45540
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "232",
+   "itemName": "당근",
+   "kindCode": "10",
+   "kindName": "세척(수입)",
+   "units": {
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "wholesale": 8398
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "233",
+   "itemName": "열무",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 2177,
+    "wholesale": 7030
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "241",
+   "itemName": "건고추",
+   "kindCode": "00",
+   "kindName": "화건",
+   "units": {
+    "retail": "600g",
+    "wholesale": "30kg"
+   },
+   "refPrice": {
+    "retail": 17836,
+    "wholesale": 673200
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "241",
+   "itemName": "건고추",
+   "kindCode": "01",
+   "kindName": "햇산화건",
+   "units": {
+    "retail": "600g",
+    "wholesale": "30kg"
+   },
+   "refPrice": {
+    "retail": 17197,
+    "wholesale": 684800
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "242",
+   "itemName": "풋고추",
+   "kindCode": "00",
+   "kindName": "풋고추(녹광 등)",
+   "units": {
+    "retail": "100g",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 1682,
+    "wholesale": 62600
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "242",
+   "itemName": "풋고추",
+   "kindCode": "02",
+   "kindName": "꽈리고추",
+   "units": {
+    "retail": "100g",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 1572,
+    "wholesale": 25960
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "242",
+   "itemName": "풋고추",
+   "kindCode": "03",
+   "kindName": "청양고추",
+   "units": {
+    "retail": "100g",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 1398,
+    "wholesale": 49800
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "242",
+   "itemName": "풋고추",
+   "kindCode": "04",
+   "kindName": "오이맛고추",
+   "units": {
+    "retail": "100g",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 1252,
+    "wholesale": 47720
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "243",
+   "itemName": "붉은고추",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 2783,
+    "wholesale": 100740
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "244",
+   "itemName": "피마늘",
+   "kindCode": "03",
+   "kindName": "한지",
+   "units": {
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "wholesale": 115000
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "244",
+   "itemName": "피마늘",
+   "kindCode": "22",
+   "kindName": "난지(대서)",
+   "units": {
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "wholesale": 57560
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "245",
+   "itemName": "양파",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "15kg"
+   },
+   "refPrice": {
+    "retail": 2359,
+    "wholesale": 18760
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "245",
+   "itemName": "양파",
+   "kindCode": "02",
+   "kindName": "햇양파",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "15kg"
+   },
+   "refPrice": {
+    "wholesale": 18520
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "246",
+   "itemName": "파",
+   "kindCode": "00",
+   "kindName": "대파",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 2984,
+    "wholesale": 2036
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "246",
+   "itemName": "파",
+   "kindCode": "02",
+   "kindName": "쪽파",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 6888,
+    "wholesale": 7198
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "247",
+   "itemName": "생강",
+   "kindCode": "00",
+   "kindName": "국산",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 14510,
+    "wholesale": 60360
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "247",
+   "itemName": "생강",
+   "kindCode": "01",
+   "kindName": "수입",
+   "units": {
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "wholesale": 79867
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "248",
+   "itemName": "고춧가루",
+   "kindCode": "00",
+   "kindName": "국산",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 33756
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "248",
+   "itemName": "고춧가루",
+   "kindCode": "01",
+   "kindName": "중국",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 13544
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "251",
+   "itemName": "가지",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "3개",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 2285,
+    "wholesale": 12580
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "252",
+   "itemName": "미나리",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "8kg"
+   },
+   "refPrice": {
+    "retail": 1881,
+    "wholesale": 70080
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "253",
+   "itemName": "깻잎",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "50g",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 1493,
+    "wholesale": 25220
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "254",
+   "itemName": "부추",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 833,
+    "wholesale": 14106
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "255",
+   "itemName": "피망",
+   "kindCode": "00",
+   "kindName": "청",
+   "units": {
+    "retail": "100g",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 1822,
+    "wholesale": 39240
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "256",
+   "itemName": "파프리카",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1개",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 1723,
+    "wholesale": 23360
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "257",
+   "itemName": "멜론",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1개",
+    "wholesale": "8kg"
+   },
+   "refPrice": {
+    "retail": 9519,
+    "wholesale": 27540
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "258",
+   "itemName": "깐마늘(국산)",
+   "kindCode": "01",
+   "kindName": "",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 10697
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "258",
+   "itemName": "깐마늘(국산)",
+   "kindCode": "03",
+   "kindName": "깐마늘(대서)",
+   "units": {
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "wholesale": 168200
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "258",
+   "itemName": "깐마늘(국산)",
+   "kindCode": "04",
+   "kindName": "햇깐마늘(대서)",
+   "units": {
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "wholesale": 153800
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "258",
+   "itemName": "깐마늘(국산)",
+   "kindCode": "05",
+   "kindName": "깐마늘(남도)",
+   "units": {
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "wholesale": 173000
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "279",
+   "itemName": "알배기배추",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1포기",
+    "wholesale": "8kg"
+   },
+   "refPrice": {
+    "retail": 4403,
+    "wholesale": 21700
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "280",
+   "itemName": "브로콜리",
+   "kindCode": "00",
+   "kindName": "브로콜리(국산)",
+   "units": {
+    "retail": "1개",
+    "wholesale": "8kg"
+   },
+   "refPrice": {
+    "retail": 3174,
+    "wholesale": 34500
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "422",
+   "itemName": "방울토마토",
+   "kindCode": "01",
+   "kindName": "",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 9093
+   }
+  },
+  {
+   "categoryCode": "200",
+   "itemCode": "422",
+   "itemName": "방울토마토",
+   "kindCode": "02",
+   "kindName": "대추방울토마토",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "3kg"
+   },
+   "refPrice": {
+    "retail": 10957,
+    "wholesale": 23440
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "312",
+   "itemName": "참깨",
+   "kindCode": "01",
+   "kindName": "백색(국산)",
+   "units": {
+    "retail": "500g",
+    "wholesale": "30kg"
+   },
+   "refPrice": {
+    "retail": 16633,
+    "wholesale": 736000
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "312",
+   "itemName": "참깨",
+   "kindCode": "02",
+   "kindName": "중국",
+   "units": {
+    "retail": "500g",
+    "wholesale": "30kg"
+   },
+   "refPrice": {
+    "retail": 4958,
+    "wholesale": 214800
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "312",
+   "itemName": "참깨",
+   "kindCode": "03",
+   "kindName": "인도",
+   "units": {
+    "wholesale": "30kg"
+   },
+   "refPrice": {
+    "wholesale": 159250
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "313",
+   "itemName": "들깨",
+   "kindCode": "01",
+   "kindName": "국산",
+   "units": {
+    "wholesale": "22.5kg"
+   },
+   "refPrice": {
+    "wholesale": 381800
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "313",
+   "itemName": "들깨",
+   "kindCode": "02",
+   "kindName": "수입",
+   "units": {
+    "wholesale": "45kg"
+   },
+   "refPrice": {
+    "wholesale": 299000
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "314",
+   "itemName": "땅콩",
+   "kindCode": "01",
+   "kindName": "국산",
+   "units": {
+    "retail": "100g",
+    "wholesale": "30kg"
+   },
+   "refPrice": {
+    "retail": 3319,
+    "wholesale": 496500
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "314",
+   "itemName": "땅콩",
+   "kindCode": "02",
+   "kindName": "수입",
+   "units": {
+    "retail": "100g"
+   },
+   "refPrice": {
+    "retail": 1078
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "315",
+   "itemName": "느타리버섯",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 1094,
+    "wholesale": 18375
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "315",
+   "itemName": "느타리버섯",
+   "kindCode": "01",
+   "kindName": "애느타리버섯",
+   "units": {
+    "retail": "100g",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 660,
+    "wholesale": 8792
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "316",
+   "itemName": "팽이버섯",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "150g",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 492,
+    "wholesale": 10820
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "317",
+   "itemName": "새송이버섯",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 532,
+    "wholesale": 8718
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "318",
+   "itemName": "호두",
+   "kindCode": "00",
+   "kindName": "수입",
+   "units": {
+    "retail": "100g"
+   },
+   "refPrice": {
+    "retail": 2131
+   }
+  },
+  {
+   "categoryCode": "300",
+   "itemCode": "319",
+   "itemName": "아몬드",
+   "kindCode": "00",
+   "kindName": "수입",
+   "units": {
+    "retail": "100g"
+   },
+   "refPrice": {
+    "retail": 2079
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "411",
+   "itemName": "사과",
+   "kindCode": "05",
+   "kindName": "후지",
+   "units": {
+    "retail": "10개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 28846,
+    "wholesale": 87075
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "411",
+   "itemName": "사과",
+   "kindCode": "06",
+   "kindName": "쓰가루(아오리)",
+   "units": {
+    "retail": "10개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 20878,
+    "wholesale": 49160
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "411",
+   "itemName": "사과",
+   "kindCode": "07",
+   "kindName": "홍로",
+   "units": {
+    "retail": "10개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 23107,
+    "wholesale": 44640
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "412",
+   "itemName": "배",
+   "kindCode": "01",
+   "kindName": "신고",
+   "units": {
+    "retail": "10개",
+    "wholesale": "15kg"
+   },
+   "refPrice": {
+    "retail": 31238,
+    "wholesale": 49100
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "412",
+   "itemName": "배",
+   "kindCode": "04",
+   "kindName": "원황",
+   "units": {
+    "retail": "10개",
+    "wholesale": "15kg"
+   },
+   "refPrice": {
+    "retail": 31238,
+    "wholesale": 47667
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "413",
+   "itemName": "복숭아",
+   "kindCode": "01",
+   "kindName": "백도",
+   "units": {
+    "retail": "10개",
+    "wholesale": "4kg"
+   },
+   "refPrice": {
+    "retail": 19044,
+    "wholesale": 23100
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "414",
+   "itemName": "포도",
+   "kindCode": "01",
+   "kindName": "캠벨얼리",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "3kg"
+   },
+   "refPrice": {
+    "retail": 8004,
+    "wholesale": 17460
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "414",
+   "itemName": "포도",
+   "kindCode": "02",
+   "kindName": "거봉",
+   "units": {
+    "retail": "2kg",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 19762,
+    "wholesale": 13720
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "414",
+   "itemName": "포도",
+   "kindCode": "06",
+   "kindName": "MBA",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 5975,
+    "wholesale": 17350
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "414",
+   "itemName": "포도",
+   "kindCode": "12",
+   "kindName": "샤인머스켓",
+   "units": {
+    "retail": "2kg",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 11829,
+    "wholesale": 9760
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "415",
+   "itemName": "감귤",
+   "kindCode": "01",
+   "kindName": "노지",
+   "units": {
+    "retail": "10개",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 4864,
+    "wholesale": 22840
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "415",
+   "itemName": "감귤",
+   "kindCode": "02",
+   "kindName": "시설",
+   "units": {
+    "retail": "10개",
+    "wholesale": "3kg"
+   },
+   "refPrice": {
+    "retail": 7222,
+    "wholesale": 21360
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "416",
+   "itemName": "단감",
+   "kindCode": "00",
+   "kindName": "부유",
+   "units": {
+    "retail": "5개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 6491,
+    "wholesale": 34680
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "418",
+   "itemName": "바나나",
+   "kindCode": "02",
+   "kindName": "수입",
+   "units": {
+    "retail": "100g",
+    "wholesale": "13kg"
+   },
+   "refPrice": {
+    "retail": 327,
+    "wholesale": 31140
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "419",
+   "itemName": "참다래",
+   "kindCode": "01",
+   "kindName": "국산",
+   "units": {
+    "retail": "10개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 8785,
+    "wholesale": 43800
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "419",
+   "itemName": "참다래",
+   "kindCode": "02",
+   "kindName": "그린 뉴질랜드",
+   "units": {
+    "retail": "10개",
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "retail": 11635,
+    "wholesale": 57140
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "420",
+   "itemName": "파인애플",
+   "kindCode": "02",
+   "kindName": "수입",
+   "units": {
+    "retail": "1개",
+    "wholesale": "12kg"
+   },
+   "refPrice": {
+    "retail": 7586,
+    "wholesale": 39640
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "421",
+   "itemName": "오렌지",
+   "kindCode": "03",
+   "kindName": "네이블 미국",
+   "units": {
+    "retail": "10개",
+    "wholesale": "17kg"
+   },
+   "refPrice": {
+    "retail": 18741,
+    "wholesale": 77730
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "421",
+   "itemName": "오렌지",
+   "kindCode": "06",
+   "kindName": "네이블 호주",
+   "units": {
+    "retail": "10개",
+    "wholesale": "18kg"
+   },
+   "refPrice": {
+    "retail": 12610,
+    "wholesale": 58900
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "424",
+   "itemName": "레몬",
+   "kindCode": "00",
+   "kindName": "수입",
+   "units": {
+    "retail": "10개",
+    "wholesale": "17kg"
+   },
+   "refPrice": {
+    "retail": 7870,
+    "wholesale": 55840
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "425",
+   "itemName": "체리",
+   "kindCode": "00",
+   "kindName": "수입",
+   "units": {
+    "retail": "100g",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 2019,
+    "wholesale": 86480
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "428",
+   "itemName": "망고",
+   "kindCode": "00",
+   "kindName": "수입",
+   "units": {
+    "retail": "1개",
+    "wholesale": "5kg"
+   },
+   "refPrice": {
+    "retail": 7201,
+    "wholesale": 72375
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "429",
+   "itemName": "블루베리",
+   "kindCode": "02",
+   "kindName": "수입(냉동)",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 11477
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "430",
+   "itemName": "아보카도",
+   "kindCode": "00",
+   "kindName": "수입",
+   "units": {
+    "retail": "1개"
+   },
+   "refPrice": {
+    "retail": 1948
+   }
+  },
+  {
+   "categoryCode": "400",
+   "itemCode": "437",
+   "itemName": "키위",
+   "kindCode": "01",
+   "kindName": "골드",
+   "units": {
+    "retail": "10개",
+    "wholesale": "5.7kg"
+   },
+   "refPrice": {
+    "retail": 14216,
+    "wholesale": 40260
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4301",
+   "itemName": "소",
+   "kindCode": "21",
+   "kindName": "안심",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 18659,
+    "wholesale": 18659
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4301",
+   "itemName": "소",
+   "kindCode": "22",
+   "kindName": "등심",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 15692,
+    "wholesale": 15692
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4301",
+   "itemName": "소",
+   "kindCode": "36",
+   "kindName": "설도",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 5784,
+    "wholesale": 5784
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4301",
+   "itemName": "소",
+   "kindCode": "40",
+   "kindName": "양지",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 7434,
+    "wholesale": 7434
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4301",
+   "itemName": "소",
+   "kindCode": "50",
+   "kindName": "갈비",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 8598,
+    "wholesale": 8598
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4304",
+   "itemName": "돼지",
+   "kindCode": "25",
+   "kindName": "앞다리",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 1710,
+    "wholesale": 1710
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4304",
+   "itemName": "돼지",
+   "kindCode": "27",
+   "kindName": "삼겹살",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 3027,
+    "wholesale": 3027
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4304",
+   "itemName": "돼지",
+   "kindCode": "28",
+   "kindName": "갈비",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 1694,
+    "wholesale": 1694
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4304",
+   "itemName": "돼지",
+   "kindCode": "68",
+   "kindName": "목심",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 2859,
+    "wholesale": 2859
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4401",
+   "itemName": "수입 소고기",
+   "kindCode": "31",
+   "kindName": "갈비",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 4553,
+    "wholesale": 4553
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4401",
+   "itemName": "수입 소고기",
+   "kindCode": "37",
+   "kindName": "갈비살",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 5252,
+    "wholesale": 5252
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "4402",
+   "itemName": "수입 돼지고기",
+   "kindCode": "27",
+   "kindName": "삼겹살",
+   "units": {
+    "retail": "100g",
+    "wholesale": "100g"
+   },
+   "refPrice": {
+    "retail": 1528,
+    "wholesale": 1528
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "9901",
+   "itemName": "닭",
+   "kindCode": "24",
+   "kindName": "절단육",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "1kg"
+   },
+   "refPrice": {}
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "9901",
+   "itemName": "닭",
+   "kindCode": "99",
+   "kindName": "육계(kg)",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 5780,
+    "wholesale": 5780
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "9903",
+   "itemName": "계란",
+   "kindCode": "21",
+   "kindName": "특란10구",
+   "units": {
+    "retail": "10구",
+    "wholesale": "10구"
+   },
+   "refPrice": {
+    "retail": 4181,
+    "wholesale": 4181
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "9903",
+   "itemName": "계란",
+   "kindCode": "23",
+   "kindName": "특란30구",
+   "units": {
+    "retail": "30구",
+    "wholesale": "30구"
+   },
+   "refPrice": {
+    "retail": 7168,
+    "wholesale": 7168
+   }
+  },
+  {
+   "categoryCode": "500",
+   "itemCode": "9908",
+   "itemName": "우유",
+   "kindCode": "01",
+   "kindName": "흰우유",
+   "units": {
+    "retail": "1L",
+    "wholesale": "1L"
+   },
+   "refPrice": {
+    "retail": 2973,
+    "wholesale": 2973
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "611",
+   "itemName": "고등어",
+   "kindCode": "01",
+   "kindName": "생선",
+   "units": {
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "wholesale": 58540
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "611",
+   "itemName": "고등어",
+   "kindCode": "02",
+   "kindName": "냉동",
+   "units": {
+    "wholesale": "10kg"
+   },
+   "refPrice": {
+    "wholesale": 42580
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "611",
+   "itemName": "고등어",
+   "kindCode": "03",
+   "kindName": "국산(염장)",
+   "units": {
+    "retail": "1손"
+   },
+   "refPrice": {
+    "retail": 5577
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "611",
+   "itemName": "고등어",
+   "kindCode": "04",
+   "kindName": "냉동(수입)",
+   "units": {
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "wholesale": 183400
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "611",
+   "itemName": "고등어",
+   "kindCode": "05",
+   "kindName": "국산(신선 냉장)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 4145
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "611",
+   "itemName": "고등어",
+   "kindCode": "06",
+   "kindName": "국산(냉동)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 3838
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "611",
+   "itemName": "고등어",
+   "kindCode": "08",
+   "kindName": "수입산(염장)",
+   "units": {
+    "retail": "1손"
+   },
+   "refPrice": {
+    "retail": 12855
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "612",
+   "itemName": "꽁치",
+   "kindCode": "01",
+   "kindName": "냉동(수입)",
+   "units": {
+    "retail": "5마리"
+   },
+   "refPrice": {
+    "retail": 7203
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "613",
+   "itemName": "갈치",
+   "kindCode": "01",
+   "kindName": "생선",
+   "units": {
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "wholesale": 24150
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "613",
+   "itemName": "갈치",
+   "kindCode": "02",
+   "kindName": "냉동",
+   "units": {
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "wholesale": 21300
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "613",
+   "itemName": "갈치",
+   "kindCode": "03",
+   "kindName": "국산(냉장)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 13805
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "613",
+   "itemName": "갈치",
+   "kindCode": "04",
+   "kindName": "국산(냉동)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 11554
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "613",
+   "itemName": "갈치",
+   "kindCode": "05",
+   "kindName": "수입산(냉동)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 6772
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "614",
+   "itemName": "조기",
+   "kindCode": "05",
+   "kindName": "참조기(신선 냉장)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 1760
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "614",
+   "itemName": "조기",
+   "kindCode": "06",
+   "kindName": "참조기(냉동)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 1668
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "614",
+   "itemName": "조기",
+   "kindCode": "07",
+   "kindName": "굴비",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 3167
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "615",
+   "itemName": "명태",
+   "kindCode": "02",
+   "kindName": "냉동",
+   "units": {
+    "wholesale": "20kg"
+   },
+   "refPrice": {
+    "wholesale": 52580
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "615",
+   "itemName": "명태",
+   "kindCode": "04",
+   "kindName": "냉동(원양수입통합)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 4241
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "615",
+   "itemName": "명태",
+   "kindCode": "05",
+   "kindName": "냉동가공",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 7587
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "616",
+   "itemName": "삼치",
+   "kindCode": "01",
+   "kindName": "냉장",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 8649
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "616",
+   "itemName": "삼치",
+   "kindCode": "02",
+   "kindName": "냉동",
+   "units": {
+    "wholesale": "1kg",
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "wholesale": 5950,
+    "retail": 6651
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "619",
+   "itemName": "물오징어",
+   "kindCode": "01",
+   "kindName": "생선",
+   "units": {
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "wholesale": 16600
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "619",
+   "itemName": "물오징어",
+   "kindCode": "03",
+   "kindName": "연근해(신선 냉장)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 6605
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "619",
+   "itemName": "물오징어",
+   "kindCode": "04",
+   "kindName": "연근해(냉동)",
+   "units": {
+    "retail": "1마리",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 6648,
+    "wholesale": 14700
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "619",
+   "itemName": "물오징어",
+   "kindCode": "05",
+   "kindName": "원양(냉동)",
+   "units": {
+    "retail": "1마리",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 5452,
+    "wholesale": 10875
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "638",
+   "itemName": "마른멸치",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "1.5kg"
+   },
+   "refPrice": {
+    "retail": 2596,
+    "wholesale": 14400
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "639",
+   "itemName": "북어",
+   "kindCode": "01",
+   "kindName": "황태",
+   "units": {
+    "wholesale": "10마리"
+   },
+   "refPrice": {
+    "wholesale": 54820
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "640",
+   "itemName": "마른오징어",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "10마리",
+    "wholesale": "20마리"
+   },
+   "refPrice": {
+    "retail": 77429,
+    "wholesale": 107000
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "641",
+   "itemName": "김",
+   "kindCode": "00",
+   "kindName": "마른김",
+   "units": {
+    "retail": "10장",
+    "wholesale": "1속"
+   },
+   "refPrice": {
+    "retail": 1432,
+    "wholesale": 11110
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "641",
+   "itemName": "김",
+   "kindCode": "01",
+   "kindName": "구운김",
+   "units": {
+    "retail": "10장"
+   },
+   "refPrice": {
+    "retail": 2036
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "642",
+   "itemName": "마른미역",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "100g",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 3096,
+    "wholesale": 14980
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "644",
+   "itemName": "굴",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "wholesale": "1kg",
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "wholesale": 12600,
+    "retail": 19357
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "649",
+   "itemName": "수입조기",
+   "kindCode": "04",
+   "kindName": "부세수입(냉동)",
+   "units": {
+    "retail": "1마리"
+   },
+   "refPrice": {
+    "retail": 4825
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "650",
+   "itemName": "새우젓",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 18973
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "651",
+   "itemName": "멸치액젓",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 6239
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "652",
+   "itemName": "천일염",
+   "kindCode": "00",
+   "kindName": "",
+   "units": {
+    "retail": "5kg"
+   },
+   "refPrice": {
+    "retail": 12029
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "653",
+   "itemName": "전복",
+   "kindCode": "00",
+   "kindName": "냉장",
+   "units": {
+    "retail": "5마리",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 11330,
+    "wholesale": 25460
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "654",
+   "itemName": "새우",
+   "kindCode": "01",
+   "kindName": "흰다리(수입)",
+   "units": {
+    "retail": "10마리",
+    "wholesale": "2kg"
+   },
+   "refPrice": {
+    "retail": 5482,
+    "wholesale": 28040
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "656",
+   "itemName": "꽃게",
+   "kindCode": "00",
+   "kindName": "냉동",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 16571
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "656",
+   "itemName": "꽃게",
+   "kindCode": "02",
+   "kindName": "암꽃게(냉동)",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 16848
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "656",
+   "itemName": "꽃게",
+   "kindCode": "04",
+   "kindName": "암꽃게(냉장)",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 15588
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "656",
+   "itemName": "꽃게",
+   "kindCode": "05",
+   "kindName": "수꽃게(냉장)",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 19949
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "658",
+   "itemName": "홍합",
+   "kindCode": "01",
+   "kindName": "깐홍합(냉장)",
+   "units": {
+    "retail": "100g"
+   },
+   "refPrice": {
+    "retail": 2735
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "658",
+   "itemName": "홍합",
+   "kindCode": "02",
+   "kindName": "안깐홍합(냉장)",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 3929,
+    "wholesale": 1694
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "659",
+   "itemName": "가리비",
+   "kindCode": "01",
+   "kindName": "해만가리비(홍가리비)",
+   "units": {
+    "retail": "1kg",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 6697,
+    "wholesale": 3562
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "660",
+   "itemName": "건다시마",
+   "kindCode": "01",
+   "kindName": "완도산",
+   "units": {
+    "retail": "100g",
+    "wholesale": "1kg"
+   },
+   "refPrice": {
+    "retail": 3237,
+    "wholesale": 12980
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "661",
+   "itemName": "바지락",
+   "kindCode": "00",
+   "kindName": "냉장",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 9673
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "662",
+   "itemName": "고등어필렛",
+   "kindCode": "00",
+   "kindName": "수입",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 21082
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "662",
+   "itemName": "고등어필렛",
+   "kindCode": "01",
+   "kindName": "국산",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 19257
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "663",
+   "itemName": "전어",
+   "kindCode": "01",
+   "kindName": "냉장",
+   "units": {
+    "retail": "5마리"
+   },
+   "refPrice": {
+    "retail": 5241
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "664",
+   "itemName": "낙지",
+   "kindCode": "00",
+   "kindName": "수입(냉동)",
+   "units": {
+    "retail": "100g"
+   },
+   "refPrice": {
+    "retail": 2076
+   }
+  },
+  {
+   "categoryCode": "600",
+   "itemCode": "665",
+   "itemName": "꼬막",
+   "kindCode": "00",
+   "kindName": "국산(새꼬막)",
+   "units": {
+    "retail": "1kg"
+   },
+   "refPrice": {
+    "retail": 9814
+   }
+  }
+ ]
+}

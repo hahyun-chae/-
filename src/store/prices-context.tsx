@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { PriceBoard, PriceType } from "@/lib/types";
 import { useAppState } from "./app-store";
 
@@ -19,6 +19,15 @@ interface Initial {
 }
 
 const PricesContext = createContext<PricesValue | null>(null);
+
+/** 재료별로 고른 용량의 시세로 바꿔 끼운다. 상태·추천도 고른 용량의 가격 흐름으로 계산된다 */
+function applySizePrefs(board: PriceBoard, prefs: Record<string, string>): PriceBoard {
+  const entries = Object.entries(prefs).flatMap(([id, kindCode]) => {
+    const chosen = board[id]?.sizes?.find((s) => s.kindCode === kindCode);
+    return chosen ? [[id, { ...chosen, sizes: board[id].sizes }] as const] : [];
+  });
+  return entries.length ? { ...board, ...Object.fromEntries(entries) } : board;
+}
 
 function latestDate(board: PriceBoard): string | null {
   const dates = Object.values(board).map((s) => s.date);
@@ -53,7 +62,9 @@ export function PricesProvider({ initial, children }: { initial: Initial; childr
   }, [key, initialKey, priceType, region]);
 
   const current = key === initialKey ? initial : fetched?.key === key ? fetched : null;
-  const board = current?.board ?? initial.board;
+  const rawBoard = current?.board ?? initial.board;
+  const sizePrefs = app?.sizePrefs;
+  const board = useMemo(() => applySizePrefs(rawBoard, sizePrefs ?? {}), [rawBoard, sizePrefs]);
 
   return (
     <PricesContext.Provider

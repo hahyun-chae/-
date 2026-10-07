@@ -1,4 +1,4 @@
-import { INGREDIENTS } from "../catalog";
+import { INGREDIENTS, KAMIS_REF_PRICE } from "../catalog";
 import type { PriceBoard, PriceType } from "../types";
 
 // KAMIS 인증키가 없을 때 쓰는 데모 시세.
@@ -70,6 +70,15 @@ function noise(key: string): number {
   return hash(key) * 2 - 1;
 }
 
+/** 대표 재료가 아닌 KAMIS 품종은 동기화 시점 실제 가격을 기준으로, 변동률은 품목별로 고정된 값을 만든다 */
+function profileOf(id: string, kamis: { itemCode: string; kindCode?: string } | undefined): MockProfile | undefined {
+  if (PROFILES[id]) return PROFILES[id];
+  const base = kamis?.kindCode && KAMIS_REF_PRICE.get(`${kamis.itemCode}-${kamis.kindCode}`);
+  if (!base) return undefined;
+  const week = Math.round(noise(`${id}:week`) * 15) / 100;
+  return { base, week, month: week * 1.5, normal: Math.round(noise(`${id}:normal`) * 12) / 100 };
+}
+
 function roundPrice(v: number): number {
   return v >= 1000 ? Math.round(v / 10) * 10 : Math.round(v);
 }
@@ -80,7 +89,7 @@ export function getMockBoard(date: string, priceType: PriceType): PriceBoard {
   const typeRatio = priceType === "wholesale" ? 0.7 : 1;
 
   for (const ing of INGREDIENTS) {
-    const p = PROFILES[ing.id];
+    const p = profileOf(ing.id, ing.kamis);
     if (!p) continue;
     const n = (k: string, amp: number) => 1 + noise(`${ing.id}:${date}:${k}`) * amp;
 

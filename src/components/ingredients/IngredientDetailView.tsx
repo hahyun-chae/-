@@ -4,8 +4,8 @@ import { StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { Toggle } from "@/components/ui/toggle";
-import { CATEGORY_LABEL, getIngredient } from "@/lib/catalog";
-import { formatPct, formatWon, pctChange } from "@/lib/format";
+import { CATEGORY_LABEL, getIngredient, kamisPath } from "@/lib/catalog";
+import { formatPct, formatUnitPrice, formatWon, pctChange } from "@/lib/format";
 import { buildDecisions } from "@/lib/recommend";
 import { makeNameOf, useAppState } from "@/store/app-store";
 import { usePrices } from "@/store/prices-context";
@@ -13,6 +13,7 @@ import { ActionBadge, ChangeText, NormalBadge, RoleBadge, StatusBadge } from "..
 import { EmptyState, LoadingBlock, SectionTitle, SourceNote } from "../ui/common";
 import { toggleWatch } from "./IngredientsView";
 import { PriceChart } from "./PriceChart";
+import { SizePicker } from "./SizePicker";
 
 const CHART_COLOR = { surge: "#f87171", up: "#fb923c", flat: "#a1a1aa", down: "#60a5fa", plunge: "#3b82f6" } as const;
 
@@ -58,7 +59,8 @@ export function IngredientDetailView({ id }: { id: string }) {
         <div>
           <p className="text-sm text-slate-500">
             {CATEGORY_LABEL[ingredient.category]}
-            {!ingredient.kamis && " · KAMIS 미조사 품목"}
+            {" · "}
+            {kamisPath(ingredient) ?? "KAMIS 미조사 품목"}
           </p>
           <h1 className="mt-0.5 flex items-center gap-2 text-2xl font-semibold text-slate-900">
             {ingredient.name}
@@ -94,12 +96,20 @@ export function IngredientDetailView({ id }: { id: string }) {
                   오늘 {s.priceType === "retail" ? "소매" : "도매"}가 · {s.unit}
                 </p>
                 <p className="tabular text-4xl font-semibold text-slate-900">{formatWon(s.price)}</p>
+                {formatUnitPrice(s.price, s.unit) && (
+                  <p className="tabular mt-1 font-mono text-xs text-steel">{formatUnitPrice(s.price, s.unit)}</p>
+                )}
               </div>
               <div className="text-right">
                 <ChangeText value={d.change} status={d.status} className="text-2xl" />
                 <p className="text-xs text-slate-400">1주 전 대비</p>
               </div>
             </div>
+            {s.sizes && (
+              <div className="mt-5">
+                <SizePicker ingredientId={id} snapshot={s} variant="detail" />
+              </div>
+            )}
             <div className="mt-4">
               <PriceChart snapshot={s} color={CHART_COLOR[d.status ?? "flat"]} />
             </div>

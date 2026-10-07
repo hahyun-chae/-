@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { track } from "@/lib/analytics";
-import { CATEGORY_LABEL, INGREDIENTS } from "@/lib/catalog";
+import { CATEGORY_LABEL, CATEGORY_ORDER, INGREDIENTS } from "@/lib/catalog";
 import { matchesKorean } from "@/lib/hangul";
 import { buildDecisions, type Decision } from "@/lib/recommend";
 import { compareForDisplay } from "@/lib/status";
@@ -17,8 +17,6 @@ import { LoadingBlock, PageHeader, SourceNote } from "../ui/common";
 import { PriceRow } from "./PriceRow";
 
 type Tab = "all" | IngredientCategory;
-
-const CATEGORY_ORDER: IngredientCategory[] = ["grain", "leafy", "vegetable", "namul", "mushroom", "fruit", "meat", "seafood", "etc"];
 
 /** 관심 재료 담기/빼기 + 이벤트 기록 (재료 상세 화면에서도 사용) */
 export function toggleWatch(id: string, name: string, on: boolean, source: "ingredients_list" | "ingredient_detail") {
@@ -96,7 +94,7 @@ export function IngredientsView() {
     const all = [...INGREDIENTS, ...app.customIngredients];
     const decisions = buildDecisions(all.map((i) => i.id), app.menus, prices.board, app.settings.thresholds, nameOf);
     const categoryOf = new Map(all.map((i) => [i.id, i.category]));
-    const searchable = new Map(all.map((i) => [i.id, [i.name, ...i.aliases]]));
+    const searchable = new Map(all.map((i) => [i.id, [i.name, ...i.aliases, ...(i.kamis ? [i.kamis.itemName] : [])]]));
     return { nameOf, decisions, categoryOf, searchable };
   }, [app, prices.board]);
 

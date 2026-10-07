@@ -34,7 +34,7 @@ export function IngredientPicker({
     if (!q) return [];
     return [...INGREDIENTS, ...custom]
       .filter((i) => !exclude.includes(i.id))
-      .filter((i) => [i.name, ...i.aliases].some((n) => matchesKorean(q, n)))
+      .filter((i) => [i.name, ...i.aliases, ...(i.kamis ? [i.kamis.itemName] : [])].some((n) => matchesKorean(q, n)))
       .slice(0, 8);
   }, [query, exclude, custom]);
 

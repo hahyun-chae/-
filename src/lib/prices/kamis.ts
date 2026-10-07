@@ -1,15 +1,18 @@
-import { INGREDIENTS } from "../catalog";
-import type { PriceBoard, PriceType } from "../types";
+import { INGREDIENTS, KAMIS_CATEGORY_LABEL } from "../catalog";
+import type { PriceBoard, PriceSnapshot, PriceType } from "../types";
 import { shiftDate } from "../format";
 
 // KAMIS Open API - 일별 부류별 도·소매가격 (dailyPriceByCategoryList)
-// 필드 의미(dpr1~dpr7)와 코드 값은 KAMIS 공식 문서 기준으로 연동 전에 다시 확인할 것.
+// 부류마다 한 번씩 받아 item_code / kind_code로 재료와 맞춘다.
 const ENDPOINT = "https://www.kamis.or.kr/service/price/xml.do";
 
 interface KamisItem {
   item_name: string;
+  item_code: string;
   kind_name: string;
+  kind_code: string;
   rank: string;
+  rank_code: string;
   unit: string;
   dpr1: string; // 당일
   dpr2: string; // 1일 전
@@ -50,11 +53,12 @@ async function fetchCategory(
   return Array.isArray(items) ? items : [];
 }
 
-function pick(items: KamisItem[], itemName: string, kindName?: string): KamisItem | undefined {
-  const matches = items.filter(
-    (it) => it.item_name === itemName && (!kindName || it.kind_name?.includes(kindName)),
-  );
-  return matches.find((it) => it.rank === "상품") ?? matches[0];
+/** 품종을 지정하지 않으면 그날 조사된 첫 품종. 등급은 상품(04)을 우선하고 없으면 첫 등급 */
+function pick(items: KamisItem[], itemCode: string, kindCode?: string): KamisItem | undefined {
+  const matches = items.filter((it) => it.item_code === itemCode && (!kindCode || it.kind_code === kindCode) && toNumber(it.dpr1));
+  const kind = matches[0]?.kind_code;
+  const sameKind = matches.filter((it) => it.kind_code === kind);
+  return sameKind.find((it) => it.rank_code === "04") ?? sameKind[0];
 }
 
 export function isKamisConfigured(): boolean {
@@ -70,9 +74,7 @@ export async function getKamisBoard(
   priceType: PriceType,
   region: string,
 ): Promise<PriceBoard> {
-  const categories = [
-    ...new Set(INGREDIENTS.flatMap((i) => (i.kamis ? [i.kamis.categoryCode] : []))),
-  ];
+  const categories = Object.keys(KAMIS_CATEGORY_LABEL);
 
   for (let back = 0; back <= 6; back++) {
     const date = shiftDate(today, -back);
@@ -85,23 +87,33 @@ export async function getKamisBoard(
     const board: PriceBoard = {};
     for (const ing of INGREDIENTS) {
       if (!ing.kamis) continue;
-      const item = pick(byCategory.get(ing.kamis.categoryCode) ?? [], ing.kamis.itemName, ing.kamis.kindName);
-      const price = item && toNumber(item.dpr1);
-      if (!item || !price) continue;
-      board[ing.id] = {
-        ingredientId: ing.id,
-        priceType,
-        date,
-        unit: item.unit || ing.unit,
-        price,
-        prevDay: toNumber(item.dpr2),
-        weekAgo: toNumber(item.dpr3),
-        twoWeeksAgo: toNumber(item.dpr4),
-        monthAgo: toNumber(item.dpr5),
-        yearAgo: toNumber(item.dpr6),
-        normalYear: toNumber(item.dpr7),
-        source: "KAMIS",
-      };
+      const { categoryCode, itemCode, kindCode, sizeKindCodes = [] } = ing.kamis;
+      const rows = byCategory.get(categoryCode) ?? [];
+      // 기본 용량이 오늘 조사되지 않았으면(도매 등) 조사된 다른 용량이 기본이 된다
+      const sizes = [kindCode, ...sizeKindCodes].flatMap((code): PriceSnapshot[] => {
+        const item = pick(rows, itemCode, code);
+        const price = item && toNumber(item.dpr1);
+        if (!item || !price) return [];
+        return [
+          {
+            ingredientId: ing.id,
+            priceType,
+            date,
+            unit: item.unit || ing.unit,
+            price,
+            prevDay: toNumber(item.dpr2),
+            weekAgo: toNumber(item.dpr3),
+            twoWeeksAgo: toNumber(item.dpr4),
+            monthAgo: toNumber(item.dpr5),
+            yearAgo: toNumber(item.dpr6),
+            normalYear: toNumber(item.dpr7),
+            source: "KAMIS",
+            kindCode: item.kind_code,
+          },
+        ];
+      });
+      if (sizes.length === 0) continue;
+      board[ing.id] = sizes.length > 1 ? { ...sizes[0], sizes } : sizes[0];
     }
     return board;
   }
