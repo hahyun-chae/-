@@ -121,7 +121,7 @@ export function IngredientsView() {
 
   return (
     <>
-      <PageHeader title="재료 시세" description={<SourceNote date={prices.date} source={prices.source} />} />
+      <PageHeader title="재료 시세" description={<SourceNote date={prices.date} source={prices.source} fallback={prices.fallback} />} />
 
       <Tabs
         value={activeTab}

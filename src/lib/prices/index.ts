@@ -1,12 +1,14 @@
 import "server-only";
 import { todayKST } from "../format";
-import type { PriceBoard, PriceType } from "../types";
+import type { PriceBoard, PriceFallback, PriceType } from "../types";
 import { getKamisBoard, isKamisConfigured } from "./kamis";
 import { getMockBoard } from "./mock";
 
 export interface PriceBoardResult {
   board: PriceBoard;
   source: "KAMIS" | "MOCK";
+  /** source가 MOCK일 때 그 이유 */
+  fallback?: PriceFallback;
   priceType: PriceType;
   region: string;
 }
@@ -17,13 +19,17 @@ export async function getPriceBoard(
   region = "",
 ): Promise<PriceBoardResult> {
   const today = todayKST();
-  if (isKamisConfigured()) {
-    try {
-      const board = await getKamisBoard(today, priceType, region);
-      if (Object.keys(board).length > 0) return { board, source: "KAMIS", priceType, region };
-    } catch (e) {
-      console.error("[prices] KAMIS 조회 실패, 데모 시세로 대체합니다.", e);
-    }
+  const mock = (fallback: PriceFallback): PriceBoardResult => ({ board: getMockBoard(today, priceType), source: "MOCK", fallback, priceType, region });
+  if (!isKamisConfigured()) {
+    console.warn("[prices] KAMIS_CERT_KEY / KAMIS_CERT_ID 환경변수가 없어 데모 시세를 씁니다.");
+    return mock("no_key");
   }
-  return { board: getMockBoard(today, priceType), source: "MOCK", priceType, region };
+  try {
+    const board = await getKamisBoard(today, priceType, region);
+    if (Object.keys(board).length > 0) return { board, source: "KAMIS", priceType, region };
+    console.error("[prices] KAMIS 응답에 최근 7일 시세가 없어 데모 시세로 대체합니다.");
+  } catch (e) {
+    console.error("[prices] KAMIS 조회 실패, 데모 시세로 대체합니다.", e);
+  }
+  return mock("kamis_failed");
 }

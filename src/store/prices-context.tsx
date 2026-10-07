@@ -1,12 +1,13 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import type { PriceBoard, PriceType } from "@/lib/types";
+import type { PriceBoard, PriceFallback, PriceType } from "@/lib/types";
 import { useAppState } from "./app-store";
 
 interface PricesValue {
   board: PriceBoard;
   source: "KAMIS" | "MOCK";
+  fallback?: PriceFallback;
   date: string | null;
   loading: boolean;
 }
@@ -14,6 +15,7 @@ interface PricesValue {
 interface Initial {
   board: PriceBoard;
   source: "KAMIS" | "MOCK";
+  fallback?: PriceFallback;
   priceType: PriceType;
   region: string;
 }
@@ -37,6 +39,7 @@ function latestDate(board: PriceBoard): string | null {
 /**
  * 서버에서 받은 기본 시세(소매·전국)로 먼저 그리고,
  * 가게 설정의 기준(도매/지역)이 다르면 /api/prices로 다시 받아온다.
+ * 서버에서 그린 시세가 데모 시세면(빌드 시점에 KAMIS 연결 실패 등) 같은 기준이라도 한 번 더 받아온다.
  */
 export function PricesProvider({ initial, children }: { initial: Initial; children: React.ReactNode }) {
   const app = useAppState();
@@ -45,23 +48,24 @@ export function PricesProvider({ initial, children }: { initial: Initial; childr
   const key = `${priceType}:${region}`;
   const initialKey = `${initial.priceType}:${initial.region}`;
 
-  const [fetched, setFetched] = useState<{ key: string; board: PriceBoard; source: "KAMIS" | "MOCK" } | null>(null);
+  const [fetched, setFetched] = useState<{ key: string; board: PriceBoard; source: "KAMIS" | "MOCK"; fallback?: PriceFallback } | null>(null);
+  const retryInitial = initial.source === "MOCK";
 
   useEffect(() => {
-    if (key === initialKey) return;
+    if (key === initialKey && !retryInitial) return;
     let cancelled = false;
     fetch(`/api/prices?type=${priceType}&region=${region}`)
       .then((r) => r.json())
       .then((data) => {
-        if (!cancelled) setFetched({ key, board: data.board, source: data.source });
+        if (!cancelled) setFetched({ key, board: data.board, source: data.source, fallback: data.fallback });
       })
       .catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, [key, initialKey, priceType, region]);
+  }, [key, initialKey, retryInitial, priceType, region]);
 
-  const current = key === initialKey ? initial : fetched?.key === key ? fetched : null;
+  const current = fetched?.key === key ? fetched : key === initialKey ? initial : null;
   const rawBoard = current?.board ?? initial.board;
   const sizePrefs = app?.sizePrefs;
   const board = useMemo(() => applySizePrefs(rawBoard, sizePrefs ?? {}), [rawBoard, sizePrefs]);
@@ -71,6 +75,7 @@ export function PricesProvider({ initial, children }: { initial: Initial; childr
       value={{
         board,
         source: current?.source ?? initial.source,
+        fallback: current ? current.fallback : initial.fallback,
         date: latestDate(board),
         loading: current === null,
       }}
