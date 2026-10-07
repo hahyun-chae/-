@@ -30,14 +30,21 @@ export interface AnalyticsEvents {
   "Custom Ingredient Added": { ingredient_name: string; source: "ingredients_list" | "onboarding" | "menu_editor" };
   "Category Tab Selected": { category: string };
   "Ingredient Size Selected": { ingredient_id: string; unit: string; source: "price_row" | "ingredient_detail" };
-  "Recommendation Responded": {
-    ingredient_id: string;
+  /** 장보기 목록에 담기. 판단 카드에서 담았으면 어떤 추천을 어떻게 따랐는지(choice) 남긴다 */
+  "Shopping Item Added": {
+    ingredient_id: string | null;
     ingredient_name: string;
-    action: string;
-    response: "applied" | "deferred" | "ignored" | "cleared";
-    price_change_pct: number | null;
-    candidate_ids: string[];
+    source: "recommendation" | "manual";
+    list_day: string;
+    recommendation_action?: string;
+    choice?: "substitute" | "reduce" | "needed_only" | "as_is";
+    replaced_from?: string;
+    price_change_pct?: number | null;
+    candidate_ids?: string[];
   };
+  "Shopping Item Removed": { ingredient_id: string | null; ingredient_name: string; from_recommendation: boolean };
+  "Shopping Item Checked": { ingredient_id: string | null; ingredient_name: string; checked: boolean; from_recommendation: boolean; replaced: boolean };
+  "Shopping List Copied": { from_date: string; to_date: string; item_count: number };
   "Menu Template Applied": { template_id: string; template_name: string };
   "Menu Saved": { is_new: boolean; core_count: number; adjustable_count: number; substitute_group_count: number; has_price: boolean };
   "Menu Deleted": { menu_id: string };

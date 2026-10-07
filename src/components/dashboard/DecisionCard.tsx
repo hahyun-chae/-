@@ -1,36 +1,15 @@
 "use client";
 
-import { CheckIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { track } from "@/lib/analytics";
 import { formatWon } from "@/lib/format";
 import type { Decision } from "@/lib/recommend";
-import type { UserResponse } from "@/lib/types";
-import { actions } from "@/store/app-store";
+import { AddToListActions } from "../shopping/AddToListActions";
 import { ActionBadge, ChangeText, NormalBadge, RoleBadge, StatusBadge } from "../ui/Badges";
 
-const RESPONSES: { value: UserResponse; label: string }[] = [
-  { value: "applied", label: "적용" },
-  { value: "deferred", label: "보류" },
-  { value: "ignored", label: "무시" },
-];
-
-export function DecisionCard({
-  decision: d,
-  nameOf,
-  responseKey,
-  response,
-}: {
-  decision: Decision;
-  nameOf: (id: string) => string;
-  responseKey: string;
-  response?: UserResponse;
-}) {
-  const showResponses = d.action === "substitute" || d.action === "adjust";
-
+/** 먼저 확인할 재료 카드. 추천에 대한 응답 대신 장보기 목록에 바로 담는다 */
+export function DecisionCard({ decision: d, nameOf }: { decision: Decision; nameOf: (id: string) => string }) {
   return (
-    <article className={`card p-5 sm:p-7 ${response === "ignored" ? "opacity-60" : ""}`}>
+    <article className="card p-5 sm:p-7">
       <div className="flex flex-wrap items-center gap-2">
         <ActionBadge action={d.action} />
         {d.aboveNormal && <NormalBadge />}
@@ -90,35 +69,7 @@ export function DecisionCard({
         {d.reason}
       </p>
 
-      {showResponses && (
-        <div className="mt-3 flex gap-2" role="group" aria-label="추천에 대한 응답">
-          {RESPONSES.map((r) => {
-            const selected = response === r.value;
-            return (
-              <Button
-                key={r.value}
-                variant={selected ? "default" : "outline"}
-                className="flex-1 sm:flex-none sm:min-w-20"
-                aria-pressed={selected}
-                onClick={() => {
-                  actions.respond(responseKey, selected ? null : r.value);
-                  track("Recommendation Responded", {
-                    ingredient_id: d.ingredientId,
-                    ingredient_name: nameOf(d.ingredientId),
-                    action: d.action,
-                    response: selected ? "cleared" : r.value,
-                    price_change_pct: d.change == null ? null : Math.round(d.change * 10) / 10,
-                    candidate_ids: d.candidates.map((c) => c.ingredientId),
-                  });
-                }}
-              >
-                {selected && <CheckIcon data-icon="inline-start" />}
-                {r.label}
-              </Button>
-            );
-          })}
-        </div>
-      )}
+      <AddToListActions decision={d} nameOf={nameOf} />
     </article>
   );
 }

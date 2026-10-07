@@ -3,7 +3,8 @@
 import { useSyncExternalStore } from "react";
 import { getIngredient } from "@/lib/catalog";
 import { DEFAULT_THRESHOLDS } from "@/lib/status";
-import type { AppState, Ingredient, Menu, StoreSettings, UserResponse } from "@/lib/types";
+import { findItem, pruneLists } from "@/lib/shopping";
+import type { AppState, Ingredient, Menu, ShoppingItem, StoreSettings } from "@/lib/types";
 
 // MVP에서는 가게 데이터(관심 재료, 메뉴, 설정)를 브라우저 localStorage에 저장한다.
 // 로그인·DB(PostgreSQL)를 붙일 때 이 모듈의 load/save만 서버 API 호출로 바꾸면 된다.
@@ -23,7 +24,7 @@ export const INITIAL_STATE: AppState = {
   watchlist: [],
   menus: [],
   customIngredients: [],
-  responses: {},
+  shoppingLists: {},
   sizePrefs: {},
 };
 
@@ -128,13 +129,41 @@ export const actions = {
   deleteMenu(id: string) {
     setState((s) => ({ ...s, menus: s.menus.filter((m) => m.id !== id) }));
   },
-  respond(key: string, response: UserResponse | null) {
+  /** 장보기 목록에 담는다. 같은 재료가 이미 있으면 메모·출처만 새 값으로 바꾼다 */
+  addShoppingItem(date: string, item: Omit<ShoppingItem, "id" | "checked">): string {
+    const current = getSnapshot().shoppingLists[date] ?? [];
+    const existing = findItem(current, item.ingredientId, item.name);
+    const id = existing?.id ?? newId("item");
     setState((s) => {
-      const responses = { ...s.responses };
-      if (response) responses[key] = response;
-      else delete responses[key];
-      return { ...s, responses };
+      const items = s.shoppingLists[date] ?? [];
+      const next = existing
+        ? items.map((i) => (i.id === existing.id ? { ...i, ...item, qty: item.qty || i.qty } : i))
+        : [...items, { ...item, id, checked: false }];
+      return { ...s, shoppingLists: pruneLists({ ...s.shoppingLists, [date]: next }) };
     });
+    return id;
+  },
+  updateShoppingItem(date: string, id: string, patch: Partial<Omit<ShoppingItem, "id">>) {
+    setState((s) => ({
+      ...s,
+      shoppingLists: { ...s.shoppingLists, [date]: (s.shoppingLists[date] ?? []).map((i) => (i.id === id ? { ...i, ...patch } : i)) },
+    }));
+  },
+  removeShoppingItem(date: string, id: string) {
+    setState((s) => ({
+      ...s,
+      shoppingLists: { ...s.shoppingLists, [date]: (s.shoppingLists[date] ?? []).filter((i) => i.id !== id) },
+    }));
+  },
+  /** 지난 목록을 그대로 가져온다. 체크는 풀고, 이미 있는 재료는 건너뛴다. 가져온 개수를 돌려준다 */
+  copyShoppingList(fromDate: string, toDate: string): number {
+    const s0 = getSnapshot();
+    const target = s0.shoppingLists[toDate] ?? [];
+    const copied = (s0.shoppingLists[fromDate] ?? [])
+      .filter((i) => !findItem(target, i.ingredientId, i.name))
+      .map((i): ShoppingItem => ({ ...i, id: newId("item"), checked: false, source: "previous_list", note: undefined, replacedFrom: undefined }));
+    setState((s) => ({ ...s, shoppingLists: pruneLists({ ...s.shoppingLists, [toDate]: [...target, ...copied] }) }));
+    return copied.length;
   },
   setSizePref(ingredientId: string, kindCode: string) {
     setState((s) => ({ ...s, sizePrefs: { ...s.sizePrefs, [ingredientId]: kindCode } }));

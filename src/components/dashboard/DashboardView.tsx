@@ -18,7 +18,6 @@ export function DashboardView() {
   const { app, prices, decisions, nameOf, rank } = data;
   const attention = decisions.filter((d) => ["substitute", "adjust", "caution"].includes(d.action));
   const opportunities = decisions.filter((d) => d.action === "opportunity");
-  const responseKey = (id: string) => `${prices.date}:${id}`;
 
   return (
     <>
@@ -55,13 +54,7 @@ export function DashboardView() {
             ) : (
               <div className="space-y-4">
                 {attention.map((d) => (
-                  <DecisionCard
-                    key={d.ingredientId}
-                    decision={d}
-                    nameOf={nameOf}
-                    responseKey={responseKey(d.ingredientId)}
-                    response={app.responses[responseKey(d.ingredientId)]}
-                  />
+                  <DecisionCard key={d.ingredientId} decision={d} nameOf={nameOf} />
                 ))}
               </div>
             )}
