@@ -89,6 +89,9 @@ html {
 body {
   font-size: 16px;
   line-height: 1.6;
+  /* 한글이 단어 중간에서 줄바꿈되지 않게 (긴 영문·숫자는 넘칠 때만 끊는다) */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
 }

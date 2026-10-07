@@ -142,7 +142,10 @@ export function IngredientsView() {
             placeholder="재료 검색 (예: 시금치, ㅅㄱㅊ)"
             aria-label="재료 검색"
           />
-          <TabsList aria-label="재료 분류" className="mt-3 w-full justify-start overflow-x-auto rounded-lg bg-control/70 p-1 [scrollbar-width:none]">
+          {/* 옆으로 넘길 탭이 더 있다는 걸 알 수 있게 오른쪽 끝을 흐리게 한다 */}
+          <TabsList
+            aria-label="재료 분류"
+            className="mt-3 w-full justify-start overflow-x-auto rounded-lg bg-control/70 p-1 [mask-image:linear-gradient(to_right,black_88%,transparent)] [scrollbar-width:none]">
             {tabs.map((t) => (
               <TabsTrigger key={t.id} value={t.id} className="flex-none rounded-md px-4 text-[15px] data-active:font-semibold">
                 {t.label}
