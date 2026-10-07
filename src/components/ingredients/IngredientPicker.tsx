@@ -24,7 +24,7 @@ export function IngredientPicker({
   allowCustom?: boolean;
   autoFocus?: boolean;
   /** 직접 추가 이벤트에 기록할 위치 */
-  source?: "onboarding" | "menu_editor";
+  source?: "onboarding" | "menu_editor" | "shopping";
 }) {
   const [query, setQuery] = useState("");
   const listId = useId();

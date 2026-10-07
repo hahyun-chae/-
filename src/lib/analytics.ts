@@ -27,7 +27,7 @@ export interface AnalyticsEvents {
   "Onboarding Completed": { watch_count: number; custom_ingredient_count: number; menu_count: number; menus_skipped: boolean };
   "Watchlist Item Added": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
   "Watchlist Item Removed": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
-  "Custom Ingredient Added": { ingredient_name: string; source: "ingredients_list" | "onboarding" | "menu_editor" };
+  "Custom Ingredient Added": { ingredient_name: string; source: "ingredients_list" | "onboarding" | "menu_editor" | "shopping" };
   "Category Tab Selected": { category: string };
   "Ingredient Size Selected": { ingredient_id: string; unit: string; source: "price_row" | "ingredient_detail" };
   /** 장보기 목록에 담기. 판단 카드에서 담았으면 어떤 추천을 어떻게 따랐는지(choice) 남긴다 */
