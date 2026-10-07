@@ -494,14 +494,14 @@ export function DesignSystemView() {
         <Section id="tabs" title="Tabs" description="variant default · line, 비활성 탭, 패널 전환 (재료 시세 카테고리 탭에 사용)">
           <Row label='variant="default"' hint="원가핏 사용 형태: 알약형 + 개수 표시">
             <Tabs defaultValue="namul" className="w-full">
-              <TabsList className="w-full justify-start overflow-x-auto rounded-full bg-control/70 p-1 sm:w-fit">
+              <TabsList className="w-full justify-start overflow-x-auto rounded-lg bg-control/70 p-1 sm:w-fit">
                 {[
                   ["all", "전체", 42],
                   ["leafy", "잎채소", 7],
                   ["namul", "나물", 9],
                   ["meat", "축산", 4],
                 ].map(([v, l, n]) => (
-                  <TabsTrigger key={v} value={String(v)} className="flex-none rounded-full px-4 text-[15px] data-active:font-semibold">
+                  <TabsTrigger key={v} value={String(v)} className="flex-none rounded-md px-4 text-[15px] data-active:font-semibold">
                     {l}
                     <span className="text-steel">{n}</span>
                   </TabsTrigger>

@@ -144,9 +144,9 @@ export function IngredientsView() {
             placeholder="재료 검색 (예: 시금치, ㅅㄱㅊ)"
             aria-label="재료 검색"
           />
-          <TabsList aria-label="재료 분류" className="mt-3 w-full justify-start overflow-x-auto rounded-full bg-control/70 p-1 [scrollbar-width:none]">
+          <TabsList aria-label="재료 분류" className="mt-3 w-full justify-start overflow-x-auto rounded-lg bg-control/70 p-1 [scrollbar-width:none]">
             {tabs.map((t) => (
-              <TabsTrigger key={t.id} value={t.id} className="flex-none rounded-full px-4 text-[15px] data-active:font-semibold">
+              <TabsTrigger key={t.id} value={t.id} className="flex-none rounded-md px-4 text-[15px] data-active:font-semibold">
                 {t.label}
                 <span className="text-steel">{t.count}</span>
               </TabsTrigger>

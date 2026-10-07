@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+import { Inter, JetBrains_Mono, Noto_Sans_KR } from "next/font/google";
 import { AnalyticsProvider } from "@/components/layout/AnalyticsProvider";
 import { AppShell } from "@/components/layout/AppShell";
 import { getPriceBoard } from "@/lib/prices";
@@ -7,6 +7,17 @@ import { PricesProvider } from "@/store/prices-context";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+});
+
+// 한글은 Inter에 없으므로 Noto Sans KR로 받친다
 const notoSansKr = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
   subsets: ["latin"],
@@ -19,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5f5f7",
+  themeColor: "#020617",
 };
 
 // 시세는 하루 1~2회 바뀌므로 1시간마다 다시 생성
@@ -28,7 +39,7 @@ export const revalidate = 3600;
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const prices = await getPriceBoard();
   return (
-    <html lang="ko" className={cn("h-full antialiased font-sans", notoSansKr.variable)}>
+    <html lang="ko" className={cn("h-full antialiased font-sans", inter.variable, jetbrainsMono.variable, notoSansKr.variable)}>
       <body className="min-h-full">
         <AnalyticsProvider />
         <PricesProvider initial={prices}>

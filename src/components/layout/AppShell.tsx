@@ -28,7 +28,7 @@ function isActive(pathname: string, href: string) {
 export function Logo() {
   return (
     <Link href="/ingredients" className="flex items-center gap-2">
-      <span className="grid h-8 w-8 place-items-center rounded-[9px] bg-ink text-sm font-semibold text-white">₩</span>
+      <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-sm font-semibold text-white shadow-[0_0_20px_-4px_rgb(59_130_246/0.8)]">₩</span>
       <span className="text-lg font-semibold tracking-tight text-slate-900">원가핏</span>
     </Link>
   );
@@ -59,16 +59,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="lg:flex">
       {/* 데스크톱 사이드바 */}
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-control bg-white px-4 py-7 lg:flex">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-hairline bg-canvas/70 px-4 py-7 backdrop-blur-xl lg:flex">
         <Logo />
-        <p className="mt-1 pl-10 text-xs text-slate-500">{app?.settings.name || "우리 가게"}</p>
+        <p className="mt-1 pl-10 font-mono text-xs text-slate-500">{app?.settings.name || "우리 가게"}</p>
         <nav className="mt-8 space-y-1">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-[15px] ${
-                isActive(pathname, n.href) ? "bg-canvas font-semibold text-ink" : "text-muted-foreground hover:text-ink"
+              className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-[15px] transition-colors ${
+                isActive(pathname, n.href) ? "bg-control font-medium text-ink ring-1 ring-inset ring-hairline" : "text-muted-foreground hover:text-ink"
               }`}
             >
               <NavIcon d={n.icon} />
@@ -82,21 +82,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* 모바일 상단 바 */}
-      <header className="sticky top-0 z-20 flex h-12 items-center justify-between border-b border-control bg-frost/80 px-4 backdrop-blur-xl lg:hidden">
+      <header className="sticky top-0 z-20 flex h-12 items-center justify-between border-b border-hairline bg-frost/80 px-4 backdrop-blur-xl lg:hidden">
         <Logo />
         <span className="max-w-[45%] truncate text-sm text-slate-500">{app?.settings.name || "우리 가게"}</span>
       </header>
 
-      <main className="mx-auto w-full max-w-5xl px-4 pt-5 pb-28 sm:px-6 lg:px-12 lg:pt-14 lg:pb-20">{ready ? children : <LoadingBlock />}</main>
+      <main className="stagger mx-auto w-full max-w-5xl px-4 pt-5 pb-28 sm:px-6 lg:px-12 lg:pt-14 lg:pb-20">{ready ? children : <LoadingBlock />}</main>
 
       {/* 모바일 하단 탭 */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t border-control bg-frost/90 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t border-hairline bg-frost/90 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] lg:hidden">
         {NAV.map((n) => (
           <Link
             key={n.href}
             href={n.href}
             className={`flex min-h-14 flex-col items-center justify-center gap-0.5 text-xs ${
-              isActive(pathname, n.href) ? "text-ink" : "text-steel"
+              isActive(pathname, n.href) ? "text-brand-700" : "text-steel"
             }`}
           >
             <NavIcon d={n.icon} />

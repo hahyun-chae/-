@@ -7,62 +7,103 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  원가핏 디자인 토큰 — DESIGN.md(Apple 스타일 레퍼런스) 기반
-  - 흰 카드(#ffffff)를 Studio Mist(#f5f5f7) 바탕 위에 올리고, 그림자 없이 28px 둥근 모서리로 구분한다.
-  - 파란색은 주요 버튼(#0071e3)과 링크(#0066cc)에만 쓴다. 선택 상태는 Ink(#1d1d1f)로 표시한다.
+  원가핏 디자인 토큰 — design-2.md(Tactile Analytics Interface) 기반 다크 테마
+  - 바탕은 #020617, 카드는 surface(#7A7C82)를 바탕에 옅게 섞은 면 + 얇은 테두리 + 깊은 그림자로 구분한다.
+  - 파란색(#3B82F6)은 주요 버튼·링크·선택 강조에만, 피치(#EAB393)는 경고성 메타 정보에만 쓴다.
+  - 모서리: 카드 16px(rounded-3xl), 버튼·입력 같은 컨트롤 8px(rounded-lg), 배지는 알약형.
   - 가격 상태 색(상승 빨강·주황, 하락 파랑, 구매 기회 초록, 대체 추천 보라)은 PRD 요구사항이라 유지하고,
     ▲▼ 아이콘과 라벨을 함께 쓴다.
 */
 @theme {
-  --font-sans: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", var(--font-noto-sans-kr), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-inter), var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), var(--font-noto-sans-kr), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* 기본 색 */
-  --color-ink: #1d1d1f;
-  --color-steel: #86868b;
-  --color-hairline: #d6d6d6;
-  --color-control: #e6e6e8;
-  --color-frost: #fafafc;
-  --color-surface: #ffffff;
-  --color-canvas: #f5f5f7;
-  --color-launch-orange: #b64400;
+  --color-ink: #ffffff;
+  --color-steel: #a1a1aa;
+  --color-hairline: color-mix(in srgb, #7a7c82 32%, transparent);
+  --color-control: color-mix(in srgb, #7a7c82 20%, transparent);
+  --color-frost: #050a1c;
+  --color-surface: color-mix(in srgb, #7a7c82 9%, #020617);
+  --color-canvas: #020617;
+  --color-launch-orange: #eab393;
 
-  /* 브랜드(파랑): 600 = 버튼 채움, 700 = 링크 */
-  --color-brand-50: #f0f6ff;
-  --color-brand-100: #dcebff;
-  --color-brand-200: #b8d6fb;
-  --color-brand-600: #0071e3;
-  --color-brand-700: #0066cc;
-  --color-brand-800: #0058b0;
-  --color-brand-900: #00437f;
+  /* 브랜드(파랑): 600 = 버튼 채움, 700 = 링크(어두운 바탕에서 읽히도록 한 단계 밝게) */
+  --color-brand-50: color-mix(in srgb, #3b82f6 10%, transparent);
+  --color-brand-100: color-mix(in srgb, #3b82f6 22%, transparent);
+  --color-brand-200: color-mix(in srgb, #3b82f6 40%, transparent);
+  --color-brand-600: #3b82f6;
+  --color-brand-700: #60a5fa;
+  --color-brand-800: #93c5fd;
+  --color-brand-900: #bfdbfe;
 
-  /* Tailwind slate를 Apple 무채색 계열로 바꿔 화면 전체 중립색을 한 번에 맞춘다 */
-  --color-slate-50: #fafafc;
-  --color-slate-100: #f5f5f7;
-  --color-slate-200: #e6e6e8;
-  --color-slate-300: #d6d6d6;
-  --color-slate-400: #86868b;
-  --color-slate-500: #707070;
-  --color-slate-600: #6e6e73;
-  --color-slate-700: #424245;
-  --color-slate-800: #1d1d1f;
-  --color-slate-900: #1d1d1f;
+  /* Tailwind slate를 다크 무채색 계열로 뒤집는다: 50~300은 면·선, 400~900은 글자(밝을수록 강조) */
+  --color-slate-50: #0a0f22;
+  --color-slate-100: #0f1427;
+  --color-slate-200: #1f2433;
+  --color-slate-300: #3a3d47;
+  --color-slate-400: #71717a;
+  --color-slate-500: #a1a1aa;
+  --color-slate-600: #b4b4bb;
+  --color-slate-700: #d4d4d8;
+  --color-slate-800: #f4f4f5;
+  --color-slate-900: #ffffff;
 
-  /* 모서리는 아래 :root의 --radius(0.8rem)에서 계산된다: xl ≈ 18px, 2xl ≈ 23px, 3xl(카드) ≈ 28px
-     보조 글자색은 shadcn 토큰 text-muted-foreground(#707070)를 쓴다 */
+  /* 상태 색: 옅은 배경(50~200)은 반투명 틴트로, 진한 글자(700~900)는 밝은 톤으로 바꿔 어두운 바탕에서 읽히게 한다 */
+  --color-red-50: color-mix(in srgb, var(--color-red-500) 12%, transparent);
+  --color-red-100: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+  --color-red-200: color-mix(in srgb, var(--color-red-500) 35%, transparent);
+  --color-red-700: var(--color-red-400);
+  --color-red-800: var(--color-red-300);
+  --color-red-900: var(--color-red-300);
+  --color-orange-50: color-mix(in srgb, var(--color-orange-500) 12%, transparent);
+  --color-orange-100: color-mix(in srgb, var(--color-orange-500) 20%, transparent);
+  --color-orange-200: color-mix(in srgb, var(--color-orange-500) 35%, transparent);
+  --color-orange-700: var(--color-orange-400);
+  --color-orange-800: var(--color-orange-300);
+  --color-orange-900: var(--color-orange-300);
+  --color-green-50: color-mix(in srgb, var(--color-green-500) 12%, transparent);
+  --color-green-100: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+  --color-green-200: color-mix(in srgb, var(--color-green-500) 35%, transparent);
+  --color-green-700: var(--color-green-400);
+  --color-green-800: var(--color-green-300);
+  --color-green-900: var(--color-green-300);
+  --color-blue-50: color-mix(in srgb, var(--color-blue-500) 12%, transparent);
+  --color-blue-100: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+  --color-blue-200: color-mix(in srgb, var(--color-blue-500) 35%, transparent);
+  --color-blue-700: var(--color-blue-400);
+  --color-blue-800: var(--color-blue-300);
+  --color-blue-900: var(--color-blue-300);
+  --color-violet-50: color-mix(in srgb, var(--color-violet-500) 12%, transparent);
+  --color-violet-100: color-mix(in srgb, var(--color-violet-500) 20%, transparent);
+  --color-violet-200: color-mix(in srgb, var(--color-violet-500) 35%, transparent);
+  --color-violet-700: var(--color-violet-400);
+  --color-violet-800: var(--color-violet-300);
+  --color-violet-900: var(--color-violet-300);
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
-  background: var(--color-canvas);
-  color: var(--color-ink);
-  font-size: 17px;
-  line-height: 1.47;
-  letter-spacing: -0.022em;
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* 화면 뒤 분위기 레이어: 파랑·피치 빛 번짐 + 옅은 점 격자(디더). 콘텐츠보다 앞서지 않게 아주 흐리게 둔다 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgb(59 130 246 / 0.16), transparent 60%),
+    radial-gradient(40rem 30rem at -10% 110%, rgb(234 179 147 / 0.08), transparent 60%),
+    radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px) 0 0 / 22px 22px;
 }
 
 /* 숫자 자릿수 정렬 */
@@ -70,16 +111,37 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* 화면 진입 시 섹션이 차례로 떠오른다 */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+.stagger > * > * {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.stagger > * > :nth-child(2) { animation-delay: 60ms; }
+.stagger > * > :nth-child(3) { animation-delay: 120ms; }
+.stagger > * > :nth-child(4) { animation-delay: 180ms; }
+.stagger > * > :nth-child(n + 5) { animation-delay: 240ms; }
+@media (prefers-reduced-motion: reduce) {
+  .stagger > * > * {
+    animation: none;
+  }
+}
+
 @utility card {
-  @apply rounded-3xl bg-surface;
+  @apply rounded-3xl border border-hairline bg-surface shadow-[inset_0_1px_0_rgb(255_255_255/0.05),0_12px_32px_-16px_rgb(0_0_0/0.8)];
 }
 
 @utility input {
-  @apply min-h-11 w-full rounded-full border border-steel bg-white px-5 text-[17px] text-ink placeholder:text-steel focus:border-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-100;
+  @apply min-h-11 w-full rounded-lg border border-input bg-canvas/60 px-4 text-base text-ink placeholder:text-slate-400 focus:border-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-100;
 }
 
+/* 라벨·메타 정보는 모노 서체 */
 @utility label {
-  @apply mb-2 block text-sm font-semibold text-ink;
+  @apply mb-2 block font-mono text-xs font-semibold tracking-wide text-steel;
 }
 /*
   ---break---
@@ -120,48 +182,48 @@ body {
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 1.75);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius-4xl: calc(var(--radius) * 2.5);
 }
 /*
   ---break---
 */
 :root {
-  /* shadcn/ui 토큰을 원가핏 디자인(DESIGN.md)에 맞춘 값 */
-  --background: #ffffff;
-  --foreground: #1d1d1f;
-  --card: #ffffff;
-  --card-foreground: #1d1d1f;
-  --popover: #ffffff;
-  --popover-foreground: #1d1d1f;
-  --primary: #0071e3;
+  /* shadcn/ui 토큰을 design-2.md 다크 팔레트에 맞춘 값. --radius 0.5rem = 컨트롤 8px, 3xl = 카드 16px */
+  --background: #020617;
+  --foreground: #ffffff;
+  --card: color-mix(in srgb, #7a7c82 9%, #020617);
+  --card-foreground: #ffffff;
+  --popover: color-mix(in srgb, #7a7c82 14%, #020617);
+  --popover-foreground: #ffffff;
+  --primary: #3b82f6;
   --primary-foreground: #ffffff;
-  --secondary: #f5f5f7;
-  --secondary-foreground: #1d1d1f;
-  --muted: #f5f5f7;
-  --muted-foreground: #707070;
-  --accent: #f5f5f7;
-  --accent-foreground: #1d1d1f;
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: #e6e6e8;
-  --input: #86868b;
-  --ring: #0071e3;
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.8rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1d1d1f;
-  --sidebar-primary: #0071e3;
+  --secondary: color-mix(in srgb, #7a7c82 18%, #020617);
+  --secondary-foreground: #ffffff;
+  --muted: color-mix(in srgb, #7a7c82 16%, #020617);
+  --muted-foreground: #a1a1aa;
+  --accent: color-mix(in srgb, #7a7c82 16%, #020617);
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: color-mix(in srgb, #7a7c82 32%, transparent);
+  --input: color-mix(in srgb, #7a7c82 55%, transparent);
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #eab393;
+  --chart-3: #a1a1aa;
+  --chart-4: #60a5fa;
+  --chart-5: #7a7c82;
+  --radius: 0.5rem;
+  --sidebar: #020617;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #3b82f6;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f5f5f7;
-  --sidebar-accent-foreground: #1d1d1f;
-  --sidebar-border: #e6e6e8;
-  --sidebar-ring: #0071e3;
+  --sidebar-accent: color-mix(in srgb, #7a7c82 16%, #020617);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: color-mix(in srgb, #7a7c82 32%, transparent);
+  --sidebar-ring: #3b82f6;
 }
 /*
   ---break---

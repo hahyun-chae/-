@@ -114,7 +114,7 @@ export function MenuEditor({
   return (
     <div className="space-y-4">
       {isNew && (
-        <section className="rounded-3xl bg-white p-5 sm:p-7">
+        <section className="card p-5 sm:p-7">
           <p className="text-sm font-semibold text-ink">템플릿으로 빠르게 시작하기</p>
           <div className="mt-2.5 flex flex-wrap gap-1.5">
             {MENU_TEMPLATES.map((t) => (
@@ -158,7 +158,7 @@ export function MenuEditor({
       </Section>
 
       <Section title="핵심 재료" desc="메뉴의 정체성을 결정해서 빼거나 바꾸기 어려운 재료예요.">
-        <Chips ids={idsByRole("core")} nameOf={nameOf} onRemove={removeIngredient} tone="bg-slate-800 text-white" />
+        <Chips ids={idsByRole("core")} nameOf={nameOf} onRemove={removeIngredient} tone="bg-ink text-canvas" />
         <IngredientPicker onPick={(id) => addIngredient(id, "core")} exclude={usedIds} custom={custom} placeholder="핵심 재료 추가" />
       </Section>
 

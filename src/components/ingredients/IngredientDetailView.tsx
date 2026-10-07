@@ -14,7 +14,7 @@ import { EmptyState, LoadingBlock, SectionTitle, SourceNote } from "../ui/common
 import { toggleWatch } from "./IngredientsView";
 import { PriceChart } from "./PriceChart";
 
-const CHART_COLOR = { surge: "#dc2626", up: "#ea580c", flat: "#64748b", down: "#2563eb", plunge: "#1e40af" } as const;
+const CHART_COLOR = { surge: "#f87171", up: "#fb923c", flat: "#a1a1aa", down: "#60a5fa", plunge: "#3b82f6" } as const;
 
 export function IngredientDetailView({ id }: { id: string }) {
   const app = useAppState();
