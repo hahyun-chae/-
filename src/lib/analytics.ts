@@ -29,6 +29,7 @@ export interface AnalyticsEvents {
   "Watchlist Item Removed": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
   "Custom Ingredient Added": { ingredient_name: string; source: "ingredients_list" | "onboarding" | "menu_editor" };
   "Category Tab Selected": { category: string };
+  "Ingredient Size Selected": { ingredient_id: string; unit: string; source: "price_row" | "ingredient_detail" };
   "Recommendation Responded": {
     ingredient_id: string;
     ingredient_name: string;
