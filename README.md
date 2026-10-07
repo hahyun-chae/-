@@ -11,6 +11,12 @@ cp .env.example .env.local   # KAMIS 키가 없으면 비워 둬도 데모 시�
 npm run dev                  # http://localhost:3000
 ```
 
+KAMIS 품목 카탈로그(부류 › 품목 › 품종)는 `src/lib/kamis-catalog.json`에 저장되어 있다. KAMIS가 품목을 추가하거나 바꾸면 다시 받는다.
+
+```bash
+npm run sync:kamis           # 최근 1년을 훑어 계절 품종까지 모은다 (.env.local의 KAMIS 키 필요, 1~2분)
+```
+
 처음 접속하면 온보딩(상호명 → 관심 재료 → 대표 메뉴)으로 이동하고, 이후 앱의 첫 화면은 재료 시세 탭(`/ingredients`)이다.
 
 ## 폴더 구조
@@ -35,7 +41,8 @@ src/
 │   └── ui/                     # 배지, 공통 블록, 색상 토큰(tone.ts)
 ├── lib/
 │   ├── types.ts                # 도메인 타입
-│   ├── catalog.ts              # 재료 마스터 (KAMIS 품목 매핑)
+│   ├── catalog.ts              # 재료 마스터: 대표 재료 + KAMIS 전체 품종
+│   ├── kamis-catalog.json      # KAMIS 부류·품목·품종 코드표 (npm run sync:kamis로 생성)
 │   ├── templates.ts            # 메뉴 템플릿, 지역 코드
 │   ├── status.ts               # 가격 상태 분류 (급등/상승/보합/하락/급락)
 │   ├── recommend.ts            # 추천 행동 규칙 + 대체 재료 추천 + 추천 이유 문장
@@ -57,5 +64,6 @@ src/
 ## MVP 한계와 다음 단계
 
 - 가게 데이터는 브라우저 localStorage에 저장된다. 로그인·DB를 붙일 때 `store/app-store.ts`의 저장 부분만 바꾸면 된다.
-- KAMIS 응답 필드(dpr1~dpr7), 품목명, 지역 코드는 실제 키로 연동하면서 확인이 필요하다 (`lib/prices/kamis.ts`, `lib/catalog.ts`).
-- 취나물·비름나물 등 KAMIS 미조사 품목은 실제 연동 시 "시세 없음"으로 표시된다. 데모 시세에서는 값이 있다.
+- 시세는 KAMIS item_code / kind_code로 맞춘다. 계절 품종(배추 봄·가을·월동, 사과 후지 등)은 철이 아닐 때 "시세 없음"으로 표시된다.
+- 취나물·비름나물·두부 등 KAMIS 미조사 품목은 "시세 없음"으로 표시된다. 데모 시세에서는 값이 있다.
+- 지역 코드는 실제 키로 연동하면서 확인이 필요하다 (`lib/templates.ts`).

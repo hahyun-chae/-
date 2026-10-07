@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { track } from "@/lib/analytics";
-import { CATEGORY_LABEL, INGREDIENTS, ingredientName } from "@/lib/catalog";
+import { CATEGORY_LABEL, FEATURED_INGREDIENTS, ingredientName } from "@/lib/catalog";
 import { MENU_TEMPLATES } from "@/lib/templates";
 import type { IngredientCategory } from "@/lib/types";
 import { actions, makeNameOf, useAppState } from "@/store/app-store";
@@ -35,11 +35,11 @@ export function OnboardingView() {
   const nameOf = makeNameOf(custom);
   const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
-  // 직접 추가한 재료는 '기타'에 함께 보여준다
+  // 선택지는 대표 재료만 보여주고 나머지 KAMIS 품종은 검색으로 찾는다. 직접 추가한 재료는 '기타'에 함께 보여준다
   const groups = CATEGORY_ORDER.map((c) => ({
     category: c,
     ids: [
-      ...INGREDIENTS.filter((i) => i.category === c).map((i) => i.id),
+      ...FEATURED_INGREDIENTS.filter((i) => i.category === c).map((i) => i.id),
       ...(c === "etc" ? custom.filter((i) => watch.includes(i.id)).map((i) => i.id) : []),
     ],
   })).filter((g) => g.ids.length > 0);

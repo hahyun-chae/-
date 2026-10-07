@@ -9,6 +9,8 @@ export type IngredientCategory =
   | "fruit"
   | "meat"
   | "seafood"
+  | "seasoning"
+  | "nuts"
   | "etc";
 
 export interface Ingredient {
@@ -17,8 +19,12 @@ export interface Ingredient {
   aliases: string[];
   category: IngredientCategory;
   unit: string;
-  /** KAMIS 응답의 item_name / kind_name과 매칭할 때 쓰는 값. 없으면 시세 미연동 품목. */
-  kamis?: { categoryCode: string; itemName: string; kindName?: string };
+  /**
+   * KAMIS 분류: 부류(대분류) › 품목(중분류) › 품종(소분류). 응답의 item_code / kind_code로 시세를 맞춘다.
+   * kindCode가 없으면 품목 대표 시세(그날 조사된 품종 중 첫 번째, 예: 배추는 철마다 봄·고랭지·가을·월동).
+   * 없으면 시세 미연동 품목.
+   */
+  kamis?: { categoryCode: string; itemCode: string; itemName: string; kindCode?: string; kindName?: string };
 }
 
 /** 한 품목의 특정 날짜 기준 시세와 비교 시점 가격 (KAMIS dailyPriceByCategoryList 구조를 따름) */

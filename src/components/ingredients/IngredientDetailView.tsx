@@ -4,7 +4,7 @@ import { StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { Toggle } from "@/components/ui/toggle";
-import { CATEGORY_LABEL, getIngredient } from "@/lib/catalog";
+import { CATEGORY_LABEL, getIngredient, kamisPath } from "@/lib/catalog";
 import { formatPct, formatWon, pctChange } from "@/lib/format";
 import { buildDecisions } from "@/lib/recommend";
 import { makeNameOf, useAppState } from "@/store/app-store";
@@ -58,7 +58,8 @@ export function IngredientDetailView({ id }: { id: string }) {
         <div>
           <p className="text-sm text-slate-500">
             {CATEGORY_LABEL[ingredient.category]}
-            {!ingredient.kamis && " · KAMIS 미조사 품목"}
+            {" · "}
+            {kamisPath(ingredient) ?? "KAMIS 미조사 품목"}
           </p>
           <h1 className="mt-0.5 flex items-center gap-2 text-2xl font-semibold text-slate-900">
             {ingredient.name}
