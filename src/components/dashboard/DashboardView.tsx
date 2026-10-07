@@ -25,7 +25,7 @@ export function DashboardView() {
     <>
       <PageHeader
         title={prices.date ? `${formatDateShort(prices.date)} 오늘의 판단` : "오늘의 판단"}
-        description={<SourceNote date={prices.date} source={prices.source} />}
+        description={<SourceNote date={prices.date} source={prices.source} fallback={prices.fallback} />}
         action={
           <Link href="/ingredients" className={buttonVariants({ variant: "outline" })}>
             <PlusIcon data-icon="inline-start" />

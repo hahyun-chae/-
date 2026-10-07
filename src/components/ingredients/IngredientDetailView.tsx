@@ -68,7 +68,7 @@ export function IngredientDetailView({ id }: { id: string }) {
             {d.aboveNormal && <NormalBadge />}
           </h1>
           <div className="mt-1">
-            <SourceNote date={s?.date ?? null} source={prices.source} />
+            <SourceNote date={s?.date ?? null} source={prices.source} fallback={prices.fallback} />
           </div>
         </div>
         <Toggle

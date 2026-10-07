@@ -46,11 +46,16 @@ async function fetchCategory(
     p_cert_id: process.env.KAMIS_CERT_ID ?? "",
     p_returntype: "json",
   });
-  const res = await fetch(`${ENDPOINT}?${params}`, { next: { revalidate: 3600 } });
-  if (!res.ok) throw new Error(`KAMIS ${res.status}`);
+  // KAMIS가 응답하지 않을 때 서버 함수가 시간 초과로 멈추지 않도록 끊는다
+  const res = await fetch(`${ENDPOINT}?${params}`, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(10000) });
+  if (!res.ok) throw new Error(`KAMIS HTTP ${res.status}`);
   const json = await res.json();
   const items = json?.data?.item;
-  return Array.isArray(items) ? items : [];
+  if (Array.isArray(items)) return items;
+  // 데이터가 없으면 data가 ["001"], 인증 정보가 비면 ["900"] 같은 오류 코드 배열로 온다. 001(조사 안 한 날)만 정상으로 본다
+  const code = Array.isArray(json?.data) ? json.data[0] : json?.data?.error_code;
+  if (code && code !== "001" && code !== "000") throw new Error(`KAMIS 오류 코드 ${code}`);
+  return [];
 }
 
 /** 품종을 지정하지 않으면 그날 조사된 첫 품종. 등급은 상품(04)을 우선하고 없으면 첫 등급 */
@@ -78,9 +83,19 @@ export async function getKamisBoard(
 
   for (let back = 0; back <= 6; back++) {
     const date = shiftDate(today, -back);
+    const errors: unknown[] = [];
     const results = await Promise.all(
-      categories.map((c) => fetchCategory(c, priceType, date, region).catch(() => [])),
+      categories.map((c) =>
+        fetchCategory(c, priceType, date, region).catch((e) => {
+          errors.push(e);
+          return [];
+        }),
+      ),
     );
+    // 모든 부류가 실패했으면 '조사 안 한 날'이 아니라 연결 문제다. 더 거슬러 올라가지 않고 원인을 알린다
+    if (errors.length === categories.length) {
+      throw new Error(`KAMIS 연결 실패 (${date}): ${errors.map((e) => (e instanceof Error ? e.message : String(e))).join(", ")}`);
+    }
     const byCategory = new Map(categories.map((c, i) => [c, results[i]]));
     if (results.every((r) => r.length === 0)) continue;
 

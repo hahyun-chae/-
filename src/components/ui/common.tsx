@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { formatDateShort } from "@/lib/format";
+import type { PriceFallback } from "@/lib/types";
 
 export function PageHeader({
   title,
@@ -32,11 +33,16 @@ export function SectionTitle({ children, count, hint }: { children: React.ReactN
   );
 }
 
-export function SourceNote({ date, source }: { date: string | null; source: "KAMIS" | "MOCK" }) {
+const FALLBACK_LABEL: Record<PriceFallback, string> = {
+  no_key: "데모 시세 (KAMIS 키 미설정)",
+  kamis_failed: "데모 시세 (KAMIS 연결 실패)",
+};
+
+export function SourceNote({ date, source, fallback = "no_key" }: { date: string | null; source: "KAMIS" | "MOCK"; fallback?: PriceFallback }) {
   return (
     <span className="font-mono text-xs text-muted-foreground">
       {date ? `기준일 ${formatDateShort(date)}` : "기준일 없음"} ·{" "}
-      {source === "KAMIS" ? "KAMIS 공식 시세" : <span className="font-semibold text-launch-orange">데모 시세 (KAMIS 키 미설정)</span>}
+      {source === "KAMIS" ? "KAMIS 공식 시세" : <span className="font-semibold text-launch-orange">{FALLBACK_LABEL[fallback]}</span>}
     </span>
   );
 }

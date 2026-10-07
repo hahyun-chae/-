@@ -57,6 +57,9 @@ export interface PriceSnapshot {
 
 export type PriceBoard = Record<string, PriceSnapshot>;
 
+/** 데모 시세로 대신 보여주는 이유: KAMIS 키가 없음 / 키는 있지만 KAMIS에서 시세를 받지 못함 */
+export type PriceFallback = "no_key" | "kamis_failed";
+
 export type PriceStatus = "surge" | "up" | "flat" | "down" | "plunge";
 
 export interface Thresholds {
