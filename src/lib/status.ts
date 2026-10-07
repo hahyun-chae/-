@@ -43,6 +43,13 @@ export function compareForDisplay(
   return oa - ob || Math.abs(b.change ?? 0) - Math.abs(a.change ?? 0);
 }
 
+/**
+ * 목록 표시 순서(id → 순위). 기본 용량 시세로 만든 판단을 넘겨, 용량 칩을 눌러도 재료 위치가 바뀌지 않게 한다.
+ */
+export function displayRank(baseDecisions: { ingredientId: string; status: PriceStatus | null; change: number | null }[]): Map<string, number> {
+  return new Map([...baseDecisions].sort(compareForDisplay).map((d, i) => [d.ingredientId, i]));
+}
+
 export const STATUS_META: Record<PriceStatus, { label: string; icon: string }> = {
   surge: { label: "급등", icon: "▲▲" },
   up: { label: "상승", icon: "▲" },

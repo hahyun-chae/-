@@ -9,7 +9,7 @@ import { track } from "@/lib/analytics";
 import { CATEGORY_LABEL, CATEGORY_ORDER, INGREDIENTS } from "@/lib/catalog";
 import { matchesKorean } from "@/lib/hangul";
 import { buildDecisions, type Decision } from "@/lib/recommend";
-import { compareForDisplay } from "@/lib/status";
+import { displayRank } from "@/lib/status";
 import type { IngredientCategory } from "@/lib/types";
 import { actions, makeNameOf, useAppState } from "@/store/app-store";
 import { usePrices } from "@/store/prices-context";
@@ -92,11 +92,14 @@ export function IngredientsView() {
     if (!app) return null;
     const nameOf = makeNameOf(app.customIngredients);
     const all = [...INGREDIENTS, ...app.customIngredients];
-    const decisions = buildDecisions(all.map((i) => i.id), app.menus, prices.board, app.settings.thresholds, nameOf);
+    const ids = all.map((i) => i.id);
+    const decisions = buildDecisions(ids, app.menus, prices.board, app.settings.thresholds, nameOf);
+    // 정렬은 기본 용량 기준: 용량 칩을 눌러도 재료 위치가 그대로다
+    const rank = displayRank(buildDecisions(ids, app.menus, prices.baseBoard, app.settings.thresholds, nameOf));
     const categoryOf = new Map(all.map((i) => [i.id, i.category]));
     const searchable = new Map(all.map((i) => [i.id, [i.name, ...i.aliases, ...(i.kamis ? [i.kamis.itemName] : [])]]));
-    return { nameOf, decisions, categoryOf, searchable };
-  }, [app, prices.board]);
+    return { nameOf, decisions, rank, categoryOf, searchable };
+  }, [app, prices.board, prices.baseBoard]);
 
   if (!app || !view) return <LoadingBlock />;
 
@@ -112,7 +115,7 @@ export function IngredientsView() {
 
   const visible = searched
     .filter((d) => activeTab === "all" || view.categoryOf.get(d.ingredientId) === activeTab)
-    .sort(compareForDisplay);
+    .sort((a, b) => view.rank.get(a.ingredientId)! - view.rank.get(b.ingredientId)!);
   const watchedItems = visible.filter((d) => watched.has(d.ingredientId));
   const otherItems = visible.filter((d) => !watched.has(d.ingredientId));
   const up = watchedItems.filter((d) => d.status === "surge" || d.status === "up").length;

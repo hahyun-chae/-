@@ -71,8 +71,8 @@ export function isKamisConfigured(): boolean {
 }
 
 /**
- * 오늘부터 최대 6일 전까지 거슬러 올라가며 데이터가 있는 가장 최근 조사일의 시세를 가져온다.
- * (주말·공휴일은 조사하지 않음)
+ * 오늘부터 최대 6일 전까지 거슬러 올라가며 가격이 있는 가장 최근 조사일의 시세를 가져온다.
+ * (주말·공휴일은 조사하지 않고, 당일 가격은 조사가 끝나야 채워짐)
  */
 export async function getKamisBoard(
   today: string,
@@ -130,6 +130,8 @@ export async function getKamisBoard(
       if (sizes.length === 0) continue;
       board[ing.id] = sizes.length > 1 ? { ...sizes[0], sizes } : sizes[0];
     }
+    // 조사 전인 날(오늘 아침 등)은 품목 목록만 오고 가격(dpr1)이 비어 있다. 하루 전으로 넘어간다
+    if (Object.keys(board).length === 0) continue;
     return board;
   }
   return {};

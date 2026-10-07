@@ -9,10 +9,13 @@ export function PriceRow({
   decision: d,
   name,
   trailing,
+  showSizes = true,
 }: {
   decision: Decision;
   name: string;
   trailing?: React.ReactNode;
+  /** 용량 칩 표시 여부 */
+  showSizes?: boolean;
 }) {
   return (
     <li className="flex items-center gap-3 px-5 py-4 sm:px-7">
@@ -42,7 +45,7 @@ export function PriceRow({
           </p>
         </Link>
         {/* 링크 안에 버튼을 넣을 수 없어 링크 밖에 둔다 */}
-        {d.snapshot && <SizePicker ingredientId={d.ingredientId} snapshot={d.snapshot} variant="compact" />}
+        {showSizes && d.snapshot && <SizePicker ingredientId={d.ingredientId} snapshot={d.snapshot} variant="compact" />}
       </div>
       <div className="text-right">
         <ChangeText value={d.change} status={d.status} className="text-base" />

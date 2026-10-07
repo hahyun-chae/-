@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { buildDecisions, trackedIngredientIds } from "@/lib/recommend";
+import { displayRank } from "@/lib/status";
 import { makeNameOf, useAppState } from "./app-store";
 import { usePrices } from "./prices-context";
 
@@ -14,6 +15,7 @@ export function useDecisions() {
     const nameOf = makeNameOf(app.customIngredients);
     const ids = trackedIngredientIds(app.watchlist, app.menus);
     const decisions = buildDecisions(ids, app.menus, prices.board, app.settings.thresholds, nameOf);
-    return { app, prices, nameOf, decisions };
+    const rank = displayRank(buildDecisions(ids, app.menus, prices.baseBoard, app.settings.thresholds, nameOf));
+    return { app, prices, nameOf, decisions, rank };
   }, [app, prices]);
 }
