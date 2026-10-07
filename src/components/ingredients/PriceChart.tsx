@@ -30,7 +30,7 @@ export function PriceChart({ snapshot, color }: { snapshot: PriceSnapshot; color
       <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full min-w-[320px]" role="img" aria-label="최근 1개월 가격 추이">
         {snapshot.normalYear && (
           <g>
-            <line x1={pad.l} x2={W - pad.r} y1={y(snapshot.normalYear)} y2={y(snapshot.normalYear)} stroke="#94a3b8" strokeDasharray="5 5" />
+            <line x1={pad.l} x2={W - pad.r} y1={y(snapshot.normalYear)} y2={y(snapshot.normalYear)} stroke="#71717a" strokeDasharray="5 5" />
             <text x={W - pad.r} y={y(snapshot.normalYear) - 6} textAnchor="end" className="fill-slate-500 text-[12px]">
               평년 {formatWon(snapshot.normalYear)}
             </text>
@@ -41,7 +41,7 @@ export function PriceChart({ snapshot, color }: { snapshot: PriceSnapshot; color
           const last = i === points.length - 1;
           return (
             <g key={p.label}>
-              <circle cx={x(i)} cy={y(p.value)} r={last ? 6 : 4} fill={last ? color : "#fff"} stroke={color} strokeWidth={2.5} />
+              <circle cx={x(i)} cy={y(p.value)} r={last ? 6 : 4} fill={last ? color : "#020617"} stroke={color} strokeWidth={2.5} />
               <text
                 x={x(i)}
                 y={y(p.value) - 12}

@@ -70,7 +70,7 @@ export function DecisionCard({
           <p className="mb-2 text-sm font-semibold text-violet-900">추천 대체 재료 <span className="font-normal text-violet-700">· 사장님이 허용한 재료 중에서</span></p>
           <ul className="grid gap-2 sm:grid-cols-3">
             {d.candidates.map((c, i) => (
-              <li key={c.ingredientId} className="flex items-center justify-between rounded-xl bg-white px-4 py-3">
+              <li key={c.ingredientId} className="flex items-center justify-between rounded-xl bg-canvas/60 px-4 py-3">
                 <div>
                   <p className="font-semibold text-slate-900">
                     <span className="mr-1 text-xs text-violet-600">{i + 1}</span>

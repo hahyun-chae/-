@@ -62,7 +62,7 @@ export function IngredientPicker({
         }}
       />
       {query.trim() && (
-        <ul id={listId} className="absolute inset-x-0 top-full z-30 mt-2 max-h-80 overflow-auto rounded-2xl bg-white py-2 shadow-[0_0_0_1px_var(--color-control),0_12px_32px_rgba(0,0,0,0.08)]">
+        <ul id={listId} className="absolute inset-x-0 top-full z-30 mt-2 max-h-80 overflow-auto rounded-2xl border border-hairline bg-popover py-2 shadow-[0_16px_40px_-12px_rgb(0_0_0/0.8)]">
           {results.map((i) => (
             <li key={i.id}>
               <button

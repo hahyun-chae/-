@@ -40,7 +40,7 @@ export function MenusView() {
             const risky = ids.filter((id) => ["surge", "up"].includes(byId.get(id)?.status ?? ""));
             return (
               <li key={m.id}>
-                <Link href={`/menus/${m.id}`} className="card block p-4 transition-shadow hover:shadow-md sm:p-5">
+                <Link href={`/menus/${m.id}`} className="card block p-4 transition duration-300 hover:-translate-y-0.5 hover:border-brand-200 sm:p-5">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <h2 className="text-lg font-semibold text-slate-900">{m.name}</h2>
