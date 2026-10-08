@@ -1,5 +1,6 @@
 "use client";
 
+import * as amplitude from "@amplitude/analytics-browser";
 import mixpanel from "mixpanel-browser";
 
 // Mixpanel 연동. 토큰은 .env.local의 NEXT_PUBLIC_MIXPANEL_TOKEN으로 관리한다.
@@ -55,9 +56,16 @@ export interface AnalyticsEvents {
   "Data Reset": Record<string, never>;
 }
 
+// Amplitude는 AmplitudeProvider에서 초기화한다 (페이지뷰·클릭은 autocapture로 자동 수집)
+const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
+
+/**
+ * 직접 정의한 이벤트를 Mixpanel과 Amplitude 양쪽에 같은 이름·속성으로 보낸다.
+ * (Amplitude는 초기화 전에 호출돼도 이벤트를 모아 두었다가 초기화 후 보낸다)
+ */
 export function track<E extends keyof AnalyticsEvents>(event: E, props: AnalyticsEvents[E]) {
-  if (!initialized) return;
-  mixpanel.track(event, props);
+  if (initialized) mixpanel.track(event, props);
+  if (AMPLITUDE_API_KEY) amplitude.track(event, props);
 }
 
 let lastPageView: string | null = null;
