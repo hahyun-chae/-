@@ -10,6 +10,7 @@
     "sync:kamis": "node --env-file=.env.local scripts/sync-kamis-catalog.mjs"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.47.3",
     "@base-ui/react": "^1.8.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",

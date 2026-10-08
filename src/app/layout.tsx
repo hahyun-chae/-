@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Noto_Sans_KR } from "next/font/google";
+import { AmplitudeProvider } from "@/components/layout/AmplitudeProvider";
 import { AnalyticsProvider } from "@/components/layout/AnalyticsProvider";
 import { AppShell } from "@/components/layout/AppShell";
 import { getPriceBoard } from "@/lib/prices";
@@ -42,6 +43,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="ko" className={cn("h-full antialiased font-sans", inter.variable, jetbrainsMono.variable, notoSansKr.variable)}>
       <body className="min-h-full">
         <AnalyticsProvider />
+        <AmplitudeProvider />
         <PricesProvider initial={prices}>
           <AppShell>{children}</AppShell>
         </PricesProvider>
