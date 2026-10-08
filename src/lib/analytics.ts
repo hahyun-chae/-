@@ -42,6 +42,8 @@ export interface AnalyticsEvents {
     price_change_pct?: number | null;
     candidate_ids?: string[];
   };
+  /** 장보기 목록에서 오른 재료를 대체 재료로 바꾸기 */
+  "Shopping Item Replaced": { from_ingredient_id: string; to_ingredient_id: string; price_change_pct: number | null };
   "Shopping Item Removed": { ingredient_id: string | null; ingredient_name: string; from_recommendation: boolean };
   "Shopping Item Checked": { ingredient_id: string | null; ingredient_name: string; checked: boolean; from_recommendation: boolean; replaced: boolean };
   /** 산 것 지우기(clear_checked) / 체크 모두 풀기(uncheck_all) */

@@ -147,6 +147,16 @@ export const actions = {
   removeShoppingItem(id: string) {
     setState((s) => ({ ...s, shoppingList: s.shoppingList.filter((i) => i.id !== id) }));
   },
+  /** 목록 항목을 대체 재료로 바꾼다. 대체 재료가 이미 목록에 있으면 원래 항목을 지우고 그 항목에 메모를 붙인다 */
+  replaceShoppingItem(id: string, to: { ingredientId: string; name: string; note: string; replacedFrom: string }) {
+    setState((s) => {
+      const existing = s.shoppingList.find((i) => i.ingredientId === to.ingredientId && i.id !== id);
+      const shoppingList = existing
+        ? s.shoppingList.filter((i) => i.id !== id).map((i) => (i.id === existing.id ? { ...i, note: to.note, replacedFrom: to.replacedFrom } : i))
+        : s.shoppingList.map((i) => (i.id === id ? { ...i, ...to } : i));
+      return { ...s, shoppingList };
+    });
+  },
   /** 산 것(체크한 항목) 지우기 */
   clearCheckedShoppingItems() {
     setState((s) => ({ ...s, shoppingList: s.shoppingList.filter((i) => !i.checked) }));
