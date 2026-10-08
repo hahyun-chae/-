@@ -2,9 +2,13 @@ import Link from "next/link";
 import { formatUnitPrice, formatWon } from "@/lib/format";
 import type { Decision } from "@/lib/recommend";
 import { ChangeText, NormalBadge, StatusBadge } from "../ui/Badges";
+import { AddToListButton } from "../shopping/AddToListButton";
 import { SizePicker } from "./SizePicker";
 
-/** 재료 한 줄 요약: 이름 · 상태 · 오늘 가격 · 1주 전 대비. 용량이 여럿이면 줄 안에서 바로 바꿀 수 있다 */
+/**
+ * 재료 한 줄 요약: 이름 · 상태 · 오늘 가격 · 1주 전 대비 · 장보기 담기.
+ * 용량이 여럿이면 줄 안에서 바로 바꿀 수 있다
+ */
 export function PriceRow({
   decision: d,
   name,
@@ -51,6 +55,7 @@ export function PriceRow({
         <ChangeText value={d.change} status={d.status} className="text-base" />
         <p className="text-[11px] text-slate-400">1주 전 대비</p>
       </div>
+      <AddToListButton ingredientId={d.ingredientId} name={name} source="price_row" />
       {trailing}
     </li>
   );

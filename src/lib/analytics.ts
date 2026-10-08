@@ -34,10 +34,11 @@ export interface AnalyticsEvents {
   "Shopping Item Added": {
     ingredient_id: string | null;
     ingredient_name: string;
-    source: "recommendation" | "manual";
+    /** recommendation: 먼저 확인할 재료 카드, manual: 장보기 화면 검색, price_row: 재료 한 줄, ingredient_detail: 재료 상세 */
+    source: "recommendation" | "manual" | "price_row" | "ingredient_detail";
     list_day: string;
     recommendation_action?: string;
-    choice?: "substitute" | "reduce" | "needed_only" | "as_is";
+    choice?: "substitute" | "as_is";
     replaced_from?: string;
     price_change_pct?: number | null;
     candidate_ids?: string[];

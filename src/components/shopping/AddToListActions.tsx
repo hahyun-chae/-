@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
@@ -9,7 +9,7 @@ import type { Decision } from "@/lib/recommend";
 import { defaultListDate, listDayLabel } from "@/lib/shopping";
 import { actions, useAppState } from "@/store/app-store";
 
-type Choice = "substitute" | "reduce" | "needed_only" | "as_is";
+type Choice = "substitute" | "as_is";
 
 interface Option {
   key: string;
@@ -21,27 +21,21 @@ interface Option {
   primary?: boolean;
 }
 
-/** 추천 행동마다 사장님이 고를 수 있는 담기 방법 */
+/**
+ * 담기 방법. 대체 검토만 '어떤 재료를 살지'를 고르게 하고, 나머지는 '장보기에 담기' 하나다.
+ * (얼마나 살지는 사장님이 장보기 목록에서 수량으로 정한다)
+ */
 function optionsFor(d: Decision, nameOf: (id: string) => string): Option[] {
-  const asIs: Option = { key: "as_is", label: "그대로 담기", choice: "as_is", ingredientId: d.ingredientId };
-  switch (d.action) {
-    case "substitute":
-      if (d.candidates.length === 0) {
-        return [{ key: "needed", label: "필요량만 담기", choice: "needed_only", ingredientId: d.ingredientId, note: "필요한 만큼만", primary: true }, asIs];
-      }
-      return [
-        ...d.candidates.slice(0, 2).map(
-          (c, i): Option => ({ key: `sub-${c.ingredientId}`, label: `${josaRo(nameOf(c.ingredientId))} 바꿔 담기`, choice: "substitute", ingredientId: c.ingredientId, note: `${nameOf(d.ingredientId)} 대신`, primary: i === 0 }),
-        ),
-        asIs,
-      ];
-    case "adjust":
-      return [{ key: "reduce", label: "양 줄여 담기", choice: "reduce", ingredientId: d.ingredientId, note: "평소보다 적게", primary: true }, asIs];
-    case "caution":
-      return [{ key: "needed", label: "필요량만 담기", choice: "needed_only", ingredientId: d.ingredientId, note: "필요한 만큼만", primary: true }, asIs];
-    default:
-      return [asIs];
+  const name = nameOf(d.ingredientId);
+  if (d.action === "substitute" && d.candidates.length > 0) {
+    return [
+      ...d.candidates.slice(0, 2).map(
+        (c, i): Option => ({ key: `sub-${c.ingredientId}`, label: `${josaRo(nameOf(c.ingredientId))} 바꿔 담기`, choice: "substitute", ingredientId: c.ingredientId, note: `${name} 대신`, primary: i === 0 }),
+      ),
+      { key: "as_is", label: `${name} 담기`, choice: "as_is", ingredientId: d.ingredientId },
+    ];
   }
+  return [{ key: "as_is", label: "장보기에 담기", choice: "as_is", ingredientId: d.ingredientId, primary: true }];
 }
 
 /**
@@ -114,6 +108,7 @@ export function AddToListActions({ decision: d, nameOf }: { decision: Decision; 
       <div className="flex flex-wrap gap-2" role="group" aria-label={`${nameOf(d.ingredientId)} 장보기 목록에 담기`}>
         {optionsFor(d, nameOf).map((o) => (
           <Button key={o.key} variant={o.primary ? "default" : "outline"} className="flex-1 sm:flex-none" onClick={() => add(o)}>
+            {o.choice === "as_is" && o.primary && <ShoppingCartIcon data-icon="inline-start" />}
             {o.label}
           </Button>
         ))}
