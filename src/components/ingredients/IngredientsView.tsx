@@ -1,11 +1,12 @@
 "use client";
 
 import { PlusIcon, StarIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { track } from "@/lib/analytics";
+import { useScrollTracking, useSearchTracking } from "@/lib/analytics-hooks";
 import { CATEGORY_LABEL, CATEGORY_ORDER, INGREDIENTS } from "@/lib/catalog";
 import { matchesKorean } from "@/lib/hangul";
 import { buildDecisions, type Decision } from "@/lib/recommend";
@@ -87,6 +88,9 @@ export function IngredientsView() {
   const prices = usePrices();
   const [query, setQuery] = useState("");
   const [tab, setTab] = useState<Tab>("all");
+  // 스크롤 요약에 붙일 '떠날 때의 화면 상태'
+  const scrollContext = useRef({ item_count: 0, tab: "전체", searching: false });
+  useScrollTracking(() => scrollContext.current);
 
   const view = useMemo(() => {
     if (!app) return null;
@@ -101,10 +105,20 @@ export function IngredientsView() {
     return { nameOf, decisions, rank, categoryOf, searchable };
   }, [app, prices.board, prices.baseBoard]);
 
+  // 검색 결과 수 (탭과 상관없이 검색어에 맞는 재료 전체)
+  const q = query.trim();
+  const searchCount = view && q ? view.decisions.filter((d) => view.searchable.get(d.ingredientId)!.some((n) => matchesKorean(q, n))).length : 0;
+  useSearchTracking(query, searchCount, "ingredients_list");
+  const tabCount = view
+    ? view.decisions.filter((d) => (tab === "all" || view.categoryOf.get(d.ingredientId) === tab) && (!q || view.searchable.get(d.ingredientId)!.some((n) => matchesKorean(q, n)))).length
+    : 0;
+  useEffect(() => {
+    scrollContext.current = { item_count: tabCount, tab: tab === "all" ? "전체" : CATEGORY_LABEL[tab], searching: Boolean(q) };
+  });
+
   if (!app || !view) return <LoadingBlock />;
 
   const watched = new Set(app.watchlist);
-  const q = query.trim();
   const searched = view.decisions.filter((d) => !q || view.searchable.get(d.ingredientId)!.some((n) => matchesKorean(q, n)));
   const countBy = (c: IngredientCategory) => searched.filter((d) => view.categoryOf.get(d.ingredientId) === c).length;
   const tabs = [

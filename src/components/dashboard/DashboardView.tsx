@@ -4,7 +4,8 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { formatDateShort } from "@/lib/format";
-import { useDecisions } from "@/store/use-decisions";
+import { useTrackOnce } from "@/lib/analytics-hooks";
+import { type DecisionsData, useDecisions } from "@/store/use-decisions";
 import { PriceRow } from "../ingredients/PriceRow";
 import { EmptyState, LoadingBlock, PageHeader, SectionTitle, SourceNote } from "../ui/common";
 import { DecisionCard } from "./DecisionCard";
@@ -14,10 +15,32 @@ export function DashboardView() {
   const data = useDecisions();
   // 온보딩 확인은 AppShell에서 공통으로 처리
   if (!data) return <LoadingBlock />;
+  return <DashboardContent data={data} />;
+}
 
+function DashboardContent({ data }: { data: DecisionsData }) {
   const { app, prices, decisions, nameOf, rank } = data;
   const attention = decisions.filter((d) => ["substitute", "adjust", "caution"].includes(d.action));
   const opportunities = decisions.filter((d) => d.action === "opportunity");
+  const count = (action: string) => decisions.filter((d) => d.action === action).length;
+
+  // 시세를 다 받은 뒤 판단을 본 순간 한 번 (추천 적용률의 분모)
+  useTrackOnce(
+    "Today Decisions Viewed",
+    prices.loading
+      ? null
+      : {
+          data_date: prices.date,
+          data_source: prices.source,
+          fallback: prices.fallback ?? null,
+          tracked_count: decisions.length,
+          substitute_count: count("substitute"),
+          adjust_count: count("adjust"),
+          caution_count: count("caution"),
+          opportunity_count: count("opportunity"),
+        },
+    prices.loading ? "loading" : `${prices.date}:${prices.source}`,
+  );
 
   return (
     <>

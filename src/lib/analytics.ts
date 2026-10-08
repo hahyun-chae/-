@@ -49,6 +49,37 @@ export interface AnalyticsEvents {
   "Shopping Item Checked": { ingredient_id: string | null; ingredient_name: string; checked: boolean; from_recommendation: boolean; replaced: boolean };
   /** 산 것 지우기(clear_checked) / 체크 모두 풀기(uncheck_all) */
   "Shopping List Reset": { mode: "clear_checked" | "uncheck_all"; item_count: number };
+  /** 오늘 판단 화면에서 판단을 본 순간. 추천 적용률의 분모 */
+  "Today Decisions Viewed": {
+    data_date: string | null;
+    data_source: "KAMIS" | "MOCK";
+    fallback: string | null;
+    tracked_count: number;
+    substitute_count: number;
+    adjust_count: number;
+    caution_count: number;
+    opportunity_count: number;
+  };
+  /** 장보기 화면을 연 순간의 목록 상태. 작성(밤)·사용(아침) 시간대는 이벤트 시각으로 본다 */
+  "Shopping List Viewed": {
+    item_count: number;
+    checked_count: number;
+    cheaper_count: number;
+    rising_count: number;
+    replaceable_count: number;
+  };
+  /** 검색을 마친 순간 (입력을 멈췄거나 결과를 골랐을 때). 결과 0개 = 없는 재료 */
+  "Ingredient Searched": {
+    query: string;
+    result_count: number;
+    no_result: boolean;
+    picked: boolean;
+    location: "ingredients_list" | "shopping" | "menu_editor" | "onboarding";
+  };
+  /** 장보기 항목의 수량을 적거나 바꾼 순간 (입력칸을 벗어날 때 한 번) */
+  "Shopping Item Quantity Set": { ingredient_id: string | null; ingredient_name: string; qty: string; from_recommendation: boolean };
+  /** 재료 시세 화면을 떠날 때 그 방문 동안의 스크롤 요약 */
+  "Ingredients List Scrolled": { scroll_count: number; max_depth_pct: number; item_count: number; tab: string; searching: boolean };
   "Menu Template Applied": { template_id: string; template_name: string };
   "Menu Saved": { is_new: boolean; core_count: number; adjustable_count: number; substitute_group_count: number; has_price: boolean };
   "Menu Deleted": { menu_id: string };
