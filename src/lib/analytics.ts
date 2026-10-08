@@ -99,6 +99,29 @@ export function track<E extends keyof AnalyticsEvents>(event: E, props: Analytic
   if (AMPLITUDE_API_KEY) amplitude.track(event, props);
 }
 
+let identifiedStore: string | null = null;
+
+/**
+ * 로그인이 없는 MVP에서 사장님을 구분하는 이름표. 온보딩·설정에서 입력한 가게 이름을 사용자 ID로 쓴다.
+ * 같은 가게 이름이면 기기가 달라도 한 사람으로 묶인다 (테스트 사용자가 적을 때만 쓰는 방식).
+ * Amplitude 사용자 ID는 5자 이상이어야 해서 "store:" 접두어를 붙인다.
+ */
+export function identifyStore(storeName: string) {
+  const name = storeName.trim();
+  if (!name || identifiedStore === name) return;
+  identifiedStore = name;
+  const userId = `store:${name}`;
+  if (initialized) {
+    mixpanel.identify(userId);
+    mixpanel.register({ store_name: name });
+    mixpanel.people.set({ $name: name, store_name: name });
+  }
+  if (AMPLITUDE_API_KEY) {
+    amplitude.setUserId(userId);
+    amplitude.identify(new amplitude.Identify().set("store_name", name));
+  }
+}
+
 let lastPageView: string | null = null;
 
 /** 화면 이름을 함께 보내 Mixpanel에서 화면별로 묶어 보기 쉽게 한다 */
