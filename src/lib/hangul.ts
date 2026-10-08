@@ -35,3 +35,13 @@ function hasFinalConsonant(word: string): boolean {
 export function josa(word: string, withFinal: string, withoutFinal: string): string {
   return word + (hasFinalConsonant(word) ? withFinal : withoutFinal);
 }
+
+/** "로/으로" 붙이기. 받침이 없거나 ㄹ 받침이면 "로": 근대로, 취나물로, 시금치로, 양배추로, 쌀로 */
+export function josaRo(word: string): string {
+  // "쌀(햅쌀)"처럼 괄호로 끝나면 괄호 안 마지막 글자로 판단한다
+  const last = word.replace(/[^가-힣]+$/, "");
+  const code = last.charCodeAt(last.length - 1);
+  if (!last || code < HANGUL_START || code > HANGUL_END) return `${word}로`;
+  const final = (code - HANGUL_START) % 28;
+  return `${word}${final === 0 || final === 8 ? "로" : "으로"}`;
+}

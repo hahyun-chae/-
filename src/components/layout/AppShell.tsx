@@ -9,6 +9,7 @@ import { LoadingBlock } from "../ui/common";
 const NAV = [
   { href: "/ingredients", label: "재료 시세", icon: "M4 19V9m6 10V5m6 14v-7m4 7H2" },
   { href: "/today", label: "오늘 판단", icon: "M3 12l9-8 9 8M5 10v10h5v-6h4v6h5V10" },
+  { href: "/shopping", label: "장보기", icon: "M3 4h2l2.4 11.2a1 1 0 001 .8h9.2a1 1 0 001-.8L21 8H6.2M9 20.5a1 1 0 100-2 1 1 0 000 2zm9 0a1 1 0 100-2 1 1 0 000 2z" },
   { href: "/menus", label: "메뉴", icon: "M4 6h16M4 12h16M4 18h10" },
   { href: "/settings", label: "설정", icon: "M12 15a3 3 0 100-6 3 3 0 000 6zm7.4-3a7.4 7.4 0 00-.1-1.2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 00-2-1.2L14.5 2h-5l-.4 2.6a7.6 7.6 0 00-2 1.2l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 000 2.4l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 002 1.2l.4 2.6h5l.4-2.6a7.6 7.6 0 002-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z" },
 ];
@@ -90,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <main className="stagger mx-auto w-full max-w-5xl px-4 pt-5 pb-28 sm:px-6 lg:px-12 lg:pt-14 lg:pb-20">{ready ? children : <LoadingBlock />}</main>
 
       {/* 모바일 하단 탭 */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t border-hairline bg-frost/90 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t border-hairline bg-frost/90 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] lg:hidden">
         {NAV.map((n) => (
           <Link
             key={n.href}

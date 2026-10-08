@@ -29,12 +29,14 @@ src/
 │   ├── today/                  # 대시보드: 오늘의 판단
 │   ├── onboarding/             # 3단계 온보딩
 │   ├── ingredients/            # 재료 시세(첫 화면): 전체 재료 + 카테고리 탭, ★ 관심 재료 상단 고정 / [id] 상세
+│   ├── shopping/               # 장보기 목록: 판단 반영, 수량 메모, 체크, 산 것 지우기
 │   ├── menus/                  # 메뉴 목록, new 등록, [id] 편집
 │   ├── settings/               # 가게 정보, 시세 기준, 판단 기준값
 │   └── api/prices/route.ts     # 시세 조회 API (도매/지역 변경 시 사용)
 ├── components/
 │   ├── layout/AppShell.tsx     # 사이드바(데스크톱) / 하단 탭(모바일)
 │   ├── dashboard/              # 판단 요약, 판단 카드
+│   ├── shopping/               # 장보기 목록, 판단 카드의 담기 버튼
 │   ├── ingredients/            # 재료 검색, 시세 행, 차트, 상세
 │   ├── menus/                  # 메뉴 목록, 메뉴 편집기
 │   ├── onboarding/ settings/
@@ -46,6 +48,7 @@ src/
 │   ├── templates.ts            # 메뉴 템플릿, 지역 코드
 │   ├── status.ts               # 가격 상태 분류 (급등/상승/보합/하락/급락)
 │   ├── recommend.ts            # 추천 행동 규칙 + 대체 재료 추천 + 추천 이유 문장
+│   ├── shopping.ts             # 장보기 목록 도우미
 │   ├── hangul.ts               # 초성 검색, 조사 처리
 │   └── prices/                 # 시세 소스: KAMIS 클라이언트, 데모 데이터
 └── store/

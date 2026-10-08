@@ -18,7 +18,6 @@ export function DashboardView() {
   const { app, prices, decisions, nameOf, rank } = data;
   const attention = decisions.filter((d) => ["substitute", "adjust", "caution"].includes(d.action));
   const opportunities = decisions.filter((d) => d.action === "opportunity");
-  const responseKey = (id: string) => `${prices.date}:${id}`;
 
   return (
     <>
@@ -55,13 +54,7 @@ export function DashboardView() {
             ) : (
               <div className="space-y-4">
                 {attention.map((d) => (
-                  <DecisionCard
-                    key={d.ingredientId}
-                    decision={d}
-                    nameOf={nameOf}
-                    responseKey={responseKey(d.ingredientId)}
-                    response={app.responses[responseKey(d.ingredientId)]}
-                  />
+                  <DecisionCard key={d.ingredientId} decision={d} nameOf={nameOf} />
                 ))}
               </div>
             )}
@@ -81,7 +74,7 @@ export function DashboardView() {
               <ul className="card divide-y divide-slate-100 overflow-hidden">
                 {/* 판단 결과로 묶인 칸이라 용량을 바꾸면 재료가 칸에서 빠질 수 있어, 용량 칩은 아래 전체 목록에서만 보여준다 */}
                 {opportunities.map((d) => (
-                  <PriceRow key={d.ingredientId} decision={d} name={nameOf(d.ingredientId)} showSizes={false} />
+                  <PriceRow key={d.ingredientId} decision={d} name={nameOf(d.ingredientId)} showSizes={false} addButton="button" />
                 ))}
               </ul>
             </section>

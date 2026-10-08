@@ -27,17 +27,27 @@ export interface AnalyticsEvents {
   "Onboarding Completed": { watch_count: number; custom_ingredient_count: number; menu_count: number; menus_skipped: boolean };
   "Watchlist Item Added": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
   "Watchlist Item Removed": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
-  "Custom Ingredient Added": { ingredient_name: string; source: "ingredients_list" | "onboarding" | "menu_editor" };
+  "Custom Ingredient Added": { ingredient_name: string; source: "ingredients_list" | "onboarding" | "menu_editor" | "shopping" };
   "Category Tab Selected": { category: string };
   "Ingredient Size Selected": { ingredient_id: string; unit: string; source: "price_row" | "ingredient_detail" };
-  "Recommendation Responded": {
-    ingredient_id: string;
+  /** 장보기 목록에 담기. 판단 카드에서 담았으면 어떤 추천을 어떻게 따랐는지(choice) 남긴다 */
+  "Shopping Item Added": {
+    ingredient_id: string | null;
     ingredient_name: string;
-    action: string;
-    response: "applied" | "deferred" | "ignored" | "cleared";
-    price_change_pct: number | null;
-    candidate_ids: string[];
+    /** recommendation: 먼저 확인할 재료 카드, manual: 장보기 화면 검색, price_row: 재료 한 줄, ingredient_detail: 재료 상세 */
+    source: "recommendation" | "manual" | "price_row" | "ingredient_detail";
+    recommendation_action?: string;
+    choice?: "substitute" | "as_is";
+    replaced_from?: string;
+    price_change_pct?: number | null;
+    candidate_ids?: string[];
   };
+  /** 장보기 목록에서 오른 재료를 대체 재료로 바꾸기 */
+  "Shopping Item Replaced": { from_ingredient_id: string; to_ingredient_id: string; price_change_pct: number | null };
+  "Shopping Item Removed": { ingredient_id: string | null; ingredient_name: string; from_recommendation: boolean };
+  "Shopping Item Checked": { ingredient_id: string | null; ingredient_name: string; checked: boolean; from_recommendation: boolean; replaced: boolean };
+  /** 산 것 지우기(clear_checked) / 체크 모두 풀기(uncheck_all) */
+  "Shopping List Reset": { mode: "clear_checked" | "uncheck_all"; item_count: number };
   "Menu Template Applied": { template_id: string; template_name: string };
   "Menu Saved": { is_new: boolean; core_count: number; adjustable_count: number; substitute_group_count: number; has_price: boolean };
   "Menu Deleted": { menu_id: string };

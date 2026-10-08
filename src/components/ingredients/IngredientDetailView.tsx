@@ -11,6 +11,7 @@ import { makeNameOf, useAppState } from "@/store/app-store";
 import { usePrices } from "@/store/prices-context";
 import { ActionBadge, ChangeText, NormalBadge, RoleBadge, StatusBadge } from "../ui/Badges";
 import { EmptyState, LoadingBlock, SectionTitle, SourceNote } from "../ui/common";
+import { AddToListButton } from "../shopping/AddToListButton";
 import { toggleWatch } from "./IngredientsView";
 import { PriceChart } from "./PriceChart";
 import { SizePicker } from "./SizePicker";
@@ -71,15 +72,18 @@ export function IngredientDetailView({ id }: { id: string }) {
             <SourceNote date={s?.date ?? null} source={prices.source} fallback={prices.fallback} />
           </div>
         </div>
-        <Toggle
-          variant="outline"
-          pressed={watching}
-          onPressedChange={() => toggleWatch(id, ingredient.name, watching, "ingredient_detail")}
-          aria-label={`${ingredient.name} 관심 재료`}
-        >
-          <StarIcon data-icon="inline-start" className="group-aria-pressed/toggle:fill-current" />
-          {watching ? "관심 재료" : "관심 재료로 담기"}
-        </Toggle>
+        <div className="flex flex-wrap gap-2">
+          <AddToListButton ingredientId={id} name={ingredient.name} source="ingredient_detail" variant="labeled" />
+          <Toggle
+            variant="outline"
+            pressed={watching}
+            onPressedChange={() => toggleWatch(id, ingredient.name, watching, "ingredient_detail")}
+            aria-label={`${ingredient.name} 관심 재료`}
+          >
+            <StarIcon data-icon="inline-start" className="group-aria-pressed/toggle:fill-current" />
+            {watching ? "관심 재료" : "관심 재료로 담기"}
+          </Toggle>
+        </div>
       </div>
 
       {!s ? (

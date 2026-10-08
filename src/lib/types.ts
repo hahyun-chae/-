@@ -100,7 +100,21 @@ export interface Menu {
 
 export type RecommendedAction = "caution" | "adjust" | "substitute" | "opportunity" | "keep";
 
-export type UserResponse = "applied" | "deferred" | "ignored";
+/** 장보기 목록 항목. 판단 카드에서 담았으면 어떤 추천에서 왔는지 남긴다 */
+export interface ShoppingItem {
+  id: string;
+  /** 시세 품목 또는 직접 추가한 재료의 id */
+  ingredientId?: string;
+  name: string;
+  /** "2단", "1판"처럼 사장님이 쓰는 말 그대로 */
+  qty: string;
+  /** 판단 카드에서 담을 때 붙는 메모 (예: "평소보다 적게") */
+  note?: string;
+  checked: boolean;
+  source: "manual" | "recommendation";
+  /** 대체 재료로 바꿔 담았으면 원래 재료 id */
+  replacedFrom?: string;
+}
 
 export interface AppState {
   onboarded: boolean;
@@ -109,8 +123,8 @@ export interface AppState {
   menus: Menu[];
   /** 시세 품목에 없어 사용자가 직접 입력한 재료 (시세 미연동) */
   customIngredients: Ingredient[];
-  /** key: `${date}:${ingredientId}` */
-  responses: Record<string, UserResponse>;
+  /** 장보기 목록 (날짜 구분 없이 하나). 산 것은 체크하고, 다 사면 지우거나 체크를 풀어 다시 쓴다 */
+  shoppingList: ShoppingItem[];
   /** 재료별로 고른 용량 (KAMIS 품종 코드). 없으면 기본 용량 */
   sizePrefs: Record<string, string>;
 }
