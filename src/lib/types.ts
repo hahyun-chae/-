@@ -111,13 +111,10 @@ export interface ShoppingItem {
   /** 판단 카드에서 담을 때 붙는 메모 (예: "평소보다 적게") */
   note?: string;
   checked: boolean;
-  source: "manual" | "recommendation" | "previous_list";
+  source: "manual" | "recommendation";
   /** 대체 재료로 바꿔 담았으면 원래 재료 id */
   replacedFrom?: string;
 }
-
-/** key: 장 보는 날 (YYYY-MM-DD) */
-export type ShoppingLists = Record<string, ShoppingItem[]>;
 
 export interface AppState {
   onboarded: boolean;
@@ -126,7 +123,8 @@ export interface AppState {
   menus: Menu[];
   /** 시세 품목에 없어 사용자가 직접 입력한 재료 (시세 미연동) */
   customIngredients: Ingredient[];
-  shoppingLists: ShoppingLists;
+  /** 장보기 목록 (날짜 구분 없이 하나). 산 것은 체크하고, 다 사면 지우거나 체크를 풀어 다시 쓴다 */
+  shoppingList: ShoppingItem[];
   /** 재료별로 고른 용량 (KAMIS 품종 코드). 없으면 기본 용량 */
   sizePrefs: Record<string, string>;
 }

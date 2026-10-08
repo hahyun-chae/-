@@ -14,15 +14,18 @@ export function PriceRow({
   name,
   trailing,
   showSizes = true,
+  addButton = "icon",
 }: {
   decision: Decision;
   name: string;
   trailing?: React.ReactNode;
   /** 용량 칩 표시 여부 */
   showSizes?: boolean;
+  /** 장보기 담기 버튼 모양: 줄 끝 아이콘 / 줄 아래 파란 버튼(구매 기회처럼 담기를 권할 때) */
+  addButton?: "icon" | "button";
 }) {
   return (
-    <li className="flex items-center gap-3 px-5 py-4 sm:px-7">
+    <li className="flex flex-wrap items-center gap-3 px-5 py-4 sm:px-7">
       <div className="min-w-0 flex-1">
         <Link href={`/ingredients/${d.ingredientId}`} className="block">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -55,8 +58,13 @@ export function PriceRow({
         <ChangeText value={d.change} status={d.status} className="text-base" />
         <p className="text-[11px] text-slate-400">1주 전 대비</p>
       </div>
-      <AddToListButton ingredientId={d.ingredientId} name={name} source="price_row" />
+      {addButton === "icon" && <AddToListButton ingredientId={d.ingredientId} name={name} source="price_row" />}
       {trailing}
+      {addButton === "button" && (
+        <div className="flex basis-full">
+          <AddToListButton ingredientId={d.ingredientId} name={name} source="price_row" variant="button" />
+        </div>
+      )}
     </li>
   );
 }

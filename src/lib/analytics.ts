@@ -36,7 +36,6 @@ export interface AnalyticsEvents {
     ingredient_name: string;
     /** recommendation: 먼저 확인할 재료 카드, manual: 장보기 화면 검색, price_row: 재료 한 줄, ingredient_detail: 재료 상세 */
     source: "recommendation" | "manual" | "price_row" | "ingredient_detail";
-    list_day: string;
     recommendation_action?: string;
     choice?: "substitute" | "as_is";
     replaced_from?: string;
@@ -45,7 +44,8 @@ export interface AnalyticsEvents {
   };
   "Shopping Item Removed": { ingredient_id: string | null; ingredient_name: string; from_recommendation: boolean };
   "Shopping Item Checked": { ingredient_id: string | null; ingredient_name: string; checked: boolean; from_recommendation: boolean; replaced: boolean };
-  "Shopping List Copied": { from_date: string; to_date: string; item_count: number };
+  /** 산 것 지우기(clear_checked) / 체크 모두 풀기(uncheck_all) */
+  "Shopping List Reset": { mode: "clear_checked" | "uncheck_all"; item_count: number };
   "Menu Template Applied": { template_id: string; template_name: string };
   "Menu Saved": { is_new: boolean; core_count: number; adjustable_count: number; substitute_group_count: number; has_price: boolean };
   "Menu Deleted": { menu_id: string };

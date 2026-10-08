@@ -1,13 +1,11 @@
 "use client";
 
-import { CheckIcon, CopyIcon, XIcon } from "lucide-react";
+import { CheckIcon, RotateCcwIcon, Trash2Icon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
-import { shiftDate, formatDateShort, formatWon, todayKST } from "@/lib/format";
+import { formatWon } from "@/lib/format";
 import { buildDecisions, type Decision } from "@/lib/recommend";
-import { defaultListDate, findItem, listDayLabel, previousListDate } from "@/lib/shopping";
 import type { ShoppingItem } from "@/lib/types";
 import { actions } from "@/store/app-store";
 import { useDecisions } from "@/store/use-decisions";
@@ -36,7 +34,7 @@ function PendingDecision({ decision: d, nameOf }: { decision: Decision; nameOf: 
   );
 }
 
-function ItemRow({ item, date, decision }: { item: ShoppingItem; date: string; decision?: Decision }) {
+function ItemRow({ item, decision }: { item: ShoppingItem; decision?: Decision }) {
   const s = decision?.snapshot;
   const fromRecommendation = item.source === "recommendation";
   return (
@@ -47,7 +45,7 @@ function ItemRow({ item, date, decision }: { item: ShoppingItem; date: string; d
         aria-checked={item.checked}
         aria-label={`${item.name} 샀어요`}
         onClick={() => {
-          actions.updateShoppingItem(date, item.id, { checked: !item.checked });
+          actions.updateShoppingItem(item.id, { checked: !item.checked });
           track("Shopping Item Checked", {
             ingredient_id: item.ingredientId ?? null,
             ingredient_name: item.name,
@@ -82,7 +80,7 @@ function ItemRow({ item, date, decision }: { item: ShoppingItem; date: string; d
 
       <input
         value={item.qty}
-        onChange={(e) => actions.updateShoppingItem(date, item.id, { qty: e.target.value })}
+        onChange={(e) => actions.updateShoppingItem(item.id, { qty: e.target.value })}
         placeholder="수량"
         aria-label={`${item.name} 수량`}
         className="h-11 w-20 shrink-0 rounded-lg border border-input bg-canvas/60 px-3 text-center text-sm text-ink placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
@@ -91,7 +89,7 @@ function ItemRow({ item, date, decision }: { item: ShoppingItem; date: string; d
         type="button"
         aria-label={`${item.name} 빼기`}
         onClick={() => {
-          actions.removeShoppingItem(date, item.id);
+          actions.removeShoppingItem(item.id);
           track("Shopping Item Removed", { ingredient_id: item.ingredientId ?? null, ingredient_name: item.name, from_recommendation: fromRecommendation });
         }}
         className="grid size-11 shrink-0 place-items-center rounded-lg text-steel hover:bg-control hover:text-ink"
@@ -103,57 +101,32 @@ function ItemRow({ item, date, decision }: { item: ShoppingItem; date: string; d
 }
 
 /**
- * 장보기 목록. 영업 후 밤에 내일 살 것을 적고, 아침에 보면서 체크한다.
+ * 장보기 목록 (날짜 구분 없이 하나). 영업 후 살 것을 적어 두고, 장 볼 때 체크한다.
  * 체크해도 항목 위치는 그대로 둔다 (장 보는 중에 순서가 바뀌지 않게).
+ * 다 사면 '산 것 지우기', 매일 비슷한 걸 사면 '체크 모두 풀기'로 같은 목록을 다시 쓴다.
  */
 export function ShoppingView() {
   const data = useDecisions();
-  const [date, setDate] = useState(defaultListDate);
   if (!data) return <LoadingBlock />;
 
   const { app, prices, decisions, nameOf } = data;
-  const today = todayKST();
-  const day = listDayLabel(date);
-  const items = app.shoppingLists[date] ?? [];
+  const items = app.shoppingList;
   const checked = items.filter((i) => i.checked).length;
   // 검색해서 담은 재료는 관심 재료가 아닐 수 있어 목록 재료의 시세를 따로 계산한다
   const itemIds = items.flatMap((i) => (i.ingredientId ? [i.ingredientId] : []));
   const decisionOf = new Map(buildDecisions(itemIds, app.menus, prices.board, app.settings.thresholds, nameOf).map((d) => [d.ingredientId, d]));
   const inList = (d: Decision) => items.some((i) => i.ingredientId === d.ingredientId || i.replacedFrom === d.ingredientId);
-  // 담기 버튼은 기본 목록(오늘/내일)에 담으므로, 지금 보는 목록이 기본 목록일 때만 판단 반영 칸을 보여준다
-  const pending = date === defaultListDate() ? decisions.filter((d) => ["substitute", "adjust", "caution"].includes(d.action) && !inList(d)) : [];
-  const prevDate = previousListDate(app.shoppingLists, date);
-  const prevCount = prevDate ? app.shoppingLists[prevDate].length : 0;
-  // 지난 목록 중 지금 목록에 없는 재료 수 (다 불러왔으면 버튼을 숨긴다)
-  const missingCount = prevDate ? app.shoppingLists[prevDate].filter((i) => !findItem(items, i.ingredientId, i.name)).length : 0;
+  const pending = decisions.filter((d) => ["substitute", "adjust", "caution"].includes(d.action) && !inList(d));
 
-  const copyPrevious = () => {
-    if (!prevDate) return;
-    const count = actions.copyShoppingList(prevDate, date);
-    track("Shopping List Copied", { from_date: prevDate, to_date: date, item_count: count });
+  const reset = (mode: "clear_checked" | "uncheck_all") => {
+    if (mode === "clear_checked") actions.clearCheckedShoppingItems();
+    else actions.uncheckAllShoppingItems();
+    track("Shopping List Reset", { mode, item_count: checked });
   };
 
   return (
     <>
-      <PageHeader
-        title={`${day} 장보기`}
-        description={`${formatDateShort(date)} · ${items.length ? `${items.length}개 중 ${checked}개 샀어요` : "영업 후 적어 두고, 장 볼 때 체크하세요"}`}
-      />
-
-      <div className="mb-8 flex gap-2" role="radiogroup" aria-label="목록 날짜">
-        {[today, shiftDate(today, 1)].map((d) => (
-          <button
-            key={d}
-            type="button"
-            role="radio"
-            aria-checked={d === date}
-            onClick={() => setDate(d)}
-            className={`h-11 rounded-lg border px-4 text-[15px] transition-colors ${d === date ? "border-brand-600 bg-brand-50 font-semibold text-ink" : "border-hairline text-steel hover:bg-control hover:text-ink"}`}
-          >
-            {listDayLabel(d)} <span className="font-mono text-xs">{formatDateShort(d)}</span>
-          </button>
-        ))}
-      </div>
+      <PageHeader title="장보기" description={items.length ? `${items.length}개 중 ${checked}개 샀어요` : "영업 후 살 것을 적어 두고, 장 볼 때 체크하세요"} />
 
       <div className="space-y-10">
         {pending.length > 0 && (
@@ -174,13 +147,13 @@ export function ShoppingView() {
           <div className="mb-3">
             <IngredientPicker
               placeholder="재료 검색해서 담기 (예: 양파, ㅇㅍ)"
-              exclude={items.flatMap((i) => (i.ingredientId ? [i.ingredientId] : []))}
+              exclude={itemIds}
               custom={app.customIngredients}
               source="shopping"
               onPick={(id) => {
                 const name = nameOf(id);
-                actions.addShoppingItem(date, { ingredientId: id, name, qty: "", source: "manual" });
-                track("Shopping Item Added", { ingredient_id: id, ingredient_name: name, source: "manual", list_day: day });
+                actions.addShoppingItem({ ingredientId: id, name, qty: "", source: "manual" });
+                track("Shopping Item Added", { ingredient_id: id, ingredient_name: name, source: "manual" });
               }}
             />
           </div>
@@ -188,28 +161,26 @@ export function ShoppingView() {
           {items.length === 0 ? (
             <div className="card flex flex-col items-center px-6 py-10 text-center">
               <p className="text-lg font-medium text-ink">아직 담은 재료가 없어요</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {prevDate ? "지난번 목록을 불러와서 고치면 금방 끝나요." : "위에서 검색하거나, 오늘 판단 카드에서 바로 담을 수 있어요."}
-              </p>
-              {prevDate && (
-                <Button className="mt-5" onClick={copyPrevious}>
-                  <CopyIcon data-icon="inline-start" />
-                  {formatDateShort(prevDate)} 목록 불러오기 ({prevCount}개)
-                </Button>
-              )}
+              <p className="mt-1 text-sm text-muted-foreground">위에서 검색하거나, 재료 시세·오늘 판단에서 🛒를 눌러 담을 수 있어요.</p>
             </div>
           ) : (
             <>
               <ul className="card divide-y divide-slate-100">
                 {items.map((item) => (
-                  <ItemRow key={item.id} item={item} date={date} decision={item.ingredientId ? decisionOf.get(item.ingredientId) : undefined} />
+                  <ItemRow key={item.id} item={item} decision={item.ingredientId ? decisionOf.get(item.ingredientId) : undefined} />
                 ))}
               </ul>
-              {prevDate && missingCount > 0 && (
-                <Button variant="outline" className="mt-3 w-full sm:w-auto" onClick={copyPrevious}>
-                  <CopyIcon data-icon="inline-start" />
-                  {formatDateShort(prevDate)} 목록에서 빠진 재료 {missingCount}개 불러오기
-                </Button>
+              {checked > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Button variant="outline" className="flex-1 sm:flex-none" onClick={() => reset("clear_checked")}>
+                    <Trash2Icon data-icon="inline-start" />
+                    산 것 지우기 ({checked}개)
+                  </Button>
+                  <Button variant="outline" className="flex-1 sm:flex-none" onClick={() => reset("uncheck_all")}>
+                    <RotateCcwIcon data-icon="inline-start" />
+                    체크 모두 풀기
+                  </Button>
+                </div>
               )}
             </>
           )}

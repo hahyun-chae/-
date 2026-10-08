@@ -74,7 +74,7 @@ export function DashboardView() {
               <ul className="card divide-y divide-slate-100 overflow-hidden">
                 {/* 판단 결과로 묶인 칸이라 용량을 바꾸면 재료가 칸에서 빠질 수 있어, 용량 칩은 아래 전체 목록에서만 보여준다 */}
                 {opportunities.map((d) => (
-                  <PriceRow key={d.ingredientId} decision={d} name={nameOf(d.ingredientId)} showSizes={false} />
+                  <PriceRow key={d.ingredientId} decision={d} name={nameOf(d.ingredientId)} showSizes={false} addButton="button" />
                 ))}
               </ul>
             </section>
