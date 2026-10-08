@@ -6,6 +6,8 @@ import { displayRank } from "@/lib/status";
 import { makeNameOf, useAppState } from "./app-store";
 import { usePrices } from "./prices-context";
 
+export type DecisionsData = NonNullable<ReturnType<typeof useDecisions>>;
+
 export function useDecisions() {
   const app = useAppState();
   const prices = usePrices();

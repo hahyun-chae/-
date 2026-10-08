@@ -6,6 +6,7 @@ import { matchesKorean } from "@/lib/hangul";
 import type { Ingredient } from "@/lib/types";
 import { actions } from "@/store/app-store";
 import { track } from "@/lib/analytics";
+import { useSearchTracking } from "@/lib/analytics-hooks";
 
 /** 재료 검색(초성 검색 지원). 목록에 없는 재료는 '시세 미연동 재료'로 직접 추가할 수 있다. */
 export function IngredientPicker({
@@ -29,18 +30,21 @@ export function IngredientPicker({
   const [query, setQuery] = useState("");
   const listId = useId();
 
-  const results = useMemo(() => {
+  // 검색 결과 전체 (화면에는 8개까지만 보여준다)
+  const matches = useMemo(() => {
     const q = query.trim();
     if (!q) return [];
     return [...INGREDIENTS, ...custom]
       .filter((i) => !exclude.includes(i.id))
-      .filter((i) => [i.name, ...i.aliases, ...(i.kamis ? [i.kamis.itemName] : [])].some((n) => matchesKorean(q, n)))
-      .slice(0, 8);
+      .filter((i) => [i.name, ...i.aliases, ...(i.kamis ? [i.kamis.itemName] : [])].some((n) => matchesKorean(q, n)));
   }, [query, exclude, custom]);
+  const results = matches.slice(0, 8);
+  const { trackPick } = useSearchTracking(query, matches.length, source);
 
   const exact = [...INGREDIENTS, ...custom].some((i) => i.name === query.trim());
 
   const pick = (id: string) => {
+    trackPick(query, matches.length);
     onPick(id);
     setQuery("");
   };

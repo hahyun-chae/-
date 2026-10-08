@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckIcon, RotateCcwIcon, Trash2Icon, TriangleAlertIcon, XIcon } from "lucide-react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { formatWon } from "@/lib/format";
@@ -8,7 +9,8 @@ import { josaRo } from "@/lib/hangul";
 import { buildDecisions, type Decision } from "@/lib/recommend";
 import type { ShoppingItem } from "@/lib/types";
 import { actions } from "@/store/app-store";
-import { useDecisions } from "@/store/use-decisions";
+import { useTrackOnce } from "@/lib/analytics-hooks";
+import { type DecisionsData, useDecisions } from "@/store/use-decisions";
 import { IngredientPicker } from "../ingredients/IngredientPicker";
 import { PriceRow } from "../ingredients/PriceRow";
 import { ChangeText } from "../ui/Badges";
@@ -52,6 +54,8 @@ function ItemRow({ item, decision, nameOf }: { item: ShoppingItem; decision?: De
   const s = decision?.snapshot;
   const fromRecommendation = item.source === "recommendation";
   const rising = !item.checked && (decision?.status === "up" || decision?.status === "surge");
+  // 수량칸을 벗어날 때 바뀌었으면 한 번 기록
+  const qtyAtFocus = useRef(item.qty);
   return (
     <li className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3 sm:px-6">
       <button
@@ -96,6 +100,12 @@ function ItemRow({ item, decision, nameOf }: { item: ShoppingItem; decision?: De
       <input
         value={item.qty}
         onChange={(e) => actions.updateShoppingItem(item.id, { qty: e.target.value })}
+        onFocus={() => (qtyAtFocus.current = item.qty)}
+        onBlur={() => {
+          const qty = item.qty.trim();
+          if (!qty || qty === qtyAtFocus.current.trim()) return;
+          track("Shopping Item Quantity Set", { ingredient_id: item.ingredientId ?? null, ingredient_name: item.name, qty, from_recommendation: fromRecommendation });
+        }}
         placeholder="수량"
         aria-label={`${item.name} 수량`}
         className="h-11 w-20 shrink-0 rounded-lg border border-input bg-canvas/60 px-3 text-center text-sm text-ink placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
@@ -129,7 +139,10 @@ function ItemRow({ item, decision, nameOf }: { item: ShoppingItem; decision?: De
 export function ShoppingView() {
   const data = useDecisions();
   if (!data) return <LoadingBlock />;
+  return <ShoppingContent data={data} />;
+}
 
+function ShoppingContent({ data }: { data: DecisionsData }) {
   const { app, prices, decisions, nameOf } = data;
   const items = app.shoppingList;
   const checked = items.filter((i) => i.checked).length;
@@ -138,6 +151,22 @@ export function ShoppingView() {
   const decisionOf = new Map(buildDecisions(itemIds, app.menus, prices.board, app.settings.thresholds, nameOf).map((d) => [d.ingredientId, d]));
   // 관심 재료·메뉴 재료 중 1주 전보다 내린 것. 담아도 줄이 사라지지 않고 '담김'으로만 바뀐다
   const cheaper = decisions.filter((d) => d.action === "opportunity");
+  const rising = items.filter((i) => !i.checked && i.ingredientId && ["up", "surge"].includes(decisionOf.get(i.ingredientId)?.status ?? ""));
+
+  // 화면을 연 순간의 목록 상태 (밤에 작성·아침에 사용하는지는 이벤트 시각으로 확인)
+  useTrackOnce(
+    "Shopping List Viewed",
+    prices.loading
+      ? null
+      : {
+          item_count: items.length,
+          checked_count: checked,
+          cheaper_count: cheaper.length,
+          rising_count: rising.length,
+          replaceable_count: rising.filter((i) => (decisionOf.get(i.ingredientId!)?.candidates.length ?? 0) > 0).length,
+        },
+    prices.loading ? "loading" : "viewed",
+  );
 
   const reset = (mode: "clear_checked" | "uncheck_all") => {
     if (mode === "clear_checked") actions.clearCheckedShoppingItems();
