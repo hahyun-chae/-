@@ -114,10 +114,10 @@ export function DesignSystemView() {
   return (
     <div>
       <header className="mb-10">
-        <p className="text-sm font-semibold text-brand-700">원가핏 · shadcn/ui (base-nova)</p>
+        <p className="text-sm font-semibold text-brand-700">오늘 가격 · shadcn/ui (base-nova)</p>
         <h1 className="mt-1 text-[40px] leading-none font-semibold tracking-[-0.015em]">디자인 시스템</h1>
         <p className="mt-3 max-w-2xl text-[17px] text-muted-foreground">
-          프로젝트에 추가한 shadcn/ui 컴포넌트를 variant와 상태별로 모았어요. 색·모서리는 <code className="text-sm">globals.css</code>의 원가핏 토큰을 따라요.
+          프로젝트에 추가한 shadcn/ui 컴포넌트를 variant와 상태별로 모았어요. 색·모서리는 <code className="text-sm">globals.css</code>의 오늘 가격 토큰을 따라요.
         </p>
         <nav aria-label="컴포넌트 바로가기" className="mt-6 flex flex-wrap gap-2">
           {SECTIONS.map((s) => (
@@ -492,7 +492,7 @@ export function DesignSystemView() {
 
         {/* ───────── Tabs ───────── */}
         <Section id="tabs" title="Tabs" description="variant default · line, 비활성 탭, 패널 전환 (재료 시세 카테고리 탭에 사용)">
-          <Row label='variant="default"' hint="원가핏 사용 형태: 알약형 + 개수 표시">
+          <Row label='variant="default"' hint="오늘 가격 사용 형태: 알약형 + 개수 표시">
             <Tabs defaultValue="namul" className="w-full">
               <TabsList className="w-full justify-start overflow-x-auto rounded-lg bg-control/70 p-1 sm:w-fit">
                 {[

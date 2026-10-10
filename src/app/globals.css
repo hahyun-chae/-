@@ -7,7 +7,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  원가핏 디자인 토큰 — design-2.md(Tactile Analytics Interface) 기반 다크 테마
+  오늘 가격 디자인 토큰 — design-2.md(Tactile Analytics Interface) 기반 다크 테마
   - 바탕은 #020617, 카드는 surface(#7A7C82)를 바탕에 옅게 섞은 면 + 얇은 테두리 + 깊은 그림자로 구분한다.
   - 파란색(#3B82F6)은 주요 버튼·링크·선택 강조에만, 피치(#EAB393)는 경고성 메타 정보에만 쓴다.
   - 모서리: 카드 16px(rounded-3xl), 버튼·입력 같은 컨트롤 8px(rounded-lg), 배지는 알약형.

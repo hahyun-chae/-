@@ -26,7 +26,7 @@ const notoSansKr = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "원가핏 · 식재료 시세와 원가 판단",
+  title: "오늘 가격 · 식재료 시세와 원가 판단",
   description: "오늘 장 보기 전 1분, 우리 가게 메뉴 기준으로 무엇을 그대로 사고 무엇을 줄이거나 바꿀지 알려드려요.",
 };
 
