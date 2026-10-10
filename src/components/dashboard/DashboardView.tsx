@@ -3,6 +3,7 @@
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { secondsSinceOpen } from "@/lib/analytics";
 import { formatDateShort } from "@/lib/format";
 import { useTrackOnce } from "@/lib/analytics-hooks";
 import { type DecisionsData, useDecisions } from "@/store/use-decisions";
@@ -30,6 +31,7 @@ function DashboardContent({ data }: { data: DecisionsData }) {
     prices.loading
       ? null
       : {
+          seconds_since_open: secondsSinceOpen(),
           data_date: prices.date,
           data_source: prices.source,
           fallback: prices.fallback ?? null,

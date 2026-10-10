@@ -2,8 +2,11 @@
 
 import { StarIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { Toggle } from "@/components/ui/toggle";
+import { previousPageOf } from "@/lib/analytics";
+import { useTrackOnce } from "@/lib/analytics-hooks";
 import { CATEGORY_LABEL, getIngredient, kamisPath } from "@/lib/catalog";
 import { formatPct, formatUnitPrice, formatWon, pctChange } from "@/lib/format";
 import { buildDecisions } from "@/lib/recommend";
@@ -29,9 +32,29 @@ export function IngredientDetailView({ id }: { id: string }) {
     return { nameOf, decision };
   }, [app, prices.board, id]);
 
+  const pathname = usePathname();
+  const ingredient = app ? (getIngredient(id) ?? app.customIngredients.find((c) => c.id === id)) : undefined;
+  // 시세를 다 받은 뒤 재료마다 한 번. 오늘 판단에서 왔다면 판단 근거를 확인하러 온 것
+  useTrackOnce(
+    "Ingredient Detail Viewed",
+    !app || !view || !ingredient || prices.loading
+      ? null
+      : {
+          ingredient_id: id,
+          ingredient_name: ingredient.name,
+          from: previousPageOf(pathname),
+          status: view.decision.status,
+          action: view.decision.action,
+          is_watched: app.watchlist.includes(id),
+          has_price: Boolean(view.decision.snapshot),
+          menu_usage_count: view.decision.usages.length,
+          candidate_count: view.decision.candidates.length,
+        },
+    !app || !view || !ingredient || prices.loading ? "loading" : id,
+  );
+
   if (!app || !view) return <LoadingBlock />;
 
-  const ingredient = getIngredient(id) ?? app.customIngredients.find((c) => c.id === id);
   if (!ingredient) {
     return <EmptyState title="재료를 찾을 수 없어요" href="/ingredients" cta="재료 목록으로" />;
   }
