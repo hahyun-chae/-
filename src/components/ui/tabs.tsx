@@ -22,7 +22,7 @@ function Tabs({
   )
 }
 
-// 원가핏 조정: 탭(트리거) 높이 44px(PRD 최소 터치 영역). 목록은 패딩만큼 자동으로 커진다
+// 오늘 가격 조정: 탭(트리거) 높이 44px(PRD 최소 터치 영역). 목록은 패딩만큼 자동으로 커진다
 const tabsListVariants = cva(
   "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg p-[3px] text-muted-foreground group-data-horizontal/tabs:h-auto group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col data-[variant=line]:rounded-none",
   {

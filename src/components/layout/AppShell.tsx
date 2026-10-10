@@ -30,7 +30,7 @@ export function Logo() {
   return (
     <Link href="/ingredients" className="flex items-center gap-2">
       <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-sm font-semibold text-white shadow-[0_0_20px_-4px_rgb(59_130_246/0.8)]">₩</span>
-      <span className="text-lg font-semibold tracking-tight text-slate-900">원가핏</span>
+      <span className="text-lg font-semibold tracking-tight text-slate-900">오늘 가격</span>
     </Link>
   );
 }
