@@ -24,6 +24,29 @@ export function initAnalytics() {
 
 /** 이벤트 이름 → 속성. 이벤트를 추가할 때 여기에 먼저 정의한다. */
 export interface AnalyticsEvents {
+  /** 앱을 새로 열었거나, 30분 넘게 다른 앱에 있다가 돌아온 순간. 판단 확인까지 걸린 시간의 시작점 */
+  "App Opened": {
+    entry_page: string;
+    entry_path: string;
+    /** 사용자 기기 기준 시각 (0~23). 아침 장보기·밤 발주 시간대 확인용 */
+    hour: number;
+    /** 홈 화면에 추가한 앱으로 열었는지 */
+    is_standalone: boolean;
+    resumed: boolean;
+    away_minutes: number | null;
+  };
+  /** 재료 상세를 연 순간. from: 직전 화면 (오늘 판단에서 왔으면 판단 근거를 확인하는 행동) */
+  "Ingredient Detail Viewed": {
+    ingredient_id: string;
+    ingredient_name: string;
+    from: string;
+    status: string | null;
+    action: string;
+    is_watched: boolean;
+    has_price: boolean;
+    menu_usage_count: number;
+    candidate_count: number;
+  };
   "Onboarding Step Completed": { step: number; step_name: string };
   "Onboarding Completed": { watch_count: number; custom_ingredient_count: number; menu_count: number; menus_skipped: boolean };
   "Watchlist Item Added": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
@@ -51,6 +74,8 @@ export interface AnalyticsEvents {
   "Shopping List Reset": { mode: "clear_checked" | "uncheck_all"; item_count: number };
   /** 오늘 판단 화면에서 판단을 본 순간. 추천 적용률의 분모 */
   "Today Decisions Viewed": {
+    /** 앱을 연 뒤(App Opened) 판단을 보기까지 걸린 시간(초). 목표 60초 이내 */
+    seconds_since_open: number;
     data_date: string | null;
     data_source: "KAMIS" | "MOCK";
     fallback: string | null;
@@ -91,12 +116,104 @@ export interface AnalyticsEvents {
 const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 
 /**
+ * 모든 이벤트에 붙는 공통 속성. 지금 화면에 보이는 시세가 실제(KAMIS)인지 데모(MOCK)인지 남겨서
+ * 데모 시세를 보고 한 행동을 분석에서 걸러낼 수 있게 한다. (PricesProvider가 갱신)
+ */
+let context: { data_source?: "KAMIS" | "MOCK"; data_fallback?: string | null } = {};
+
+export function setDataContext(source: "KAMIS" | "MOCK", fallback: string | null) {
+  context = { data_source: source, data_fallback: fallback };
+}
+
+/**
  * 직접 정의한 이벤트를 Mixpanel과 Amplitude 양쪽에 같은 이름·속성으로 보낸다.
  * (Amplitude는 초기화 전에 호출돼도 이벤트를 모아 두었다가 초기화 후 보낸다)
  */
 export function track<E extends keyof AnalyticsEvents>(event: E, props: AnalyticsEvents[E]) {
-  if (initialized) mixpanel.track(event, props);
-  if (AMPLITUDE_API_KEY) amplitude.track(event, props);
+  const payload = { ...context, ...props };
+  if (initialized) mixpanel.track(event, payload);
+  if (AMPLITUDE_API_KEY) amplitude.track(event, payload);
+}
+
+const RESUME_AFTER_MS = 30 * 60 * 1000;
+/** 앱을 연 시각. 처음 연 경우는 페이지를 불러오기 시작한 시각(performance.timeOrigin)을 쓴다 */
+let openedAt: number | null = null;
+let hiddenAt: number | null = null;
+
+export function secondsSinceOpen(): number {
+  const start = openedAt ?? performance.timeOrigin;
+  return Math.max(0, Math.round((Date.now() - start) / 1000));
+}
+
+function isStandalone(): boolean {
+  return window.matchMedia("(display-mode: standalone)").matches || (navigator as { standalone?: boolean }).standalone === true;
+}
+
+function sendAppOpened(resumed: boolean, awayMs: number | null) {
+  const path = window.location.pathname;
+  track("App Opened", {
+    entry_page: pageName(path),
+    entry_path: path,
+    hour: new Date().getHours(),
+    is_standalone: isStandalone(),
+    resumed,
+    away_minutes: awayMs == null ? null : Math.round(awayMs / 60000),
+  });
+}
+
+let appOpenTracked = false;
+
+/**
+ * 페이지를 처음 불러왔을 때 App Opened를 보내고, 이후 30분 넘게 다른 앱에 있다가 돌아오면 다시 보낸다.
+ * (휴대폰에서는 탭을 닫지 않고 다음 날 다시 여는 경우가 많아서 새로 불러올 때만 세면 접속이 빠진다)
+ */
+export function trackAppOpens() {
+  if (appOpenTracked || typeof window === "undefined") return;
+  appOpenTracked = true;
+  sendAppOpened(false, null);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      hiddenAt = Date.now();
+      return;
+    }
+    if (hiddenAt == null) return;
+    const away = Date.now() - hiddenAt;
+    hiddenAt = null;
+    if (away < RESUME_AFTER_MS) return;
+    openedAt = Date.now();
+    sendAppOpened(true, away);
+  });
+}
+
+/** 사장님별 현재 상태. 이 값으로 사용자를 나눠 "메뉴를 등록한 사람이 더 자주 오나?" 같은 질문에 답한다 */
+export interface UserProfile {
+  onboarded: boolean;
+  watch_count: number;
+  menu_count: number;
+  custom_ingredient_count: number;
+  shopping_item_count: number;
+  region: string;
+  price_type: string;
+}
+
+let lastProfile: string | null = null;
+
+export function syncUserProfile(profile: UserProfile) {
+  const key = JSON.stringify(profile);
+  if (lastProfile === key) return;
+  lastProfile = key;
+  // 처음 온보딩을 마친 것으로 확인된 시각. 이미 값이 있으면 바꾸지 않는다
+  const firstOnboarded = profile.onboarded ? { first_onboarded_at: new Date().toISOString() } : null;
+  if (initialized) {
+    mixpanel.people.set(profile);
+    if (firstOnboarded) mixpanel.people.set_once(firstOnboarded);
+  }
+  if (AMPLITUDE_API_KEY) {
+    const identify = new amplitude.Identify();
+    for (const [k, v] of Object.entries(profile)) identify.set(k, v);
+    if (firstOnboarded) identify.setOnce("first_onboarded_at", firstOnboarded.first_onboarded_at);
+    amplitude.identify(identify);
+  }
 }
 
 let identifiedStore: string | null = null;
@@ -123,13 +240,29 @@ export function identifyStore(storeName: string) {
 }
 
 let lastPageView: string | null = null;
+let currentPath: string | null = null;
+let previousPath: string | null = null;
+
+/** 화면 이동을 기억해 둔다. 도구 연결 여부와 관계없이 직전 화면을 알기 위해 페이지뷰와 따로 둔다 */
+export function notePath(pathname: string) {
+  if (currentPath === pathname) return;
+  previousPath = currentPath;
+  currentPath = pathname;
+}
+
+/** pathname 화면으로 오기 직전에 있던 화면 이름. 바로 들어왔으면 "direct" */
+export function previousPageOf(pathname: string): string {
+  // 아직 notePath가 이 화면을 기록하기 전이면 currentPath가 직전 화면이다
+  const prev = currentPath === pathname ? previousPath : currentPath;
+  return prev ? pageName(prev) : "direct";
+}
 
 /** 화면 이름을 함께 보내 Mixpanel에서 화면별로 묶어 보기 쉽게 한다 */
 export function trackPageView(pathname: string) {
   // 개발 모드(StrictMode)에서 effect가 두 번 실행돼도 같은 화면은 한 번만 기록
   if (!initialized || lastPageView === pathname) return;
   lastPageView = pathname;
-  mixpanel.track_pageview({ page: pageName(pathname), path: pathname });
+  mixpanel.track_pageview({ ...context, page: pageName(pathname), path: pathname });
 }
 
 function pageName(pathname: string): string {
@@ -140,6 +273,7 @@ function pageName(pathname: string): string {
   if (pathname === "/menus/new") return "메뉴 등록";
   if (/^\/menus\/.+/.test(pathname)) return "메뉴 편집";
   if (pathname.startsWith("/menus")) return "메뉴";
+  if (pathname.startsWith("/shopping")) return "장보기";
   if (pathname.startsWith("/settings")) return "설정";
   return pathname;
 }

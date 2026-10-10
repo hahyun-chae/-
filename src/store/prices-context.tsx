@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { setDataContext } from "@/lib/analytics";
 import type { PriceBoard, PriceFallback, PriceType } from "@/lib/types";
 import { useAppState } from "./app-store";
 
@@ -72,14 +73,22 @@ export function PricesProvider({ initial, children }: { initial: Initial; childr
   const rawBoard = current?.board ?? initial.board;
   const sizePrefs = app?.sizePrefs;
   const board = useMemo(() => applySizePrefs(rawBoard, sizePrefs ?? {}), [rawBoard, sizePrefs]);
+  const source = current?.source ?? initial.source;
+  const fallback = current ? current.fallback : initial.fallback;
+
+  // 모든 분석 이벤트에 지금 보이는 시세 출처를 붙인다.
+  // layout effect는 화면 전체의 일반 effect보다 먼저 실행되므로 첫 페이지뷰부터 출처가 붙는다
+  useLayoutEffect(() => {
+    setDataContext(source, fallback ?? null);
+  }, [source, fallback]);
 
   return (
     <PricesContext.Provider
       value={{
         board,
         baseBoard: rawBoard,
-        source: current?.source ?? initial.source,
-        fallback: current ? current.fallback : initial.fallback,
+        source,
+        fallback,
         date: latestDate(board),
         loading: current === null,
       }}
