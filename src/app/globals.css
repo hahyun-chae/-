@@ -114,7 +114,8 @@ body::before {
   font-variant-numeric: tabular-nums;
 }
 
-/* 화면 진입 시 섹션이 차례로 떠오른다 */
+/* 화면 진입 시 섹션이 차례로 떠오른다.
+   fill-mode를 backwards로 둬서 끝난 뒤 transform이 남지 않게 한다. 남으면 섹션마다 쌓임 맥락이 생겨 뒤 섹션이 검색 드롭다운을 가린다 */
 @keyframes rise {
   from {
     opacity: 0;
@@ -122,7 +123,7 @@ body::before {
   }
 }
 .stagger > * > * {
-  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
 }
 .stagger > * > :nth-child(2) { animation-delay: 60ms; }
 .stagger > * > :nth-child(3) { animation-delay: 120ms; }

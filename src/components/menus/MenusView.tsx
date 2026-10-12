@@ -36,7 +36,7 @@ export function MenusView() {
       ) : (
         <ul className="grid gap-3 md:grid-cols-2">
           {app.menus.map((m) => {
-            const ids = [...m.ingredients.map((i) => i.ingredientId), ...m.substituteGroups.map((g) => g.currentIngredientId)];
+            const ids = [...new Set([...m.ingredients.map((i) => i.ingredientId), ...m.substituteGroups.map((g) => g.currentIngredientId)])];
             const risky = ids.filter((id) => ["surge", "up"].includes(byId.get(id)?.status ?? ""));
             return (
               <li key={m.id}>

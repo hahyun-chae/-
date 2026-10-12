@@ -4,23 +4,19 @@ import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { track } from "@/lib/analytics";
-import { CATEGORY_LABEL, FEATURED_INGREDIENTS, ingredientName } from "@/lib/catalog";
-import { MENU_TEMPLATES } from "@/lib/templates";
+import { CATEGORY_LABEL, CATEGORY_ORDER, INGREDIENTS } from "@/lib/catalog";
 import type { IngredientCategory } from "@/lib/types";
 import { actions, makeNameOf, useAppState } from "@/store/app-store";
 import { IngredientPicker } from "../ingredients/IngredientPicker";
 import { Logo } from "../layout/AppShell";
-import { RoleBadge } from "../ui/Badges";
-import { instantiateTemplate } from "../menus/MenuEditor";
 
-const STEPS = ["상호명", "관심 재료", "대표 메뉴"];
-
-const CATEGORY_ORDER: IngredientCategory[] = ["leafy", "vegetable", "namul", "mushroom", "grain", "fruit", "meat", "seafood", "etc"];
+const STEPS = ["상호명", "관심 재료"];
 
 function StepLabel({ n }: { n: number }) {
-  return <p className="text-sm font-semibold text-brand-700">{n} / 3</p>;
+  return <p className="text-sm font-semibold text-brand-700">{n} / {STEPS.length}</p>;
 }
 
 export function OnboardingView() {
@@ -29,30 +25,26 @@ export function OnboardingView() {
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
   const [watch, setWatch] = useState<string[]>([]);
-  const [templateIds, setTemplateIds] = useState<string[]>([]);
+  const [tab, setTab] = useState<IngredientCategory>(CATEGORY_ORDER[0]);
 
   const custom = app?.customIngredients ?? [];
   const nameOf = makeNameOf(custom);
-  const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 
-  // 선택지는 대표 재료만 보여주고 나머지 KAMIS 품종은 검색으로 찾는다. 직접 추가한 재료는 '기타'에 함께 보여준다
+  // 대표 재료와 KAMIS 전체 품종을 분류별로 보여준다. 직접 추가한 재료는 '기타'에 함께 보여준다
   const groups = CATEGORY_ORDER.map((c) => ({
     category: c,
     ids: [
-      ...FEATURED_INGREDIENTS.filter((i) => i.category === c).map((i) => i.id),
+      ...INGREDIENTS.filter((i) => i.category === c).map((i) => i.id),
       ...(c === "etc" ? custom.filter((i) => watch.includes(i.id)).map((i) => i.id) : []),
     ],
   })).filter((g) => g.ids.length > 0);
 
-  const finish = (withMenus: boolean) => {
-    const menus = withMenus ? MENU_TEMPLATES.filter((t) => templateIds.includes(t.templateId)).map(instantiateTemplate) : [];
-    actions.completeOnboarding({ name: name.trim() }, watch, menus);
-    track("Onboarding Step Completed", { step: 3, step_name: "대표 메뉴" });
+  const finish = () => {
+    actions.completeOnboarding({ name: name.trim() }, watch, []);
+    track("Onboarding Step Completed", { step: 2, step_name: "관심 재료" });
     track("Onboarding Completed", {
       watch_count: watch.length,
       custom_ingredient_count: watch.filter((id) => custom.some((c) => c.id === id)).length,
-      menu_count: menus.length,
-      menus_skipped: menus.length === 0,
     });
     router.push("/ingredients");
   };
@@ -122,17 +114,31 @@ export function OnboardingView() {
             />
           </div>
 
-          <div className="mt-6 space-y-6">
+          {/* 분류 탭으로 전환한다. 탭마다 고른 개수를 보여줘 다른 분류에서 고른 재료도 놓치지 않게 한다 */}
+          <Tabs value={tab} onValueChange={(v) => setTab(v as IngredientCategory)} className="mt-4">
+            {/* 양 끝 탭(곡물·기타)이 잘리지 않게 좌우 여백을 두고, 끝을 흐리게 하는 효과는 쓰지 않는다 */}
+            <TabsList
+              aria-label="재료 분류"
+              className="w-full justify-start gap-1 overflow-x-auto rounded-lg bg-control/70 px-2 py-1 [scrollbar-width:none]"
+            >
+              {groups.map((g) => {
+                const picked = g.ids.filter((id) => watch.includes(id)).length;
+                return (
+                  <TabsTrigger key={g.category} value={g.category} className="flex-none rounded-md px-4 text-[15px] data-active:font-semibold">
+                    {CATEGORY_LABEL[g.category]}
+                    {picked > 0 && <span className="text-brand-700">{picked}</span>}
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+
             {groups.map((g) => (
-              <section key={g.category} aria-labelledby={`ob-cat-${g.category}`}>
-                <h2 id={`ob-cat-${g.category}`} className="mb-2.5 text-sm font-semibold text-muted-foreground">
-                  {CATEGORY_LABEL[g.category]}
-                </h2>
+              <TabsContent key={g.category} value={g.category} className="mt-4">
                 {/* 분류별 다중 선택. 그룹의 선택값을 전체 선택 목록(watch)에 합친다 */}
                 <ToggleGroup
                   multiple
                   variant="outline"
-                  aria-labelledby={`ob-cat-${g.category}`}
+                  aria-label={CATEGORY_LABEL[g.category]}
                   className="w-full flex-wrap"
                   value={g.ids.filter((id) => watch.includes(id))}
                   onValueChange={(next) => setWatch((w) => [...w.filter((id) => !g.ids.includes(id)), ...next])}
@@ -144,9 +150,9 @@ export function OnboardingView() {
                     </ToggleGroupItem>
                   ))}
                 </ToggleGroup>
-              </section>
+              </TabsContent>
             ))}
-          </div>
+          </Tabs>
 
           {/* 재료 목록이 길어서 이동 버튼은 하단에 고정 */}
           <div className="sticky bottom-0 -mx-4 mt-8 flex gap-2 bg-canvas/90 px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-xl sm:-mx-6 sm:px-6">
@@ -156,71 +162,14 @@ export function OnboardingView() {
             <Button
               className="flex-1"
               disabled={watch.length === 0}
-              onClick={() => {
-                track("Onboarding Step Completed", { step: 2, step_name: "관심 재료" });
-                setStep(2);
-              }}
+              onClick={finish}
             >
-              {watch.length > 0 ? `${watch.length}개 선택 · 다음` : "재료를 1개 이상 골라 주세요"}
+              {watch.length > 0 ? `${watch.length}개 선택 · 시작하기` : "재료를 1개 이상 골라 주세요"}
             </Button>
           </div>
         </section>
       )}
 
-      {step === 2 && (
-        <section>
-          <StepLabel n={3} />
-          <h1 className="mt-1 text-2xl font-semibold text-slate-900">대표 메뉴를 등록할까요?</h1>
-          <p className="mt-2 text-[17px] text-slate-500">
-            메뉴별로 <b>바꿔 써도 되는 재료</b>를 정해 두면, 가격이 올랐을 때 그 안에서만 대체 재료를 추천해 드려요.
-          </p>
-
-          <div className="mt-6 space-y-2">
-            {MENU_TEMPLATES.map((t) => {
-              const on = templateIds.includes(t.templateId);
-              return (
-                <button
-                  key={t.templateId}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => setTemplateIds(toggle(templateIds, t.templateId))}
-                  className={`card block w-full p-4 text-left ${on ? "ring-2 ring-brand-600" : ""}`}
-                >
-                  <div className="flex items-center justify-between">
-                    <p className="text-base font-semibold text-slate-900">{t.name}</p>
-                    <span className={`grid h-6 w-6 place-items-center rounded-full text-sm ${on ? "bg-brand-600 text-white" : "ring-1 ring-steel"}`}>{on && "✓"}</span>
-                  </div>
-                  <div className="mt-2 space-y-1 text-sm text-slate-600">
-                    <p className="flex flex-wrap items-center gap-1.5">
-                      <RoleBadge role="core" />
-                      {t.ingredients.filter((i) => i.role === "core").map((i) => ingredientName(i.ingredientId)).join(", ")}
-                    </p>
-                    {t.substituteGroups.map((g) => (
-                      <p key={g.id} className="flex flex-wrap items-center gap-1.5">
-                        <RoleBadge role="substitute" />
-                        {g.name}: {ingredientName(g.currentIngredientId)} ↔ {g.optionIds.map(ingredientName).join(", ")}
-                      </p>
-                    ))}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-          <p className="mt-3 text-sm text-slate-500">등록 후 메뉴 화면에서 재료를 자유롭게 고칠 수 있어요.</p>
-
-          <div className="mt-8 flex gap-2">
-            <Button variant="outline" onClick={() => setStep(1)}>
-              이전
-            </Button>
-            <Button variant="link" onClick={() => finish(false)}>
-              건너뛰기
-            </Button>
-            <Button className="flex-1" onClick={() => finish(templateIds.length > 0)}>
-              {templateIds.length > 0 ? `${templateIds.length}개 등록하고 시작` : "시작하기"}
-            </Button>
-          </div>
-        </section>
-      )}
     </div>
   );
 }

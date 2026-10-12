@@ -70,16 +70,12 @@ export function MenuEditor({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const nameOf = makeNameOf(custom);
 
-  const usedIds = [
-    ...menu.ingredients.map((i) => i.ingredientId),
-    ...menu.substituteGroups.flatMap((g) => [g.currentIngredientId, ...g.optionIds]),
-  ].filter(Boolean);
-
   const idsByRole = (role: IngredientRole) => menu.ingredients.filter((i) => i.role === role).map((i) => i.ingredientId);
   const addIngredient = (id: string, role: IngredientRole) =>
     setMenu((m) => ({ ...m, ingredients: [...m.ingredients, { ingredientId: id, role }] }));
-  const removeIngredient = (id: string) =>
-    setMenu((m) => ({ ...m, ingredients: m.ingredients.filter((i) => i.ingredientId !== id) }));
+  // 같은 재료가 핵심·조정 양쪽에 있을 수 있어 역할까지 맞는 것만 뺀다
+  const removeIngredient = (id: string, role: IngredientRole) =>
+    setMenu((m) => ({ ...m, ingredients: m.ingredients.filter((i) => !(i.ingredientId === id && i.role === role)) }));
 
   const updateGroup = (gid: string, patch: Partial<SubstituteGroup>) =>
     setMenu((m) => ({ ...m, substituteGroups: m.substituteGroups.map((g) => (g.id === gid ? { ...g, ...patch } : g)) }));
@@ -158,13 +154,14 @@ export function MenuEditor({
       </Section>
 
       <Section title="핵심 재료" desc="메뉴의 정체성을 결정해서 빼거나 바꾸기 어려운 재료예요.">
-        <Chips ids={idsByRole("core")} nameOf={nameOf} onRemove={removeIngredient} tone="bg-ink text-canvas" />
-        <IngredientPicker onPick={(id) => addIngredient(id, "core")} exclude={usedIds} custom={custom} placeholder="핵심 재료 추가" />
+        <Chips ids={idsByRole("core")} nameOf={nameOf} onRemove={(id) => removeIngredient(id, "core")} tone="bg-ink text-canvas" />
+        {/* 다른 칸에 넣은 재료도 고를 수 있다. 같은 칸 안에서만 중복을 막는다 */}
+        <IngredientPicker onPick={(id) => addIngredient(id, "core")} exclude={idsByRole("core")} custom={custom} placeholder="핵심 재료 추가" />
       </Section>
 
       <Section title="조정 가능한 재료" desc="가격에 따라 양을 늘리거나 줄일 수 있는 재료예요.">
-        <Chips ids={idsByRole("adjustable")} nameOf={nameOf} onRemove={removeIngredient} tone="bg-orange-100 text-orange-900" />
-        <IngredientPicker onPick={(id) => addIngredient(id, "adjustable")} exclude={usedIds} custom={custom} placeholder="조정 가능한 재료 추가" />
+        <Chips ids={idsByRole("adjustable")} nameOf={nameOf} onRemove={(id) => removeIngredient(id, "adjustable")} tone="bg-orange-100 text-orange-900" />
+        <IngredientPicker onPick={(id) => addIngredient(id, "adjustable")} exclude={idsByRole("adjustable")} custom={custom} placeholder="조정 가능한 재료 추가" />
       </Section>
 
       <Section title="대체 가능한 재료 그룹" desc="서로 바꿔 써도 되는 재료 묶음이에요. 대체 추천은 여기 등록한 재료 안에서만 나와요.">
@@ -192,7 +189,7 @@ export function MenuEditor({
               {g.currentIngredientId ? (
                 <Chips ids={[g.currentIngredientId]} nameOf={nameOf} onRemove={() => updateGroup(g.id, { currentIngredientId: "" })} tone="bg-violet-600 text-white" />
               ) : (
-                <IngredientPicker onPick={(id) => updateGroup(g.id, { currentIngredientId: id })} exclude={usedIds} custom={custom} placeholder="예: 시금치" />
+                <IngredientPicker onPick={(id) => updateGroup(g.id, { currentIngredientId: id })} exclude={g.optionIds} custom={custom} placeholder="예: 시금치" />
               )}
 
               <p className="mt-3 mb-1.5 text-sm font-semibold text-slate-700">대신 써도 되는 재료</p>

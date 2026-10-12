@@ -48,7 +48,7 @@ export interface AnalyticsEvents {
     candidate_count: number;
   };
   "Onboarding Step Completed": { step: number; step_name: string };
-  "Onboarding Completed": { watch_count: number; custom_ingredient_count: number; menu_count: number; menus_skipped: boolean };
+  "Onboarding Completed": { watch_count: number; custom_ingredient_count: number };
   "Watchlist Item Added": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
   "Watchlist Item Removed": { ingredient_id: string; ingredient_name: string; source: "ingredients_list" | "ingredient_detail" };
   "Custom Ingredient Added": { ingredient_name: string; source: "ingredients_list" | "onboarding" | "menu_editor" | "shopping" };
