@@ -59,7 +59,8 @@ export function IngredientPicker({
         aria-controls={listId}
         autoFocus={autoFocus}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && results[0]) {
+          // 한글 조합 중 Enter는 무시한다. 안 그러면 '시금치'를 고른 뒤 조합 중이던 '치'가 남아 '참치'까지 한 번 더 고른다
+          if (e.key === "Enter" && !e.nativeEvent.isComposing && results[0]) {
             e.preventDefault();
             pick(results[0].id);
           }
